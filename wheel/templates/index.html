@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block hero %}
+<div id="hero" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" class="active" 
+                data-bs-target="#hero" data-bs-slide-to="0"></button>
+        <button type="button" 
+                data-bs-target="#hero" data-bs-slide-to="1"></button>
+        <button type="button" 
+                data-bs-target="#hero" data-bs-slide-to="2"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div style="background-image: url('/static/images/bluesky.jpg');"></div>
+        </div>
+        <div class="carousel-item">
+            <div style="background-image: url('/static/images/brisbane.jpg')"></div>
+        </div>
+        <div class="carousel-item">
+            <div style="background-image: url('/static/images/birds.jpg'); background-position: bottom;"></div>                    
+        </div>
+    </div>
+    <button type="button" class="carousel-control-prev" 
+            data-bs-target="#hero" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button type="button" class="carousel-control-next" 
+            data-bs-target="#hero" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+{% endblock %}
+
+{% block title %}Upcoming Events{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-6 col-md-auto my-auto">
+        <a href="./create.html" class="btn btn-outline-primary rounded-pill px-4" 
+        data-bs-toggle="tooltip" data-bs-placement="left" 
+        title="only visible to administrators.">Create Event</a>
+    </div>
+    <div class="col-6 col-md-auto my-auto">
+        <select id="catselect" class="form-select rounded-pill ps-4 pe-5" >
+            <option value="" selected>All categories</option>
+            <option value="fireworks">Fireworks</option>
+            <option value="gastronomy">Gastronomy</option>
+            <option value="fundraisers">Fundraisers</option>
+        </select>
+    </div>
+</div>
+<section class="row row-cols-1 row-cols-md-2 row-cols-xl-3 mb-3 g-3">
+    
+    <div class="col event fundraisers">
+        <article class="card">
+            <a href="./event.html" class="card-image" style="background-image: url('/static/images/michelle.jpg'); "></a>
+            <div class="card-body">
+                <h5 class="card-title">Turn for Good</h5>
+                <p class="mb-1"><strong>14/06/21</strong></p>
+                <p><strong>2pm</strong></p>
+                <p class="card-text">Turn for Good is a fundraising initiative for the Give for Good Foundation. The Wheel of Brisbane is proud to announce that a portion of each ticket sold at Turn for Good will go to the Give for Good Foundation and contribute to initiatives from Laureus Sport for Good, Wings for Life and the Give Kids the World Village foundations.</p>
+                <div class="row">
+                    <span class="col my-auto" data-bs-toggle="tooltip" data-bs-placement="right" 
+                    title="no price shown for cancelled items.">Cancelled</span>
+                    <span class="col-auto"><a href="./event.html" class="btn btn-outline-danger rounded-pill px-4">View event</a></span>
+                </div>
+            </div>
+        </article>
+    </div>
+    <div class="col event gastronomy">
+        <article class="card">
+            <a href="./event.html" class="card-image" style="background-image: url('/static/images/wine.jpg');"></a>
+            <div class="card-body">
+                <h5 class="card-title">Sirromet Wine and Dine</h5>
+                <p class="mb-1"><strong>from:&nbsp;30/07/21</strong>
+                        <strong>until:&nbsp;22/08/21</strong></p>
+                <p><strong>from:&nbsp;7pm</strong>
+                        <strong>until:&nbsp;10pm</strong></p>
+                <p class="card-text">Three nights a week for 4 weeks, The Wheel of Brisbane and Sirromet are teaming up to bring you and your partner a dining experience like no other. Leave the kids with uncle Bob and treat your partner to the romantic dinner for two they've been dreaming of. Or bring them along but kids, don't fill up on the cheese!</p>
+                <div class="row">
+                    <span class="col my-auto">upcoming: from $50</span>
+                    <span class="col-auto"><a href="./event.html" class="btn btn-outline-success rounded-pill px-4">View event</a></span>
+                </div>
+            </div>
+        </article>
+    </div>
+    <div class="col event gastronomy">
+        <article class="card">
+            <a href="./event.html" class="card-image" style="background-image: url('/static/images/festival.jpg');"></a href="./event.html">
+            <div class="card-body">
+                <h5 class="card-title">Brisbane Festival</h5>
+                <p class="mb-1"><strong>from:&nbsp;03/09/21</strong>
+                        <strong>until:&nbsp;25/09/21</strong></p>
+                <p><strong>from:&nbsp;11am</strong>
+                        <strong>until:&nbsp;10pm</strong></p>
+                <p class="card-text">The Wheel of Brisbane is partnering with numerous vendors participating in Brisbane Festival to bring your lunch or dinner break to new heights. Whether you prefer oriental noodles, German curried-sausages or a good old-fashioned Aussie meat pie, you're sure to make the most of your visit to Brisbane Festival at the Wheel of Brisbane.</p>
+                <div class="row">
+                    <span class="col my-auto">upcoming: from $50</span>
+                    <span class="col-auto"><a href="./event.html" class="btn btn-outline-success rounded-pill px-4">View event</a></span>
+                </div>
+            </div>
+        </article>
+    </div>
+    <div class="col event fireworks">
+        <article class="card">
+            <a href="./event.html" class="card-image" style="background-image: url('/static/images/fireworks.jpg'); background-position: top;"></a>
+            <div class="card-body">
+                <h5 class="card-title">Sunsuper Riverfire</h5>
+                <p class="mb-1"><strong>25/09/21</strong></p>
+                <p><strong>8pm and 10pm</strong></p>
+            <p class="card-text">See Australia's most beautiful city in a new light. As another year of celebrations for our great city draw to a close, Sunsuper and Brisbane Festival will light up the night and you'll have the best seats in the house. Riverfront, sky-high and air-conditioned! Tickets are selling out fast so book now before it's too late.</p>
+                <div class="row">
+                    <span class="col my-auto" data-bs-toggle="tooltip" data-bs-placement="right" 
+                    title="no price shown for booked out items.">booked out</span>
+                    <span class="col-auto"><a href="./event.html" class="btn btn-outline-secondary rounded-pill px-4">View event</a></span>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+{% endblock %}
