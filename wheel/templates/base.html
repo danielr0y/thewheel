@@ -19,13 +19,16 @@
                     <a class="nav-link" href="./tickets.html" 
                             data-bs-toggle="tooltip" data-bs-placement="bottom" 
                             title="will redirect to login page if neccessary">My Tickets</a>
-                    <a class="nav-link" href="./register">Register</a>
+                    {% if not current_user.is_authenticated %}
+                    <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+                    {% endif %}
                 </div>
                 <button class="navbar-toggler" type="button" 
                         data-bs-toggle="collapse" data-bs-target="#navbarlogin">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse flex-grow-0" id="navbarlogin">
+                    {% if not current_user.is_authenticated %}
                     <form method="POST" action="/login" class="navbar-nav flex-row gap-1">
                         <input name="email" type="text" required 
                                 class="form-control" placeholder="email address">
@@ -33,6 +36,11 @@
                                 class="form-control" placeholder="password">
                         <button class="btn btn-outline-success rounded-pill px-5" type="submit">Login</button>
                     </form>
+                    {% else %}
+                    <form action="/logout" class="navbar-nav flex-row gap-1">
+                        <button class="btn btn-outline-primary rounded-pill px-5" type="submit">Logout</button>
+                    </form>
+                        {% endif %}
                 </div>
             </nav>
             <div>
