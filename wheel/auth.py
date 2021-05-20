@@ -29,6 +29,9 @@ def login():
             login_user(user)
     return redirect(url_for('main.index'))
 
+
+
+
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()

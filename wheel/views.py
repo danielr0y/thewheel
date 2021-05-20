@@ -6,15 +6,6 @@ from .models import Event
 main = Blueprint('main', __name__)
 events = Blueprint('events', __name__, url_prefix='/events')
 
-@events.route('/create', methods=['GET', 'POST'])
-def create():
-    form = CreateEventForm()
-    # if submitted
-        # enter into database 
-        # redirect new event
-    return render_template('create.html', form=form)
-
-
 
 @events.route('/<int:id>/update')
 def update(id):
@@ -30,6 +21,16 @@ def view(id):
     event = Event.query.filter_by(id=id).first()
 
     return render_template('event.html', event=event)
+
+
+
+@events.route('/create', methods=['GET', 'POST'])
+def create():
+    form = CreateEventForm()
+    # if submitted
+        # enter into database 
+        # redirect new event
+    return render_template('create.html', form=form)
 
 
 
