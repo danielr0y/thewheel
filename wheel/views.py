@@ -16,6 +16,15 @@ def create():
 
 
 
+@events.route('/<int:id>/update')
+def update(id):
+    form = CreateEventForm()
+    event = Event.query.filter_by(id=id).first()
+
+    return render_template('create.html', form=form, event=event)
+
+
+
 @events.route('/<int:id>')
 def view(id):
     event = Event.query.filter_by(id=id).first()
@@ -28,6 +37,11 @@ def view(id):
 def viewAll():
     return render_template('events.html')
 
+
+
 @main.route('/')
 def index():
+    # upcoming = get from database
+    # cancelled = get from database
+    # return render_template('index.html', upcoming=upcoming, cancelled=cancelled)
     return render_template('index.html')
