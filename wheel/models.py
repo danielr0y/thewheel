@@ -14,6 +14,9 @@ class User(db.Model, UserMixin):
     reviews = db.relationship('Review', backref='author')
     bookings = db.relationship('Booking', backref='customer')
     
+    def is_admin(self):
+        return self.type == 'administrator'
+
 
 
 class Event(db.Model):
