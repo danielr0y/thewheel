@@ -59,8 +59,9 @@
         <main>
             <header class="row mb-3">
                 <div class="col-md"><h1>{% block title %}{% endblock %}</h1></div>
+                {% block header_buttons %}{% endblock %}
             </header>       
-            {% block main %}
+            {% block content %}
             {% endblock %}
         </main>
         <footer class="text-center footer"><strong>not endorsed by or associated with </strong>The Wheel of Brisbane Pty Ltd</footer>
