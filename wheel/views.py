@@ -1,8 +1,14 @@
 from flask import Blueprint, render_template
+from .forms import CreateEventForm
 
 
-bp = Blueprint('main', __name__)
+main = Blueprint('main', __name__)
+events = Blueprint('events', __name__, url_prefix='/events')
 
-@bp.route('/')
+@events.route('/')
+def viewAll():
+    return render_template('events.html')
+
+@main.route('/')
 def index():
     return render_template('index.html')

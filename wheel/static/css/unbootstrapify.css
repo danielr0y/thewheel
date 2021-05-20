@@ -4,6 +4,9 @@
     width: 100%; 
     height: 400px;
 }
+#hero-mini, #hero-mini .carousel-item>div{
+    height: 200px;
+}
 #minihero{
     height: 200px;
 }

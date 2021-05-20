@@ -34,7 +34,8 @@ def create_app():
 
     # import views
     from . import views
-    app.register_blueprint(views.bp)
+    app.register_blueprint(views.main)
+    app.register_blueprint(views.events)
 
     from . import auth
     app.register_blueprint(auth.bp)

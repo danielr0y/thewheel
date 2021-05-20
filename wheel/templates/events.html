@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block hero %}
-<div id="hero" class="carousel carousel-dark slide" data-bs-ride="carousel">
+<div id="hero-mini" class="carousel carousel-dark slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" class="active" 
                 data-bs-target="#hero" data-bs-slide-to="0"></button>
@@ -34,9 +34,14 @@
 </div>
 {% endblock %}
 
-{% block title %}Upcoming Events only{% endblock %}
+{% block title %}All future events include booked out and cancelled{% endblock %}
 
 {% block header_buttons %}
+    {% if current_user.is_authenticated and current_user.is_admin() %}
+        <div class="col-6 col-md-auto my-auto">
+            <a href="{{ url_for('events.create') }}" class="btn btn-outline-primary rounded-pill px-4">Create Event</a>
+        </div>
+    {% endif %}
     <div class="col-6 col-md-auto my-auto">
         <select id="catselect" class="form-select rounded-pill ps-4 pe-5" >
             <option value="" selected>All categories</option>
@@ -46,22 +51,29 @@
         </select>
     </div>
 {% endblock %}
-    
+
 {% block content %}
 <section class="row row-cols-1 row-cols-md-2 row-cols-xl-3 mb-3 g-3">
     <!-- {% for event in events %} -->
     <div class="col event fireworks">
         <article class="card">
-            <a href="./event.html" class="card-image" style="background-image: url('/static/images/fireworks.jpg'); background-position: top;"></a>
+            <a href="{{url_for('event.view', id=event.id)}}" class="card-image" style="background-image: url('{{ event.image }}'); background-position: top;"></a>
             <div class="card-body">
-                <h5 class="card-title">Sunsuper Riverfire</h5>
-                <p class="mb-1"><strong>25/09/21</strong></p>
-                <p><strong>8pm and 10pm</strong></p>
-            <p class="card-text">See Australia's most beautiful city in a new light. As another year of celebrations for our great city draw to a close, Sunsuper and Brisbane Festival will light up the night and you'll have the best seats in the house. Riverfront, sky-high and air-conditioned! Tickets are selling out fast so book now before it's too late.</p>
+                <h5 class="card-title">{{ event.name }}</h5>
+                <p class="mb-1">
+                    {% for join, date in event.ticketsDateRange() %}
+                        <strong>{{ "{}: {}".format(join, time) }}</strong>
+                    {% endfor %}
+                </p>
+                <p class="mb-1">
+                    {% for join, time in event.ticketsTimeRange() %}
+                        <strong>{{ "{}: {}".format(join, time) }}</strong>
+                    {% endfor %}
+                </p>
+            <p class="card-text">{{ event.description }}</p>
                 <div class="row">
-                    <span class="col my-auto" data-bs-toggle="tooltip" data-bs-placement="right" 
-                    title="no price shown for booked out items.">booked out</span>
-                    <span class="col-auto"><a href="./event.html" class="btn btn-outline-secondary rounded-pill px-4">View event</a></span>
+                    <span class="col my-auto">{{ "{}: from {}".format( event.status, event.ticketsFrom() ) }}</span>
+                    <span class="col-auto"><a href="{{url_for('event.view', id=event.id)}}" class="btn btn-outline-{{ event.statusColour() }} rounded-pill px-4">View event</a></span>
                 </div>
             </div>
         </article>
