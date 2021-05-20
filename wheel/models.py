@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
 
     reviews = db.relationship('Review', backref='author')
     bookings = db.relationship('Booking', backref='customer')
-    
+
     def is_admin(self):
         return self.type == 'administrator'
 
@@ -31,6 +31,37 @@ class Event(db.Model):
     reviews = db.relationship('Review', backref='event')
     tickets = db.relationship('Ticket', backref='event')
 
+
+    def ticketsDateRange(self):
+        return {
+            "on": datetime.now().date().strftime("%d/%m/%Y"),
+            "and": datetime.now().date().strftime("%d/%m/%Y")
+        }
+
+    def ticketsTimeRange(self):
+        return {
+            "from": datetime.now().strftime("%I:%M %p"), # self.tickets.reduce( (prev, {datetime}) => lowest(prev, datetime) ) but python
+            "until": datetime.now().strftime("%I:%M %p") # self.tickets.reduce( (prev, {datetime}) => highest(prev, datetime) ) but python
+        }
+
+    def ticketsFromPrice(self):
+        return 100 # self.tickets.reduce( (prev, {price}) => lowest(prev, price) ) but python
+
+    def statusColour(self):
+        return {
+            'upcoming': 'success',
+            'inactive': 'secondary',
+            'booked out': 'secondary',
+            'cancelled': 'danger'
+        }[self.status]
+
+    def bookButtonText(self):
+        return {
+            'upcoming': 'book now',
+            'inactive': 'no tickets available',
+            'booked out': 'booked out',
+            'cancelled': 'cancelled'
+        }[self.status]
 
 
 class Review(db.Model):
