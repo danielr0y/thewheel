@@ -12,3 +12,7 @@ class RegisterForm(FlaskForm):
     confirm = PasswordField("Confirm Password")
 
     submit = SubmitField("Register")
+
+
+class CreateEventForm(FlaskForm):
+    submit = SubmitField("Create")
