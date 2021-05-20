@@ -14,6 +14,10 @@ class User(db.Model, UserMixin):
     reviews = db.relationship('Review', backref='author')
     bookings = db.relationship('Booking', backref='customer')
 
+    @staticmethod
+    def get(email):
+        return User.query.filter_by(email=email).first()
+
     def is_admin(self):
         return self.type == 'administrator'
 
@@ -31,6 +35,9 @@ class Event(db.Model):
     reviews = db.relationship('Review', backref='event')
     tickets = db.relationship('Ticket', backref='event')
 
+    @staticmethod
+    def get(id):
+        return Event.query.filter_by(id=id).first()
 
     def ticketsDateRange(self):
         return {
@@ -84,6 +91,19 @@ class Ticket(db.Model):
 
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
 
+    @staticmethod
+    def get(id):
+        return Ticket.query.filter_by(id=id).first()
+
+    def getEvent(self):
+        return Event.get(self.event_id)
+
+    def getDate(self):
+        return self.datetime.date()
+
+    def getTime(self):
+        return self.datetime.time()
+
 
 
 class Booking(db.Model):
@@ -96,3 +116,5 @@ class Booking(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     ticket_id = db.Column(db.Integer, db.ForeignKey('tickets.id'))
 
+    def getTicket(self):
+        return Ticket.get(self.ticket_id)

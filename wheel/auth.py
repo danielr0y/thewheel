@@ -14,7 +14,7 @@ def login():
     password = request.form['password']
 
     if email and password:
-        user = User.query.filter_by(email=email).first()
+        user = User.get(email)
         error = None
 
         if user is None:
@@ -40,7 +40,7 @@ def register():
         email = form.email.data
         password = form.password.data
 
-        user = User.query.filter_by(email=email).first()
+        user = User.get(email)
         if user:
             flash('User name already exists', 'danger')
             return redirect(url_for('auth.login'))

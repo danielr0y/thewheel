@@ -10,7 +10,7 @@ events = Blueprint('events', __name__, url_prefix='/events')
 @events.route('/<int:id>/update')
 def update(id):
     form = CreateEventForm()
-    event = Event.query.filter_by(id=id).first()
+    event = Event.get(id)
 
     return render_template('create.html', form=form, event=event)
 
@@ -18,7 +18,7 @@ def update(id):
 
 @events.route('/<int:id>')
 def view(id):
-    event = Event.query.filter_by(id=id).first()
+    event = Event.get(id)
 
     return render_template('event.html', event=event)
 
