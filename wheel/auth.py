@@ -9,7 +9,7 @@ from . import db
 bp = Blueprint('auth', __name__)
 
 @bp.route('/login', methods=['POST'])
-def authenticate(): 
+def login(): 
     email = request.form['email']
     password = request.form['password']
 
