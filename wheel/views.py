@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from flask_login import current_user
 from .forms import CreateEventForm
 from .models import Event
 
@@ -37,6 +38,19 @@ def create():
 @events.route('/')
 def viewAll():
     return render_template('events.html')
+
+
+
+@main.route('/bookings')
+def bookings():
+    # bookings = current_user.bookings.map( booking => ({ 
+    #     ...booking, 
+    #     'ticket' : booking.getTicket(), 
+    #     'event' : this.ticket.getEvent() 
+    # }) )
+
+    # return render_template('bookings.html', bookings=bookings)
+    return render_template('bookings.html')
 
 
 

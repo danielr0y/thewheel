@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+<form id="search" class="row mb-3" method="POST">
+    <input type="hidden" name="email" value="user@email.com" />
+    <div class="col">
+        <div class="form-floating">
+            <input id="orderID" name="orderID" type="number" 
+                    placeholder="show order by ID"
+                    class="form-control" required >
+            <label for="orderID">OrderID</label>
+        </div>
+    </div>
+    <div class="col-auto my-auto">
+        <button type="submit" class="btn btn-outline-success rounded-pill px-5">Show Booking</button>
+    </div>
+</form>
+<section class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-3">
+    {% for booking, ticket, event in bookings %}
+        <div id="{{ booking.id }}" class="col">
+            <div class="card">
+                <a href="{{ url_for('events.view', event.id)}}" class="card-image" style="background-image: url('{{ event.image }}')"></a>
+                <div class="card-body">
+                    <h5>{{ event.name }}</h5>
+                    <div><strong>orderID: </strong>{{ booking.id }}</div>
+                    <div><strong>event date: </strong>{{ ticket.getDate().strftime("%d/%m/%Y") }}</div>
+                    <div><strong>event time: </strong>{{ ticket.getTime().strftime("%I:%M %p") }}</div>
+                    <div><strong>purchase price: </strong>{{ booking.total_price }}</div>
+                    <div><strong>purchase date: </strong>{{ booking.purchase_datetime.strftime("%d/%m/%Y %I:%M %p") }}</div>
+                    <div class="mb-3"><strong>gondolas reserved: </strong>{{ booking.qty }}</div>
+                    <div class="row">
+                        <span class="col my-auto">{{ event.status }}</span>
+                        <a href="{{ url_for('events.view', event.id)}}" class="col-auto btn btn-outline-{{ event.statusColour() }} rounded-pill px-5">View event</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}
