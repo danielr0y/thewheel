@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}Create/Update an event{% endblock %}
+
+{% block content %}
+<form method="POST" action="./event.html">
+    <fieldset class="row mb-3 g-3">
+        <legend>Create an Event</legend>
+        <div class="col-lg-6">
+            <div class="form-floating">
+                <input id="eventname" name="name" type="text" class="form-control" 
+                        placeholder="Give this event a name"></input>
+                <label for="eventname">Event name</label>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="input-group form-floating">
+                <input type="text" id="eventcat" name="cat" class="form-control" 
+                        placeholder="select a category for this event"></input>
+                <label for="eventcat" style="z-index: 3">Event category</label>
+                <select id="catselect" class="form-select btn-outline-primary p-3" >
+                    <option value="" selected>new category</option>
+                    <option value="Fireworks">Fireworks</option>
+                    <option value="Gastronomy">Gastronomy</option>
+                    <option value="Fundraisers">Fundraisers</option>
+                </select>
+            </div>
+        </div>
+        <div class="w-100">
+            <div class="form-floating">
+                <textarea id="eventdesc" name="desc" class="form-control" rows="4"
+                        style="height: auto;" placeholder="enter a description"></textarea>
+                <label for="floatingTextarea2">Event description</label>
+            </div>
+        </div>
+        <div class="input-group">
+            <label for="eventimage" class="input-group-text">Event image</label>
+            <input id="eventimage" name="image" type="file" class="form-control">
+        </div>
+        <div class="row m-3">
+            <div class="col-md text-center my-auto">
+                <label for="releaseWoTickets" 
+                        class="form-check-label">Continue without releasing tickets</label>
+                <input id="releaseWoTickets" class="form-check-input" type="checkbox" >
+            </div>
+            <div class="col-6 col-md-auto ms-md-0">
+                <select id="eventStatus" name="status" 
+                        class="form-select rounded-pill w-100 ps-4 pe-5" disabled >
+                    <option value="Inactive" selected>Inactive</option>
+                    <option value="Upcoming">Upcoming</option>
+                    <option value="Booked out">Booked out</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="col-6 col-md-auto">
+                <input id="eventSubmit" type="submit" value="create" disabled
+                        class="btn btn-primary rounded-pill w-100 px-5" />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset id="tickets" class="row">
+        <legend class="col-sm">Release tickets</legend>
+        <span class="col-sm-auto my-auto">Prices listed are per gondola. Max&nbsp;6&nbsp;people</span>
+        <div class="w-100"></div>
+        <fieldset id="ticketstable" class="col">
+            <div id="dates" class="row row-cols-4 mb-3 g-2 gx-lg-5">
+                <!-- new date -->
+                <div class="col"></div>
+                <div class="col">
+                    <input type="time" min="10:00" max="23:30" value="19:00"
+                            class="form-control btn-light rounded-pill text-center "/>
+                </div>
+                <div class="col">
+                    <input type="time" min="10:00" max="23:30" value="20:00"
+                            class="form-control btn-light rounded-pill text-center "/>  
+                </div>
+                <div class="col">
+                    <input type="time" min="10:00" max="23:30" 
+                            class="form-control btn-light rounded-pill text-center "/>   
+                </div>
+                <!-- new date -->
+                <div class="col">
+                    <input type="date" value="2021-07-30" class="btn btn-light rounded-pill w-100"/>
+                </div>
+                <div class="col">
+                    <div class="input-group w-100">
+                        <input type="number" min="1" max="42" placeholder="#" 
+                                name="tickets[0][0][gondolas]" value="12" 
+                                class="form-control rounded-pill rounded-end border-dark text-center bg-white"/>
+                        <input type="number" min="1" max="200" placeholder="$" 
+                                name="tickets[0][0][price]" value="50" 
+                                class="form-control rounded-pill rounded-start border-dark text-center bg-white"/>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group w-100">
+                        <input type="number" min="1" max="42" placeholder="#" 
+                                name="tickets[0][1][gondolas]" value="12" 
+                                class="form-control rounded-pill rounded-end border-dark text-center bg-white" />
+                        <input type="number" min="1" max="200" placeholder="$" 
+                                name="tickets[0][1][price]" value="50" 
+                                class="form-control rounded-pill rounded-start border-dark text-center bg-white" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group w-100">
+                        <input type="number" min="1" max="42" placeholder="#" 
+                                name="tickets[0][2][gondolas]" 
+                                class="form-control rounded-pill rounded-end border-dark text-center bg-white" />
+                        <input type="number" min="1" max="200" placeholder="$" 
+                                name="tickets[0][2][price]" 
+                                class="form-control rounded-pill rounded-start border-dark text-center bg-white" />
+                    </div>
+                </div>
+                <template>
+                        <!-- new date -->
+                    <div class="col">
+                        <input type="date" class="btn btn-light rounded-pill w-100"/>
+                    </div>
+                    <div class="col">
+                        <div class="input-group w-100">
+                            <input type="number" min="1" max="42" placeholder="#" 
+                                    name="tickets[x][0][gondolas]" 
+                                    class="form-control rounded-pill rounded-end border-dark text-center bg-white" />
+                            <input type="number" min="1" max="200" placeholder="$" 
+                                    name="tickets[x][0][price]" 
+                                    class="form-control rounded-pill rounded-start border-dark text-center bg-white" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group w-100">
+                            <input type="number" min="1" max="42" placeholder="#" 
+                                    name="tickets[x][1][gondolas]" 
+                                    class="form-control rounded-pill rounded-end border-dark text-center bg-white" />
+                            <input type="number" min="1" max="200" placeholder="$" 
+                                    name="tickets[x][1][price]" 
+                                    class="form-control rounded-pill rounded-start border-dark text-center bg-white" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group w-100">
+                            <input type="number" min="1" max="42" placeholder="#" 
+                                    name="tickets[x][2][gondolas]" 
+                                    class="form-control rounded-pill rounded-end border-dark text-center bg-white" />
+                            <input type="number" min="1" max="200" placeholder="$" 
+                                    name="tickets[x][2][price]" 
+                                    class="form-control rounded-pill rounded-start border-dark text-center bg-white" />
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </fieldset>
+        <div id="newtime" class="col-auto m-auto">
+            <button type="button" id="temptooltip" 
+                    class="btn btn-outline-primary w-100 w-sm-75 rounded-pill" 
+                    data-bs-toggle="tooltip" data-bs-placement="left" 
+                    title="Yeah... not sure about this one yet.">+</button>
+        </div>
+        <div id="newdate" class="w-100 text-center">
+            <button type="button" class="btn btn-outline-primary w-lg-25 rounded-pill">+</button>
+        </div>
+        <div class="col-auto ms-auto">
+            <select name="status" class="form-select rounded-pill ps-4 pe-5" >
+                <option value="Inactive">Inactive</option>
+                <option value="Upcoming" selected>Upcoming</option>
+                <option value="Booked out">Booked out</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <input type="submit" value="create" 
+                    class="btn btn-primary rounded-pill px-5" />
+        </div>
+    </fieldset>
+</form>
+{% endblock %}
