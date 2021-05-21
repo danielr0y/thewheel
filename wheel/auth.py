@@ -6,9 +6,9 @@ from flask_login import login_user, login_required,logout_user
 from . import db
 
 
-bp = Blueprint('auth', __name__)
+auth = Blueprint('auth', __name__)
 
-@bp.route('/login', methods=['POST'])
+@auth.route('/login', methods=['POST'])
 def login(): 
     email = request.form['email']
     password = request.form['password']
@@ -32,7 +32,7 @@ def login():
 
 
 
-@bp.route('/register', methods=['GET', 'POST'])
+@auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
     if (form.validate_on_submit()):
@@ -56,7 +56,7 @@ def register():
 
     return render_template('register.html', form=form)
 
-@bp.route('/logout')
+@auth.route('/logout')
 @login_required
 def logout():
     logout_user()
