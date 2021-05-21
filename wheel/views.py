@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
+from flask.helpers import flash
 from flask_login import current_user, login_required
 from .forms import CreateEventForm, BookEventForm
 from .models import Event
@@ -41,8 +42,12 @@ def book():
 @events.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
+    if not current_user.is_admin():
+        flash( "You are not an administrator. You can't create events", 'danger' )
+        return redirect( url_for('main.index') )
+
     form = CreateEventForm()
-    if form.validate_on_submit() and current_user.is_admin():
+    if form.validate_on_submit():
         # enter into database 
         return redirect( url_for('events.view', id=1) )
 
