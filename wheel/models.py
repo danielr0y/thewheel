@@ -16,6 +16,7 @@ class User(db.Model, UserMixin):
     reviews = db.relationship('Review', backref='author')
     bookings = db.relationship('Booking', backref='customer')
 
+
     @staticmethod
     def register(name, email, password):
         if User.getByEmail(email):
@@ -28,6 +29,7 @@ class User(db.Model, UserMixin):
         db.session.commit()
 
         return True
+
 
     @staticmethod
     def login(email, password):
@@ -47,9 +49,11 @@ class User(db.Model, UserMixin):
     def get(id):
         return User.query.filter_by(id=id).first()
 
+
     @staticmethod
     def getByEmail(email):
         return User.query.filter_by(email=email).first()
+
 
     def is_admin(self):
         return self.type == 'administrator'
@@ -68,33 +72,48 @@ class Event(db.Model):
     reviews = db.relationship('Review', backref='event')
     tickets = db.relationship('Ticket', backref='event')
 
+
     @staticmethod
     def get(id):
         return Event.query.filter_by(id=id).first()
 
+
     @staticmethod
     def getAll():
+        # TODO: 
         return 
+
 
     @staticmethod
     def getUpcoming():
         return 
 
+
     @staticmethod
     def getUpcomingByCategory(category):
         return 
 
+
+    @staticmethod
+    def getAllCategories():
+        return 
+
+
     def set(self, name, description, category, status, image):
         return 
+
 
     def getTicketsDateRange(self):
         return Ticket.getDateRangeByEvent(self.id)
 
+
     def getTicketsTimeRange(self):
         return Ticket.getTimeRangeByEvent(self.id)
 
+
     def getTicketsPriceFrom(self):
         return 100 # self.tickets.reduce( (prev, {price}) => lowest(prev, price) ) but python
+
 
     def getStatusColour(self):
         return {
@@ -103,6 +122,7 @@ class Event(db.Model):
             'booked out': 'secondary',
             'cancelled': 'danger'
         }[self.status]
+
 
     def getBookButtonText(self):
         return {
@@ -122,9 +142,11 @@ class Review(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
 
+
     @staticmethod
     def getAllByEvent(event_id):
         return 
+
 
     @staticmethod
     def post(event_id, author_id, text):
@@ -142,9 +164,11 @@ class Ticket(db.Model):
 
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
 
+
     @staticmethod
     def get(id):
         return Ticket.query.filter_by(id=id).first()
+
 
     @staticmethod
     def getTimeRangeByEvent(event_id):
@@ -153,6 +177,7 @@ class Ticket(db.Model):
             "until": datetime.now().strftime("%I:%M %p") # self.tickets.reduce( (prev, {datetime}) => highest(prev, datetime) ) but python
         }
 
+
     @staticmethod
     def getDateRangeByEvent(event_id):
         return {
@@ -160,11 +185,14 @@ class Ticket(db.Model):
             "and": datetime.now().date().strftime("%d/%m/%Y")
         }
 
+
     def getEvent(self):
         return Event.get(self.event_id)
 
+
     def getDate(self):
         return self.datetime.date()
+
 
     def getTime(self):
         return self.datetime.time()
@@ -178,15 +206,30 @@ class Booking(db.Model):
     total_price = db.Column(db.Integer, nullable=False) 
     purchase_datetime = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
-    customer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     ticket_id = db.Column(db.Integer, db.ForeignKey('tickets.id'))
+
 
     @staticmethod
     def get(id):
         return Booking.query.filter_by(id=id).first()
 
-    def getCustomer(self):
-        return User.get(self.customer_id)
+
+    @staticmethod
+    def getAllByUser(user_id):
+        return Booking.query.filter_by(user_id=id).first()
+
+
+    @staticmethod
+    def book(): # TODO: what args does this need?
+        # TODO: use Booking() constructor
+        # TODO: check that a booking was created and return errors if neccessary
+        return
+
+
+    def getUser(self):
+        return User.get(self.user_id)
+
 
     def getTicket(self):
         return Ticket.get(self.ticket_id)
