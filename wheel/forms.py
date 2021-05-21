@@ -15,8 +15,15 @@ class RegisterForm(FlaskForm):
 
 
 class CreateEventForm(FlaskForm):
+    # TODO: add all the neccessary fields
     submit = SubmitField("Create")
 
 
 class BookEventForm(FlaskForm):
+    # TODO: add all the neccessary fields
     submit = SubmitField("Pay now")
+
+
+class SearchForm(FlaskForm):
+    # TODO: add all the neccessary fields
+    submit = SubmitField("Search")

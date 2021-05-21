@@ -85,12 +85,14 @@ class Event(db.Model):
 
 
     @staticmethod
-    def getUpcoming():
+    def getAllByStatus(status):
+        # TODO:
         return 
 
 
     @staticmethod
-    def getUpcomingByCategory(category):
+    def getAllByCategory(category):
+        # TODO:
         return 
 
 
@@ -217,7 +219,7 @@ class Booking(db.Model):
 
     @staticmethod
     def getAllByUser(user_id):
-        return Booking.query.filter_by(user_id=id).first()
+        return Booking.query.filter_by(user_id=user_id)
 
 
     @staticmethod
