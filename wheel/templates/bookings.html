@@ -32,7 +32,7 @@
                     <div class="mb-3"><strong>gondolas reserved: </strong>{{ booking.qty }}</div>
                     <div class="row">
                         <span class="col my-auto">{{ event.status }}</span>
-                        <a href="{{ url_for('events.view', event.id)}}" class="col-auto btn btn-outline-{{ event.statusColour() }} rounded-pill px-5">View event</a>
+                        <a href="{{ url_for('events.view', event.id)}}" class="col-auto btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5">View event</a>
                     </div>
                 </div>
             </div>

@@ -61,19 +61,19 @@
             <div class="card-body">
                 <h5 class="card-title">{{ event.name }}</h5>
                 <p class="mb-1">
-                    {% for join, date in event.ticketsDateRange() %}
+                    {% for join, date in event.getTicketsDateRange() %}
                         <strong>{{ "{}: {}".format(join, time) }}</strong>
                     {% endfor %}
                 </p>
                 <p class="mb-1">
-                    {% for join, time in event.ticketsTimeRange() %}
+                    {% for join, time in event.getTicketsTimeRange() %}
                         <strong>{{ "{}: {}".format(join, time) }}</strong>
                     {% endfor %}
                 </p>
             <p class="card-text">{{ event.description }}</p>
                 <div class="row">
                     <span class="col my-auto">{{ "{}: from {}".format( event.status, event.ticketsFrom() ) }}</span>
-                    <span class="col-auto"><a href="{{url_for('events.view', id=event.id)}}" class="btn btn-outline-{{ event.statusColour() }} rounded-pill px-4">View event</a></span>
+                    <span class="col-auto"><a href="{{url_for('events.view', id=event.id)}}" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-4">View event</a></span>
                 </div>
             </div>
         </article>

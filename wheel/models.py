@@ -1,6 +1,8 @@
 from . import db
 from flask_login import UserMixin
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user
 
 
 class User(db.Model, UserMixin):
@@ -15,7 +17,38 @@ class User(db.Model, UserMixin):
     bookings = db.relationship('Booking', backref='customer')
 
     @staticmethod
-    def get(email):
+    def register(name, email, password):
+        if User.getByEmail(email):
+            return False
+
+        pwd_hash = generate_password_hash(password)
+        new_user = User(name=name, password_hash=pwd_hash, email=email)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        return True
+
+    @staticmethod
+    def login(email, password):
+        user = User.getByEmail(email)
+
+        if user is None:
+            return 'Incorrect email'
+        
+        if not check_password_hash(user.password_hash, password):
+            return 'Incorrect password'
+
+        login_user(user)
+        return False # returns errors, so False means success
+
+
+    @staticmethod
+    def get(id):
+        return User.query.filter_by(id=id).first()
+
+    @staticmethod
+    def getByEmail(email):
         return User.query.filter_by(email=email).first()
 
     def is_admin(self):
@@ -39,22 +72,31 @@ class Event(db.Model):
     def get(id):
         return Event.query.filter_by(id=id).first()
 
-    def ticketsDateRange(self):
-        return {
-            "on": datetime.now().date().strftime("%d/%m/%Y"),
-            "and": datetime.now().date().strftime("%d/%m/%Y")
-        }
+    @staticmethod
+    def getAll():
+        return 
 
-    def ticketsTimeRange(self):
-        return {
-            "from": datetime.now().strftime("%I:%M %p"), # self.tickets.reduce( (prev, {datetime}) => lowest(prev, datetime) ) but python
-            "until": datetime.now().strftime("%I:%M %p") # self.tickets.reduce( (prev, {datetime}) => highest(prev, datetime) ) but python
-        }
+    @staticmethod
+    def getUpcoming():
+        return 
 
-    def ticketsFromPrice(self):
+    @staticmethod
+    def getUpcomingByCategory(category):
+        return 
+
+    def set(self, name, description, category, status, image):
+        return 
+
+    def getTicketsDateRange(self):
+        return Ticket.getDateRangeByEvent(self.id)
+
+    def getTicketsTimeRange(self):
+        return Ticket.getTimeRangeByEvent(self.id)
+
+    def getTicketsPriceFrom(self):
         return 100 # self.tickets.reduce( (prev, {price}) => lowest(prev, price) ) but python
 
-    def statusColour(self):
+    def getStatusColour(self):
         return {
             'upcoming': 'success',
             'inactive': 'secondary',
@@ -62,7 +104,7 @@ class Event(db.Model):
             'cancelled': 'danger'
         }[self.status]
 
-    def bookButtonText(self):
+    def getBookButtonText(self):
         return {
             'upcoming': 'book now',
             'inactive': 'no tickets available',
@@ -80,6 +122,15 @@ class Review(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
 
+    @staticmethod
+    def getAllByEvent(event_id):
+        return 
+
+    @staticmethod
+    def post(event_id, author_id, text):
+        time = datetime.now()
+        return 
+
 
 
 class Ticket(db.Model):
@@ -94,6 +145,20 @@ class Ticket(db.Model):
     @staticmethod
     def get(id):
         return Ticket.query.filter_by(id=id).first()
+
+    @staticmethod
+    def getTimeRangeByEvent(event_id):
+        return {
+            "from": datetime.now().strftime("%I:%M %p"), # self.tickets.reduce( (prev, {datetime}) => lowest(prev, datetime) ) but python
+            "until": datetime.now().strftime("%I:%M %p") # self.tickets.reduce( (prev, {datetime}) => highest(prev, datetime) ) but python
+        }
+
+    @staticmethod
+    def getDateRangeByEvent(event_id):
+        return {
+            "on": datetime.now().date().strftime("%d/%m/%Y"),
+            "and": datetime.now().date().strftime("%d/%m/%Y")
+        }
 
     def getEvent(self):
         return Event.get(self.event_id)
@@ -115,6 +180,13 @@ class Booking(db.Model):
 
     customer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     ticket_id = db.Column(db.Integer, db.ForeignKey('tickets.id'))
+
+    @staticmethod
+    def get(id):
+        return Booking.query.filter_by(id=id).first()
+
+    def getCustomer(self):
+        return User.get(self.customer_id)
 
     def getTicket(self):
         return Ticket.get(self.ticket_id)

@@ -26,24 +26,24 @@
     <div class="row mb-3">
         <div class="col-sm">
             <p class="mb-1">
-                {% for join, date in event.ticketsDateRange().items() %}
+                {% for join, date in event.getTicketsDateRange().items() %}
                     {{join}}:&nbsp;{{date}}
                 {% endfor %}
             </p>
         </div>
         <div class="col-sm">
             <p class="mb-1">
-                {% for join, time in event.ticketsTimeRange().items() %}
+                {% for join, time in event.getTicketsTimeRange().items() %}
                 {{join}}:&nbsp;{{time}}
                 {% endfor %}
             </p>
         </div>
         <div class="col-sm">
-            <p>from&nbsp;${{ event.ticketsFromPrice() }} per&nbsp;gondola</p>
+            <p>from&nbsp;${{ event.getTicketsPriceFrom() }} per&nbsp;gondola</p>
         </div>
         <div class="col-sm-auto my-auto">
-            <!-- <button type="button" class="btn btn-outline-{{ event.statusColour() }} rounded-pill px-5" 
-                    data-bs-toggle="modal" data-bs-target="#book" {{ "disabled" if event.status != 'upcoming' }}>{{ event.bookButtonText() }}</button> -->
+            <!-- <button type="button" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5" 
+                    data-bs-toggle="modal" data-bs-target="#book" {{ "disabled" if event.status != 'upcoming' }}>{{ event.getBookButtonText() }}</button> -->
             <button type="button" class="btn btn-outline-success rounded-pill px-5" 
                     data-bs-toggle="modal" data-bs-target="#book" >Book now</button>
         </div>
