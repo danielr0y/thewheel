@@ -40,9 +40,10 @@ def book():
 @events.route('/create', methods=['GET', 'POST'])
 def create():
     form = CreateEventForm()
-    # if submitted
+    if form.validate_on_submit() and current_user.is_authenticated and current_user.is_admin():
         # enter into database 
-        # redirect new event
+        return redirect( url_for('events.view', id=1) )
+
     return render_template('create.html', form=form)
 
 
@@ -55,6 +56,9 @@ def viewAll():
 
 @main.route('/bookings')
 def bookings():
+    if not current_user.is_authenticated:
+        return redirect( url_for('main.index') )
+        
     # bookings = current_user.bookings.map( booking => ({ 
     #     ...booking, 
     #     'ticket' : booking.getTicket(), 
