@@ -80,25 +80,25 @@
                             <label class="btn btn-light rounded-pill w-100">30/07/21</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime1" name="datetime" value="2021-07-30 19:00" data-price="80"
+                            <input id="datetime1" name="ticket_id" value="ticket_id_here" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime1"
                                     class="btn btn-outline-success rounded-pill w-100">$80</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime2" name="datetime" value="2021-07-30 20:00" data-price="90"
+                            <input id="datetime2" name="ticket_id" value="ticket_id_here" data-price="90"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime2"
                                     class="btn btn-outline-success rounded-pill w-100">$90</label>
                         </div>
                         <div class="col">
-                            <input id="datetime3" name="datetime" value="2021-07-30 21:00" data-price="90"
+                            <input id="datetime3" name="ticket_id" value="ticket_id_here" data-price="90"
                                     class="btn-check" type="radio" autocomplete="off" required disabled>
                             <label for="datetime3"
                                     class="btn btn-outline-secondary rounded-pill w-100">$90</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime4" name="datetime" value="2021-07-30 22:00" data-price="80"
+                            <input id="datetime4" name="ticket_id" value="ticket_id_here" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" required disabled>
                             <label for="datetime4"
                                     class="btn btn-outline-secondary rounded-pill w-100">$80</label>
@@ -108,25 +108,25 @@
                             <label class="btn btn-light rounded-pill w-100">31/07/21</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime6" name="datetime" value="2021-07-31 19:00" data-price="80"
+                            <input id="datetime6" name="ticket_id" value="ticket_id_here" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime6"
                                     class="btn btn-outline-success rounded-pill w-100">$80</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime7" name="datetime" value="2021-07-31 20:00" data-price="90"
+                            <input id="datetime7" name="ticket_id" value="ticket_id_here" data-price="90"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime7"
                                     class="btn btn-outline-success rounded-pill w-100">$90</label>
                         </div>
                         <div class="col">
-                            <input id="datetime8" name="datetime" value="2021-07-31 21:00" data-price="90"
+                            <input id="datetime8" name="ticket_id" value="ticket_id_here" data-price="90"
                                     class="btn-check" type="radio" autocomplete="off" required disabled>
                             <label for="datetime8"
                                     class="btn btn-outline-secondary rounded-pill w-100">$90</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime9" name="datetime" value="2021-07-31 22:00" data-price="80"
+                            <input id="datetime9" name="ticket_id" value="ticket_id_here" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" required disabled>
                             <label for="datetime9"
                                     class="btn btn-outline-secondary rounded-pill w-100">$80</label>
@@ -136,25 +136,25 @@
                             <label class="btn btn-light rounded-pill w-100">01/08/21</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime11" name="datetime" value="2021-08-01 19:00" data-price="60"
+                            <input id="datetime11" name="ticket_id" value="ticket_id_here" data-price="60"
                                     class="btn-check" type="radio" autocomplete="off" disabled required>
                             <label for="datetime11"
                                     class="btn btn-outline-secondary rounded-pill w-100">$60</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime12" name="datetime" value="2021-08-01 20:00" data-price="80"
+                            <input id="datetime12" name="ticket_id" value="ticket_id_here" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" disabled required>
                             <label for="datetime12"
                                     class="btn btn-outline-secondary rounded-pill w-100">$80</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime13" name="datetime" value="2021-08-01 21:00" data-price="80"
+                            <input id="datetime13" name="ticket_id" value="ticket_id_here" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime13"
                                     class="btn btn-outline-success rounded-pill w-100">$80</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime14" name="datetime" value="2021-08-01 22:00" data-price="60"
+                            <input id="datetime14" name="ticket_id" value="ticket_id_here" data-price="60"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime14"
                                     class="btn btn-outline-success rounded-pill w-100">$60</label>    
@@ -276,7 +276,7 @@
     const gondolas = document.getElementById('gondolas');
 
     /* selecting a datetime option */
-    document.querySelectorAll('[name="datetime"]').forEach( (datetime) => {
+    document.querySelectorAll('[name="ticket_id"]').forEach( (datetime) => {
         datetime.addEventListener('change', ({target}) => {
             updatePrice( target.getAttribute('data-price') || 0 );
         } )
