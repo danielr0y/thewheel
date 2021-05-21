@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
-from flask_login import current_user
+from flask_login import current_user, login_required
 from .forms import CreateEventForm, BookEventForm
 from .models import Event
 
@@ -27,9 +27,10 @@ def view(id):
 
 
 @events.route('/book', methods=['POST'])
+@login_required
 def book():
     form = BookEventForm()
-    if form.validate_on_submit() and current_user.is_authenticated:
+    if form.validate_on_submit():
         # enter into database 
         return redirect( url_for('main.bookings') )
 
@@ -38,11 +39,13 @@ def book():
 
 
 @events.route('/create', methods=['GET', 'POST'])
+@login_required
 def create():
     form = CreateEventForm()
-    # if submitted
+    if form.validate_on_submit() and current_user.is_admin():
         # enter into database 
-        # redirect new event
+        return redirect( url_for('events.view', id=1) )
+
     return render_template('create.html', form=form)
 
 
@@ -54,7 +57,9 @@ def viewAll():
 
 
 @main.route('/bookings')
+@login_required
 def bookings():
+       
     # bookings = current_user.bookings.map( booking => ({ 
     #     ...booking, 
     #     'ticket' : booking.getTicket(), 
