@@ -16,3 +16,7 @@ class RegisterForm(FlaskForm):
 
 class CreateEventForm(FlaskForm):
     submit = SubmitField("Create")
+
+
+class BookEventForm(FlaskForm):
+    submit = SubmitField("Pay now")

@@ -51,7 +51,7 @@
     <div id="book" class="modal fade" tabindex="-1" 
             data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg">
-            <form class="modal-content" method="POST" action="./tickets.html">
+            <form class="modal-content" method="POST" action="{{ url_for('events.book') }}">
                 <div class="modal-header">
                     <h5 id="staticBackdropLabel" class="modal-title">Book your tickets to {{ event.name }} on the Wheel of Brisbane</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -80,25 +80,25 @@
                             <label class="btn btn-light rounded-pill w-100">30/07/21</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime1" name="datetime" value="2021-07-30-19:00" data-price="80"
+                            <input id="datetime1" name="datetime" value="2021-07-30 19:00" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime1"
                                     class="btn btn-outline-success rounded-pill w-100">$80</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime2" name="datetime" value="2021-07-30-20:00" data-price="90"
+                            <input id="datetime2" name="datetime" value="2021-07-30 20:00" data-price="90"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime2"
                                     class="btn btn-outline-success rounded-pill w-100">$90</label>
                         </div>
                         <div class="col">
-                            <input id="datetime3" name="datetime" value="2021-07-30-21:00" data-price="90"
+                            <input id="datetime3" name="datetime" value="2021-07-30 21:00" data-price="90"
                                     class="btn-check" type="radio" autocomplete="off" required disabled>
                             <label for="datetime3"
                                     class="btn btn-outline-secondary rounded-pill w-100">$90</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime4" name="datetime" value="2021-07-30-22:00" data-price="80"
+                            <input id="datetime4" name="datetime" value="2021-07-30 22:00" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" required disabled>
                             <label for="datetime4"
                                     class="btn btn-outline-secondary rounded-pill w-100">$80</label>
@@ -108,25 +108,25 @@
                             <label class="btn btn-light rounded-pill w-100">31/07/21</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime6" name="datetime" value="2021-07-31-19:00" data-price="80"
+                            <input id="datetime6" name="datetime" value="2021-07-31 19:00" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime6"
                                     class="btn btn-outline-success rounded-pill w-100">$80</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime7" name="datetime" value="2021-07-31-20:00" data-price="90"
+                            <input id="datetime7" name="datetime" value="2021-07-31 20:00" data-price="90"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime7"
                                     class="btn btn-outline-success rounded-pill w-100">$90</label>
                         </div>
                         <div class="col">
-                            <input id="datetime8" name="datetime" value="2021-07-31-21:00" data-price="90"
+                            <input id="datetime8" name="datetime" value="2021-07-31 21:00" data-price="90"
                                     class="btn-check" type="radio" autocomplete="off" required disabled>
                             <label for="datetime8"
                                     class="btn btn-outline-secondary rounded-pill w-100">$90</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime9" name="datetime" value="2021-07-31-22:00" data-price="80"
+                            <input id="datetime9" name="datetime" value="2021-07-31 22:00" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" required disabled>
                             <label for="datetime9"
                                     class="btn btn-outline-secondary rounded-pill w-100">$80</label>
@@ -136,25 +136,25 @@
                             <label class="btn btn-light rounded-pill w-100">01/08/21</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime11" name="datetime" value="2021-08-01-19:00" data-price="60"
+                            <input id="datetime11" name="datetime" value="2021-08-01 19:00" data-price="60"
                                     class="btn-check" type="radio" autocomplete="off" disabled required>
                             <label for="datetime11"
                                     class="btn btn-outline-secondary rounded-pill w-100">$60</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime12" name="datetime" value="2021-08-01-20:00" data-price="80"
+                            <input id="datetime12" name="datetime" value="2021-08-01 20:00" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" disabled required>
                             <label for="datetime12"
                                     class="btn btn-outline-secondary rounded-pill w-100">$80</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime13" name="datetime" value="2021-08-01-21:00" data-price="80"
+                            <input id="datetime13" name="datetime" value="2021-08-01 21:00" data-price="80"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime13"
                                     class="btn btn-outline-success rounded-pill w-100">$80</label>    
                         </div>
                         <div class="col">
-                            <input id="datetime14" name="datetime" value="2021-08-01-22:00" data-price="60"
+                            <input id="datetime14" name="datetime" value="2021-08-01 22:00" data-price="60"
                                     class="btn-check" type="radio" autocomplete="off" required>
                             <label for="datetime14"
                                     class="btn btn-outline-success rounded-pill w-100">$60</label>    
@@ -243,4 +243,97 @@
     {% endfor %}
     </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+    /* post a review */
+    document.getElementById('review').addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const reviews = document.getElementById('reviews');
+        const newreview = reviews.querySelector('template').content.cloneNode(true);
+        newreview.querySelector('p').innerHTML = event.target.review.value;
+        
+        reviews.prepend(newreview);
+        event.target.review.value = '';
+    });
+
+    /* 
+     * book a ticket 
+     * 
+     */
+    
+    /* 
+     * monitor changes 
+     */
+    const people = document.getElementById('people');
+    const gondolas = document.getElementById('gondolas');
+
+    /* selecting a datetime option */
+    document.querySelectorAll('[name="datetime"]').forEach( (datetime) => {
+        datetime.addEventListener('change', ({target}) => {
+            updatePrice( target.getAttribute('data-price') || 0 );
+        } )
+    } )
+
+    /* updating number of people */
+    people.addEventListener('change', ({target}) => {
+        const minus = target.closest('.counter').querySelector('.minus');
+        minus.disabled = (target.value === target.min );
+
+        const plus = target.closest('.counter').querySelector('.plus');
+        plus.disabled = (target.value === target.max);
+
+        const requiredgondolas = Math.ceil( Number(target.value)/6 );
+
+        const currentgondolas = Number(gondolas.value);
+        if ( currentgondolas < requiredgondolas || target.value < currentgondolas ){
+            gondolas.value = requiredgondolas;
+        }
+
+        gondolas.dispatchEvent( new Event('change') );
+    } );
+
+    /* updating number of gondolas */
+    gondolas.addEventListener('change', ({target}) => {
+        const plus = target.closest('.counter').querySelector('.plus');
+        plus.disabled = (target.value === people.value || target.value === target.max);
+        
+        const requiredgondolas = Math.ceil( Number(people.value)/6 );
+        const minus = target.closest('.counter').querySelector('.minus');
+        minus.disabled = (target.value <= requiredgondolas);
+
+        const price = document.querySelector(`[value="${target.form.datetime.value}"]`);
+
+        price && updatePrice( price.getAttribute('data-price') || 0 );
+    } );
+
+    /* controls for buttons */
+    document.querySelectorAll('.counter').forEach( (counter) => {
+        counter.querySelectorAll('button').forEach( (button) => {
+            button.addEventListener('click', () => {
+                const input = counter.querySelector('input');
+
+                if ( button.classList.contains('plus') )
+                    input.stepUp();
+                
+                if ( button.classList.contains('minus') )
+                    input.stepDown();
+
+                input.dispatchEvent( new Event('change') );
+            } );
+        } );
+    } );
+
+    function updatePrice(price){
+        document.getElementById('price').value = Number(gondolas.value) * Number( price );
+    }
+</script>
+
 {% endblock %}

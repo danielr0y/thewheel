@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for
 from flask_login import current_user
-from .forms import CreateEventForm
+from .forms import CreateEventForm, BookEventForm
 from .models import Event
 
 
@@ -19,9 +19,21 @@ def update(id):
 
 @events.route('/<int:id>')
 def view(id):
+    form = BookEventForm()
     event = Event.get(id)
 
-    return render_template('event.html', event=event)
+    return render_template('event.html', form=form, event=event)
+
+
+
+@events.route('/book', methods=['POST'])
+def book():
+    form = BookEventForm()
+    if form.validate_on_submit() and current_user.is_authenticated:
+        # enter into database 
+        return redirect( url_for('main.bookings') )
+
+    return redirect( url_for('main.index') )
 
 
 
