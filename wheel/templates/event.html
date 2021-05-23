@@ -79,7 +79,7 @@
                             {% for ticket_id in times %}
                                 {% for ticket in bookform.ticket if ticket.data == ticket_id %}
                                     <div class="col">
-                                        {{ ticket(class_="btn-check", data_price=ticket.label.text.strip('$') ) }}
+                                        {{ ticket(class_="btn-check", data_price=ticket.label.text.strip('$'), required=True ) }}
                                         {{ ticket.label(class_="btn btn-outline-success rounded-pill w-100") }}
                                     </div>
                                 {% endfor %}

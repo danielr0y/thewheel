@@ -21,9 +21,9 @@ class CreateEventForm(FlaskForm):
 
 
 class BookEventForm(FlaskForm):
-    ticket = RadioField('Tickets', coerce=int)
-    qty = IntegerField('Number of Gondolas', default=1)
-    price = IntegerField('Total Price', default=0)
+    ticket = RadioField('Tickets', coerce=int, validators=[InputRequired()])
+    qty = IntegerField('Number of Gondolas', default=1, validators=[InputRequired()])
+    price = IntegerField('Total Price', default=0, validators=[InputRequired()])
     submit = SubmitField("Book now")
 
 

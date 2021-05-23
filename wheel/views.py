@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for
 from flask.helpers import flash
 from flask_login import current_user, login_required
-from .forms import CreateEventForm, BookEventForm, SearchForm
+from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm
 from .models import Event, Booking
 
 
