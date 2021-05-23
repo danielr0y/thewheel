@@ -1,3 +1,4 @@
+from itertools import groupby
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for
 from flask.helpers import flash
@@ -17,13 +18,13 @@ def update(id):
 
     # TODO: passing a form to this template does nothing
     # TODO: passing an event to this template does nothing
-    return render_template('create.html', form=form, event=event) 
+    # return render_template('create.html', form=form, event=event) 
+    return render_template('create.html')
 
 
 
 @events.route('/<int:id>')
 def view(id):
-    form = BookEventForm() # TODO: create this form
     event = Event.get(id)
     bookform = BookEventForm()
     reviewform = PostReviewForm() # TODO: create this form
@@ -83,7 +84,8 @@ def create():
         return redirect( url_for('events.view', id=1) ) # TODO: actually send the new_event.id
 
     # TODO: passing a form to this template does nothing
-    return render_template('create.html', form=form)
+    # return render_template('create.html', form=form)
+    return render_template('create.html')
 
 
 
@@ -93,7 +95,8 @@ def viewAll():
     form = SearchForm() # TODO: create this form
 
     # TODO: passing events to this template doesnt do anything
-    return render_template('events.html', events=events, form=form) 
+    # return render_template('events.html', events=events, form=form)
+    return render_template('events.html')
 
 
 
@@ -108,7 +111,8 @@ def bookings():
     #     'ticket' : booking.getTicket(), 
     #     'event' : this.ticket.getEvent() 
     # }) )
-    return render_template('bookings.html', bookings=bookings)
+    # return render_template('bookings.html', bookings=bookings)
+    return render_template('bookings.html')
 
 
 
@@ -116,4 +120,5 @@ def bookings():
 def index():
     upcoming = Event.getAllByStatus('upcoming')
     cancelled = Event.getAllByStatus('cancelled')
-    return render_template('index.html', upcoming=upcoming, cancelled=cancelled)
+    # return render_template('index.html', upcoming=upcoming, cancelled=cancelled)
+    return render_template('index.html')
