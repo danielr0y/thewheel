@@ -6,10 +6,8 @@
 
 {% block title %}{{ event.name }}{% endblock %}
 
-<!-- 
-    TODO: use the form object passed to this template to improve the book form in the modal window
-    TODO: this page uses the event object a bit but it's not complete
- -->
+<!-- TODO: this page uses the event object a bit but it's not complete -->
+
 {% block header_buttons %}
 {% if current_user.is_authenticated and current_user.is_admin() %}
     <div class="col-sm-auto my-auto">
@@ -20,6 +18,7 @@
 
 {% block content %}
 <section>
+    <!-- TODO: We're storing HTML in the database. How do we made Flask parse HTML? -->
     {{ event.description }}
 </section>
 <section>
@@ -61,108 +60,31 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <fieldset class="row row-cols-5 mb-3 btn-group g-2 gx-lg-5">
+                    <fieldset class="row row-cols-{{ times|length+1 }} mb-3 btn-group g-2 gx-lg-5">
                         <legend class="col-12 col-lg">Dates and times</legend>
                         <span class="col-12 col-lg-auto my-auto">Prices listed are per gondola. Max 6 people</span>
                         <div class="w-100"></div>
-                        <!-- new date -->
+                        <!-- times header -->
                         <div class="col"></div>
-                        <div class="col">
-                            <label class="btn btn-light rounded-pill w-100">7pm</label>    
-                        </div>
-                        <div class="col">
-                            <label class="btn btn-light rounded-pill w-100">8pm</label>    
-                        </div>
-                        <div class="col">
-                            <label class="btn btn-light rounded-pill w-100">9pm</label>    
-                        </div>
-                        <div class="col">
-                            <label class="btn btn-light rounded-pill w-100">10pm</label>    
-                        </div>
-                        <!-- new date -->
-                        <div class="col">
-                            <label class="btn btn-light rounded-pill w-100">30/07/21</label>    
-                        </div>
-                        <div class="col">
-                            <input id="datetime1" name="ticket_id" value="ticket_id_here" data-price="80"
-                                    class="btn-check" type="radio" autocomplete="off" required>
-                            <label for="datetime1"
-                                    class="btn btn-outline-success rounded-pill w-100">$80</label>    
-                        </div>
-                        <div class="col">
-                            <input id="datetime2" name="ticket_id" value="ticket_id_here" data-price="90"
-                                    class="btn-check" type="radio" autocomplete="off" required>
-                            <label for="datetime2"
-                                    class="btn btn-outline-success rounded-pill w-100">$90</label>
-                        </div>
-                        <div class="col">
-                            <input id="datetime3" name="ticket_id" value="ticket_id_here" data-price="90"
-                                    class="btn-check" type="radio" autocomplete="off" required disabled>
-                            <label for="datetime3"
-                                    class="btn btn-outline-secondary rounded-pill w-100">$90</label>    
-                        </div>
-                        <div class="col">
-                            <input id="datetime4" name="ticket_id" value="ticket_id_here" data-price="80"
-                                    class="btn-check" type="radio" autocomplete="off" required disabled>
-                            <label for="datetime4"
-                                    class="btn btn-outline-secondary rounded-pill w-100">$80</label>
-                        </div>
-                        <!-- new date -->
-                        <div class="col">
-                            <label class="btn btn-light rounded-pill w-100">31/07/21</label>    
-                        </div>
-                        <div class="col">
-                            <input id="datetime6" name="ticket_id" value="ticket_id_here" data-price="80"
-                                    class="btn-check" type="radio" autocomplete="off" required>
-                            <label for="datetime6"
-                                    class="btn btn-outline-success rounded-pill w-100">$80</label>    
-                        </div>
-                        <div class="col">
-                            <input id="datetime7" name="ticket_id" value="ticket_id_here" data-price="90"
-                                    class="btn-check" type="radio" autocomplete="off" required>
-                            <label for="datetime7"
-                                    class="btn btn-outline-success rounded-pill w-100">$90</label>
-                        </div>
-                        <div class="col">
-                            <input id="datetime8" name="ticket_id" value="ticket_id_here" data-price="90"
-                                    class="btn-check" type="radio" autocomplete="off" required disabled>
-                            <label for="datetime8"
-                                    class="btn btn-outline-secondary rounded-pill w-100">$90</label>    
-                        </div>
-                        <div class="col">
-                            <input id="datetime9" name="ticket_id" value="ticket_id_here" data-price="80"
-                                    class="btn-check" type="radio" autocomplete="off" required disabled>
-                            <label for="datetime9"
-                                    class="btn btn-outline-secondary rounded-pill w-100">$80</label>
-                        </div>
-                        <!-- new date -->
-                        <div class="col">
-                            <label class="btn btn-light rounded-pill w-100">01/08/21</label>    
-                        </div>
-                        <div class="col">
-                            <input id="datetime11" name="ticket_id" value="ticket_id_here" data-price="60"
-                                    class="btn-check" type="radio" autocomplete="off" disabled required>
-                            <label for="datetime11"
-                                    class="btn btn-outline-secondary rounded-pill w-100">$60</label>    
-                        </div>
-                        <div class="col">
-                            <input id="datetime12" name="ticket_id" value="ticket_id_here" data-price="80"
-                                    class="btn-check" type="radio" autocomplete="off" disabled required>
-                            <label for="datetime12"
-                                    class="btn btn-outline-secondary rounded-pill w-100">$80</label>    
-                        </div>
-                        <div class="col">
-                            <input id="datetime13" name="ticket_id" value="ticket_id_here" data-price="80"
-                                    class="btn-check" type="radio" autocomplete="off" required>
-                            <label for="datetime13"
-                                    class="btn btn-outline-success rounded-pill w-100">$80</label>    
-                        </div>
-                        <div class="col">
-                            <input id="datetime14" name="ticket_id" value="ticket_id_here" data-price="60"
-                                    class="btn-check" type="radio" autocomplete="off" required>
-                            <label for="datetime14"
-                                    class="btn btn-outline-success rounded-pill w-100">$60</label>    
-                        </div>
+                        {% for time in times %}
+                            <div class="col">
+                                <label class="btn btn-light rounded-pill w-100">{{time}}</label>    
+                            </div>
+                        {% endfor %}
+                        <!-- new date row -->
+                        {% for date, times in dates %}
+                            <div class="col">
+                                <label class="btn btn-light rounded-pill w-100">{{date}}</label>    
+                            </div>
+                            {% for ticket_id in times %}
+                                {% for ticket in bookform.ticket if ticket.data == ticket_id %}
+                                    <div class="col">
+                                        {{ ticket(class_="btn-check", data_price=ticket.label.text.strip('$') ) }}
+                                        {{ ticket.label(class_="btn btn-outline-success rounded-pill w-100") }}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
                     </fieldset>
                     <fieldset class="row mb-3 g-2">
                         <legend class="">Passengers and Gondolas</legend>
@@ -182,15 +104,12 @@
                             </div>
                         </div>
                         <div class="w-100"></div>
-                        <div class="col text-end">
-                            <label for="gondolas">number of gondolas</label>
-                        </div>
+                        <div class="col text-end">{{ bookform.qty.label }}</div>
                         <div class="col-auto">
                             <div class="btn-group counter">
                                 <button type="button" disabled 
                                         class="btn btn-success rounded-pill rounded-end minus">-</button>
-                                <input id="gondolas" name="gondolas" type="number" min="1" max="42" value="1" 
-                                        class="rounded-0 border-success border-start-0 border-end-0 form-control text-center shadow-none"/>
+                                {{ bookform.qty(class_="rounded-0 border-success border-start-0 border-end-0 form-control text-center shadow-none",  min="1", max="42") }}
                                 <button type="button" disabled 
                                         class="btn btn-success rounded-pill rounded-start plus">+</button>
                             </div>
@@ -202,8 +121,7 @@
                         <div class="col-auto">
                             <div class="btn-group counter">
                                 <span class="btn btn-success rounded-pill rounded-end">$</span>
-                                <input id="price" name="price" type="number" value="0" readonly 
-                                        class="rounded-0 border-success border-start-0 border-end-0 form-control text-center shadow-none bg-white"/>
+                                {{ bookform.price(readonly=true, class_="rounded-0 border-success border-start-0 border-end-0 form-control text-center shadow-none bg-white",  min="0") }}
                                 <span class="btn btn-success rounded-pill rounded-start">.00</span>
                             </div>
                         </div>
@@ -212,7 +130,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary rounded-pill px-5" 
                             data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success rounded-pill px-5">Book Now</button>
+                    {{ bookform.submit(class_="btn btn-success rounded-pill px-5") }}
                 </div>
             </form>
         </div>
@@ -256,32 +174,12 @@
         return new bootstrap.Tooltip(tooltipTriggerEl)
     });
 
-    /* post a review */
-    document.getElementById('review').addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const reviews = document.getElementById('reviews');
-        const newreview = reviews.querySelector('template').content.cloneNode(true);
-        newreview.querySelector('p').innerHTML = event.target.review.value;
-        
-        reviews.prepend(newreview);
-        event.target.review.value = '';
-    });
-
-    /* 
-     * book a ticket 
-     * 
-     */
-    
-    /* 
-     * monitor changes 
-     */
     const people = document.getElementById('people');
-    const gondolas = document.getElementById('gondolas');
+    const gondolas = document.getElementById('qty');
 
-    /* selecting a datetime option */
-    document.querySelectorAll('[name="ticket_id"]').forEach( (datetime) => {
-        datetime.addEventListener('change', ({target}) => {
+    /* selecting a ticket option */
+    document.querySelectorAll('[name="ticket"]').forEach( (ticket) => {
+        ticket.addEventListener('change', ({target}) => {
             updatePrice( target.getAttribute('data-price') || 0 );
         } )
     } )
@@ -313,7 +211,7 @@
         const minus = target.closest('.counter').querySelector('.minus');
         minus.disabled = (target.value <= requiredgondolas);
 
-        const price = document.querySelector(`[value="${target.form.datetime.value}"]`);
+        const price = document.querySelector(`[value="${target.form.ticket.value}"]`);
 
         price && updatePrice( price.getAttribute('data-price') || 0 );
     } );

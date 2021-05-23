@@ -25,10 +25,28 @@ def update(id):
 def view(id):
     form = BookEventForm() # TODO: create this form
     event = Event.get(id)
+    bookform = BookEventForm()
+    reviewform = PostReviewForm() # TODO: create this form
 
-    # TODO: passing a form to this template does nothing
-    # TODO: check how else the event object could be used in the template. it's started already
-    return render_template('event.html', form=form, event=event)
+    # create radio field options from the tickets sorted by date
+    bookform.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), event.tickets))
+
+    # get a list of all possible times in order
+    ticketssortedbytime = sorted(event.tickets, key=lambda ticket: ticket.datetime.strftime("%I:%M %p"))
+    ticketsgroupedbytime = groupby(ticketssortedbytime, key=lambda ticket: ticket.datetime.strftime("%I:%M %p"))
+    times = [time for time, _tickets in ticketsgroupedbytime]
+
+    # get a list of ticket ids grouped by date
+    ticketssortedbydate = sorted(event.tickets, key=lambda ticket: ticket.datetime)    
+    ticketsgroupedbydate = groupby(ticketssortedbydate, key=lambda ticket: ticket.datetime.strftime("%d/%m/%Y"))
+    dates = [[date, [time.id for time in times]] for date, times in ticketsgroupedbydate]
+
+    # in the template, 
+    # times are used to generate the table header and
+    # dates are used to generate rows.
+    # the radio options are not actually held in dates, 
+    # rather, they are retreived from the form object according to the ticket ids in dates
+    return render_template('event.html', event=event, bookform=bookform, times=times, dates=dates)
 
 
 

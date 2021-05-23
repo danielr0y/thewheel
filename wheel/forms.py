@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import TextAreaField,SubmitField, StringField, PasswordField
+from wtforms.fields import TextAreaField,SubmitField, StringField, PasswordField, RadioField
+from wtforms.fields.html5 import IntegerField
 from wtforms.validators import InputRequired, Length, Email, EqualTo
 
 
@@ -20,8 +21,15 @@ class CreateEventForm(FlaskForm):
 
 
 class BookEventForm(FlaskForm):
+    ticket = RadioField('Tickets', coerce=int)
+    qty = IntegerField('Number of Gondolas', default=1)
+    price = IntegerField('Total Price', default=0)
+    submit = SubmitField("Book now")
+
+
+class PostReviewForm(FlaskForm):
     # TODO: add all the neccessary fields
-    submit = SubmitField("Pay now")
+    submit = SubmitField("Post review")
 
 
 class SearchForm(FlaskForm):
