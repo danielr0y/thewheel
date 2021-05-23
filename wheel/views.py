@@ -54,9 +54,8 @@ def view(id):
 @events.route('/book', methods=['POST'])
 @login_required
 def book():
-    form = BookEventForm() # TODO: create this form
+    form = BookEventForm()
     if form.validate_on_submit():
-        # TODO: see events.view first. It's not actually using this form yet
         # TODO: get the data from the form and validate it
         # TODO: use current_user and datetime.now()
 

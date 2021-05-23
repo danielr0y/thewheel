@@ -211,7 +211,6 @@ class Booking(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     ticket_id = db.Column(db.Integer, db.ForeignKey('tickets.id'))
 
-
     @staticmethod
     def get(id):
         return Booking.query.filter_by(id=id).first()
@@ -223,8 +222,8 @@ class Booking(db.Model):
 
 
     @staticmethod
-    def book(): # TODO: what args does this need?
-        # TODO: use Booking() constructor
+    def book(): # TODO: what args does this need? all the properties?
+        # TODO: use Booking() constructor. follow the tutorial about creating destinations
         # TODO: check that a booking was created and return errors if neccessary
         return
 
