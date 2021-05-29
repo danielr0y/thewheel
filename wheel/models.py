@@ -74,6 +74,13 @@ class Event(db.Model):
 
 
     @staticmethod
+    def create():
+        # TODO: implement this method. take arguements and pass them along to the constructor.
+        #  check that everything was successful and return the event or an error
+        return Event()
+
+
+    @staticmethod
     def get(id):
         return Event.query.filter_by(id=id).first()
 
@@ -98,6 +105,7 @@ class Event(db.Model):
 
     @staticmethod
     def getAllCategories():
+        # TODO: SELECT category FROM events GROUP BY category but with SQLAlchemy syntax
         return 
 
 
@@ -165,6 +173,14 @@ class Ticket(db.Model):
     remaining = db.Column(db.Integer, nullable=False)
 
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+
+
+    @staticmethod
+    def release():
+        # TODO: this method should take params for creating a new ticket and pass them onto the constructor
+        # TODO: check that they were created successfully and return the tickets or an error.
+
+        return Ticket()
 
 
     @staticmethod

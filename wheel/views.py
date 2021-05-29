@@ -3,8 +3,10 @@ from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for
 from flask.helpers import flash
 from flask_login import current_user, login_required
+from werkzeug.utils import secure_filename
+import os
 from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm
-from .models import Event, Booking
+from .models import Event, Booking, Ticket
 
 
 main = Blueprint('main', __name__)
@@ -78,13 +80,37 @@ def create():
     form = CreateEventForm() # TODO: create this form
     if form.validate_on_submit():
         # TODO: get all of the data from the form
-        new_event = Event.create() # TODO: actually send the data along to create
+        # use check_upload_file for the image
+        new_event = Event.create() # TODO: this is not complete. its just a guide. actually send the data along to create. 
+
+        # TODO: process the tickets JSON object, loop through it creating tickets for each passing new_event.ID
+        Ticket.release()
+
         # TODO: use the response from create() to flash() something
         return redirect( url_for('events.view', id=1) ) # TODO: actually send the new_event.id
+
+    # TODO: if GET, populate the categories select field with choices
+    # https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.SelectField
+    # use Event.getAllCategories
+    # follow events.view as a guide
 
     # TODO: passing a form to this template does nothing
     # return render_template('create.html', form=form)
     return render_template('create.html')
+
+def check_upload_file(form):
+    # get file data from form
+    fp = form.image.data
+    filename = fp.filename
+    # get the current path of the module file… store image file relative to this path
+    BASE_PATH = os.path.dirname(__file__)
+    #upload file location – directory of this file/static/image
+    upload_path = os.path.join(BASE_PATH, 'static/images', secure_filename(filename))
+    # store relative path in DB as image location in HTML is relative
+    db_upload_path = '/static/images/'+ secure_filename(filename)
+    # save the file and return the db upload path
+    fp.save(upload_path)
+    return db_upload_path
 
 
 

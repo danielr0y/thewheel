@@ -4,8 +4,11 @@
 
 {% block content %}
 <!-- 
-TODO: use the form passed to this template instead of the hardcoding.
-TODO: use the event passed to this template to prefill the form with data when editing
+TODO:   use the form passed to this template
+        we can't just use quickform anymore because we need to format the form our way.
+        follow event.html as a guide
+
+TODO: (much later) use the event passed to this template to prefill the form with data when editing
  -->
 <form id="create-event" method="POST" action="{{ url_for('events.create') }}" enctype="multipart/form-data">
     <fieldset class="row mb-3 g-3">
