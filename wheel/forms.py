@@ -16,7 +16,7 @@ class RegisterForm(FlaskForm):
 
 
 class CreateEventForm(FlaskForm):
-    # TODO: add all the neccessary fields
+    # TODO: add all the neccessary fields 
     # TODO: once this form is created we need to use the fields in template. Follow event.html as guide
     submit = SubmitField("Create")
 
