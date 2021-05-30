@@ -24,14 +24,8 @@ class CreateEventForm(FlaskForm):
     image = FileField('Event Image', validators=[FileRequired(message='Image can not be empty'),FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')])
     status = SelectField('Status', choices=[('inactive', 'Inactive'), ('upcoming', 'Upcoming'), ('booked', 'Booked Out'), ('cancelled', 'Cancelled')])
     category = SelectField('Category', choices=[('category 1', 'category 1'), ('category 2', 'category 2'), ('category 3', 'category 3')])
+    tickets = StringField('Tickets') # note: you don't have to use this in the template. the Javascript on the create.html page adds this on submit. but it does have to be here
 
-    #ticket data needed, these are a bit weird because we have to make a lot of them, might have to do 2 forms
-
-    #price = IntegerField('Price ($)', default=0, validators=[InputRequired()])
-    #qty = IntegerField('Total number of gondolas', default=1, validators=[InputRequired()])
-    #datetime = DateTimeField('Date/Time', validators=[InputRequired()])
-
-    # TODO: need to add the tickets data and functionality so we can add a lot of them
     # TODO: once this form is created we need to use the fields in template. Follow event.html as guide
     submit = SubmitField("Create")
 

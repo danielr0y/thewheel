@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, redirect, url_for
 from flask.helpers import flash
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
-import os
+import os, json
 from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm
 from .models import Event, Booking, Ticket
 from . import db 
@@ -94,12 +94,10 @@ def create():
         #db.session.add(event)
         #db.session.commit()
 
-        ticket = Ticket(
-            #insert creation of all the tickets
-        )
-
-        # TODO: process the tickets JSON object, loop through it creating tickets for each passing new_event.ID
-        #Ticket.release()
+        tickets = json.loads(form.tickets.data)
+        for ticket in tickets:
+            # TODO: finish the release() method over in models.py 
+            Ticket.release(new_event.id, ticket.datetime, ticket.numberOfGondolas, ticket.price)
 
         flash(f'Successfully created {form.name.data}', 'success')
 
