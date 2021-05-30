@@ -19,8 +19,7 @@ def create_app():
     bootstrap = Bootstrap(app)
     
     #initialize the login manager
-    #test comment for push
-    
+
     login_manager = LoginManager()
 
     #set the name of the login function that lets user login
