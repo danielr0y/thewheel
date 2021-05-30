@@ -22,13 +22,12 @@ TODO: (much later) use the event passed to this template to prefill the form wit
         </div>
         <div class="col-lg-6">
             <div class="input-group form-floating">
-                <input type="text" id="eventcat" name="cat" class="form-control" 
+                <input type="text" id="newcategory" name="newcategory" class="form-control" 
                         placeholder="select a category for this event"></input>
-                <label for="eventcat" style="z-index: 3">Event category</label>
-                <select id="catselect" class="form-select btn-outline-primary p-3" >
+                <label for="newcategory" style="z-index: 3">Event category</label>
+                <select id="category" name="category" class="form-select btn-outline-primary p-3" >
                     <option value="new" selected>new category</option>
                     {% for category in categories %}
-                        <option value="Fireworks">Fireworks</option>
                     {% endfor %}
                 </select>
             </div>
@@ -48,8 +47,7 @@ TODO: (much later) use the event passed to this template to prefill the form wit
             <div class="col-md text-center my-auto">
                 <label for="releaseWoTickets" 
                         class="form-check-label">Continue without releasing tickets</label>
-                <input id="releaseWoTickets" name="releaseWoTickets" 
-                        class="form-check-input" type="checkbox" >
+                <input id="releaseWoTickets" class="form-check-input" type="checkbox" >
             </div>
             <div class="col-6 col-md-auto ms-md-0">
                 <select id="eventStatus" name="status" disabled
@@ -61,7 +59,7 @@ TODO: (much later) use the event passed to this template to prefill the form wit
                 </select>
             </div>
             <div class="col-6 col-md-auto">
-                <input id="eventSubmit" type="submit" value="create" disabled
+                <input id="eventSubmit" type="submit" value="create" name="submit" disabled
                         class="btn btn-primary rounded-pill w-100 px-5" />
             </div>
         </div>
@@ -114,7 +112,7 @@ TODO: (much later) use the event passed to this template to prefill the form wit
             </select>
         </div>
         <div class="col-auto">
-            <input type="submit" value="create" 
+            <input type="submit" name="submit" value="create" 
                     class="btn btn-primary rounded-pill px-5" />
         </div>
     </fieldset>
@@ -129,8 +127,8 @@ TODO: (much later) use the event passed to this template to prefill the form wit
             return new bootstrap.Tooltip(tooltipTriggerEl)
         });
 
-        document.getElementById('catselect').addEventListener('change', ({target}) => {
-            document.getElementById('eventcat').value = target.value;
+        document.getElementById('category').addEventListener('change', ({target}) => {
+            document.getElementById('newcategory').value = target.value;
         });
 
         document.getElementById('releaseWoTickets').addEventListener('change', ({target}) => {
