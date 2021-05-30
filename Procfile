@@ -1,0 +1,1 @@
+web: gunicorn 'wheel:create_app()'
