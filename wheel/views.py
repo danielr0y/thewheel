@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 import os
 from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm
 from .models import Event, Booking, Ticket
+from . import db 
 
 
 main = Blueprint('main', __name__)
@@ -77,26 +78,39 @@ def create():
         flash( "You are not an administrator. You can't create events", 'danger' )
         return redirect( url_for('main.index') )
 
-    form = CreateEventForm() # TODO: create this form
+    form = CreateEventForm() 
     if form.validate_on_submit():
-        # TODO: get all of the data from the form
-        # use check_upload_file for the image
-        new_event = Event.create() # TODO: this is not complete. its just a guide. actually send the data along to create. 
+        db_file_path = check_upload_file(form)
+
+        event = Event(
+            name = form.name.data,
+            description = form.desc.data,
+            category = form.category.data,
+            status = form.status.data,
+            image = db_file_path
+        )
+
+        #commented out the commitment to not ruin anything until it works
+        #db.session.add(event)
+        #db.session.commit()
+
+        ticket = Ticket(
+            #insert creation of all the tickets
+        )
 
         # TODO: process the tickets JSON object, loop through it creating tickets for each passing new_event.ID
-        Ticket.release()
+        #Ticket.release()
 
-        # TODO: use the response from create() to flash() something
-        return redirect( url_for('events.view', id=1) ) # TODO: actually send the new_event.id
+        flash(f'Successfully created {form.name.data}', 'success')
+
+        return redirect( url_for('events.event', id=event.id)) 
+    return render_template('create.html', form=form)
 
     # TODO: if GET, populate the categories select field with choices
     # https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.SelectField
     # use Event.getAllCategories
     # follow events.view as a guide
 
-    # TODO: passing a form to this template does nothing
-    # return render_template('create.html', form=form)
-    return render_template('create.html')
 
 def check_upload_file(form):
     # get file data from form
