@@ -90,7 +90,12 @@ def create():
             image = db_file_path
         )
 
-        #commented out the commitment to not ruin anything until it works
+        # TODO: don't use the constructor directly (above) 
+        # use Event.create() which is our own method (which we'll need to finish)
+        # and put all these database calls (sesson.add and session.commit) in that method.
+        # this keeps all the database logic together and keeps this area clean
+
+        # commented out the commitment to not ruin anything until it works
         #db.session.add(event)
         #db.session.commit()
 
