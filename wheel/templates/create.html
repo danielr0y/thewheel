@@ -186,20 +186,17 @@ TODO: (much later) use the event passed to this template to prefill the form wit
                 const date = daterow.querySelector('.date-header').value;
                 const datetimes = daterow.querySelectorAll('.datetime');
 
-                const datetickets = [];
                 datetimes.forEach( (datetime, index) => {
                     const datetimestamp = date + " " + times[index].value;
                     const numberOfGondolas = datetime.querySelector('.gondolas').value || 0;
                     const price = datetime.querySelector('.price').value || 0;
                     
-                    datetickets.push({
+                    alltickets.push({
                         datetime: datetimestamp,
                         numberOfGondolas,
                         price
                     })
                 } )
-
-                alltickets.push(datetickets);
             } )
 
             event.formData.append('tickets', JSON.stringify(alltickets))
