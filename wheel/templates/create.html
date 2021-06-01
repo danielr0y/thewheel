@@ -15,33 +15,46 @@ TODO: (much later) use the event passed to this template to prefill the form wit
         <legend>Event details</legend>
         <div class="col-lg-6">
             <div class="form-floating">
-                <input id="eventname" name="name" type="text" class="form-control" 
-                        placeholder="Give this event a name"></input>
-                <label for="eventname">Event name</label>
+                {{ form.name.label }}
+                {{ form.name(class="form-control") }}
+                <!-- <input id="eventname" name="name" type="text" class="form-control"  -->
+                        <!-- placeholder="Give this event a name"></input> -->
+                
             </div>
         </div>
         <div class="col-lg-6">
             <div class="input-group form-floating">
-                <input type="text" id="newcategory" name="newcategory" class="form-control" 
-                        placeholder="select a category for this event"></input>
-                <label for="newcategory" style="z-index: 3">Event category</label>
-                <select id="category" name="category" class="form-select btn-outline-primary p-3" >
-                    <option value="new" selected>new category</option>
-                    {% for category in categories %}
+                <!-- <input type="text" id="newcategory" name="newcategory" class="form-control" placeholder="select a category for this event"></input> -->
+                <!-- <label for="newcategory" style="z-index: 3">Event category</label> -->
+                {{ form.newcategory.label }}
+                {{ form.newcategory(class="form-control") }}
+                
+                
+                <!-- <select id="category" name="category" class="form-select btn-outline-primary p-3" > -->
+                    <!-- <option value="new" selected>new category</option> -->
+                    {{ form.category.label }}
+                    {{ form.category(class="form-select btn-outline-primary p-3") }}                    
+                    {% for category in form.categories %}
                     {% endfor %}
-                </select>
+                <!-- </select> -->
             </div>
         </div>
         <div class="w-100">
             <div class="form-floating">
-                <textarea id="eventdesc" name="desc" class="form-control" rows="4"
-                        style="height: auto;" placeholder="enter a description"></textarea>
-                <label for="floatingTextarea2">Event description</label>
+                {{ form.desc.label }}
+                {{ form.desc(class="form-control") }}
+                
+                <!-- <textarea id="eventdesc" name="desc" class="form-control" rows="4" -->
+                        <!-- style="height: auto;" placeholder="enter a description"></textarea> -->
+                <!-- <label for="floatingTextarea2">Event description</label> -->
             </div>
         </div>
         <div class="input-group">
-            <label for="eventimage" class="input-group-text">Event image</label>
-            <input id="eventimage" name="image" type="file" class="form-control">
+            {{ form.image.label }}
+            {{ form.image(class="form-control") }}
+
+            <!-- <label for="eventimage" class="input-group-text">Event image</label> -->
+            <!-- <input id="eventimage" name="image" type="file" class="form-control"> -->
         </div>
         <div class="row m-3">
             <div class="col-md text-center my-auto">
@@ -50,17 +63,20 @@ TODO: (much later) use the event passed to this template to prefill the form wit
                 <input id="releaseWoTickets" class="form-check-input" type="checkbox" >
             </div>
             <div class="col-6 col-md-auto ms-md-0">
-                <select id="eventStatus" name="status" disabled
+                {{ form.status.label }}
+                {{ form.status(class="form-select rounded-pill w-100 ps-4 pe-5") }}
+                <!-- <select id="eventStatus" name="status" disabled
                         class="form-select rounded-pill w-100 ps-4 pe-5" >
                     <option value="Inactive" selected>Inactive</option>
                     <option value="Upcoming">Upcoming</option>
                     <option value="Booked out">Booked out</option>
                     <option value="Cancelled">Cancelled</option>
-                </select>
+                </select> -->
             </div>
             <div class="col-6 col-md-auto">
-                <input id="eventSubmit" type="submit" value="create" name="submit" disabled
-                        class="btn btn-primary rounded-pill w-100 px-5" />
+                
+                <!-- <input id="eventSubmit" type="submit" value="create" name="submit" disabled
+                        class="btn btn-primary rounded-pill w-100 px-5" /> -->
             </div>
         </div>
     </fieldset>
@@ -104,16 +120,20 @@ TODO: (much later) use the event passed to this template to prefill the form wit
             <button id="newdate" type="button" class="btn btn-outline-primary w-lg-25 rounded-pill">+</button>
         </div>
         <div class="col-auto ms-auto">
-            <select name="status" class="form-select rounded-pill ps-4 pe-5" >
+            {{ form.status.label }}
+            {{ form.status(class="form-select rounded-pill w-100 ps-4 pe-5") }}
+            <!-- <select name="status" class="form-select rounded-pill ps-4 pe-5" >
                 <option value="Inactive">Inactive</option>
                 <option value="Upcoming" selected>Upcoming</option>
                 <option value="Booked out">Booked out</option>
                 <option value="Cancelled">Cancelled</option>
-            </select>
+            </select> -->
         </div>
         <div class="col-auto">
-            <input type="submit" name="submit" value="create" 
-                    class="btn btn-primary rounded-pill px-5" />
+            {{ form.submit.label }}
+            {{ form.submit(class="btn btn-primary rounded-pill px-5") }}
+            <!-- <input type="submit" name="submit" value="create" 
+                    class="btn btn-primary rounded-pill px-5" /> -->
         </div>
     </fieldset>
 </form>

@@ -74,10 +74,13 @@ class Event(db.Model):
 
 
     @staticmethod
-    def create():
-        # TODO: implement this method. take arguements and pass them along to the constructor.
-        #  check that everything was successful and return the event or an error
-        return Event()
+    def create(name, description, category, status, image, db_file_path):
+        event = Event(name=name, description=description, category=category, status=status, image=image, db_file_path=db_file_path)
+        
+        db.session.add(event)
+        db.session.commit()
+       
+        return event
 
 
     @staticmethod
@@ -105,6 +108,8 @@ class Event(db.Model):
 
     @staticmethod
     def getAllCategories():
+        
+        return [(Event.category) for Event in Event.query.group_by('category')]
         # TODO: SELECT category FROM events GROUP BY category but with SQLAlchemy syntax
         return 
 
@@ -176,11 +181,17 @@ class Ticket(db.Model):
 
 
     @staticmethod
-    def release():
-        # TODO: this method should take params for creating a new ticket and pass them onto the constructor
-        # TODO: check that they were created successfully and return the tickets or an error.
+    def release(id, datetime, numberOfGondolas, ticketprice, counter):
+        ticket = Ticket(id = id, datetime = datetime, remaining = numberOfGondolas, price = ticketprice)
 
-        return Ticket()
+        db.session.add(ticket)
+        db.session.commit()
+
+        print(counter)
+        
+        
+
+        return ticket
 
 
     @staticmethod

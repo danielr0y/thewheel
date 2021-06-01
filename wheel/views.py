@@ -78,17 +78,28 @@ def create():
         flash( "You are not an administrator. You can't create events", 'danger' )
         return redirect( url_for('main.index') )
 
+    
+
+    
     form = CreateEventForm() 
+
+    form.category.choices = Event.getAllCategories()
+
     if form.validate_on_submit():
         db_file_path = check_upload_file(form)
+        
+        if len(form.newcategory.data)==0:
+            category = form.category.data
+        else:
+            category = form.newcategory.data
+        
 
-        event = Event(
-            name = form.name.data,
-            description = form.desc.data,
-            category = form.category.data,
-            status = form.status.data,
-            image = db_file_path
-        )
+        name = form.name.data
+        description = form.desc.data
+        status = form.status.data
+        image = db_file_path
+
+        new_event = Event.create(name,description,category,status,image)
 
         # TODO: don't use the constructor directly (above) 
         # use Event.create() which is our own method (which we'll need to finish)
@@ -100,13 +111,15 @@ def create():
         #db.session.commit()
 
         tickets = json.loads(form.tickets.data)
+        x = 0
         for ticket in tickets:
+            x = x + 1
             # TODO: finish the release() method over in models.py 
-            Ticket.release(new_event.id, ticket.datetime, ticket.numberOfGondolas, ticket.price)
+            Ticket.release(new_event.id, ticket.datetime, ticket.numberOfGondolas, ticket.price, x)
 
         flash(f'Successfully created {form.name.data}', 'success')
 
-        return redirect( url_for('events.event', id=event.id)) 
+        return redirect( url_for('events.event', id=new_event.id)) 
     return render_template('create.html', form=form)
 
     # TODO: if GET, populate the categories select field with choices
