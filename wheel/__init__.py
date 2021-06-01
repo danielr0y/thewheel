@@ -10,7 +10,8 @@ def create_app():
     app = Flask(__name__)
     app.env = 'development'
     app.debug = True
-    app.secret_key = 'h78gf43083740h3'
+    # app.secret_key = 'h78gf43083740h3'
+    app.config['SECRET_KEY'] = 'h78gf43083740h3'
     
     #initialize db 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///wheel.sqlite'

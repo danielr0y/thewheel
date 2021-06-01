@@ -11,6 +11,7 @@ TODO:   use the form passed to this template
 TODO: (much later) use the event passed to this template to prefill the form with data when editing
  -->
 <form id="create-event" method="POST" action="{{ url_for('events.create') }}" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
     <fieldset class="row mb-3 g-3">
         <legend>Event details</legend>
         <div class="col-lg-6">
