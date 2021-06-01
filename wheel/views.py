@@ -78,11 +78,7 @@ def create():
         flash( "You are not an administrator. You can't create events", 'danger' )
         return redirect( url_for('main.index') )
 
-    
-
-    
     form = CreateEventForm() 
-
     form.category.choices = Event.getAllCategories()
 
     if form.validate_on_submit():
@@ -93,7 +89,6 @@ def create():
         else:
             category = form.newcategory.data
         
-
         name = form.name.data
         description = form.desc.data
         status = form.status.data
@@ -101,31 +96,24 @@ def create():
 
         new_event = Event.create(name,description,category,status,image)
 
-        # TODO: don't use the constructor directly (above) 
-        # use Event.create() which is our own method (which we'll need to finish)
-        # and put all these database calls (sesson.add and session.commit) in that method.
-        # this keeps all the database logic together and keeps this area clean
-
-        # commented out the commitment to not ruin anything until it works
-        #db.session.add(event)
-        #db.session.commit()
-
         tickets = json.loads(form.tickets.data)
         x = 0
         for ticket in tickets:
             x = x + 1
-            # TODO: finish the release() method over in models.py 
-            Ticket.release(new_event.id, ticket.datetime, ticket.numberOfGondolas, ticket.price, x)
+
+            Ticket.release(
+                new_event.id, 
+                ticket["datetime"], # TODO: this needs to be a datetime object from string w/ format: 2021-01-01 10:00
+                ticket["numberOfGondolas"], 
+                ticket["price"], 
+                x
+            )
 
         flash(f'Successfully created {form.name.data}', 'success')
+        return redirect( url_for('events.event', id=new_event.id))
 
-        return redirect( url_for('events.event', id=new_event.id)) 
     return render_template('create.html', form=form)
 
-    # TODO: if GET, populate the categories select field with choices
-    # https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.SelectField
-    # use Event.getAllCategories
-    # follow events.view as a guide
 
 
 def check_upload_file(form):

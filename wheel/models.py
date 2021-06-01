@@ -74,7 +74,7 @@ class Event(db.Model):
 
 
     @staticmethod
-    def create(name, description, category, status, image, db_file_path):
+    def create(name, description, category, status, image, db_file_path): # FIXME: whats with db_file_path here? and here vvv
         event = Event(name=name, description=description, category=category, status=status, image=image, db_file_path=db_file_path)
         
         db.session.add(event)
