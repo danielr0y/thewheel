@@ -150,15 +150,17 @@ TODO: (much later) use the event passed to this template to prefill the form wit
         });
 
         document.getElementById('releaseWoTickets').addEventListener('change', ({target}) => {
-            document.getElementById('eventStatus').toggleAttribute('disabled');
-            document.getElementById('eventSubmit').toggleAttribute('disabled');
+            document.getElementById('status').toggleAttribute('disabled');
+            document.getElementById('submit').toggleAttribute('disabled');
             document.getElementById('tickets').toggleAttribute('disabled');
         });
 
         const newtimebutton = document.getElementById('newtime');
         newtimebutton.addEventListener('click', ({target}) => {
+            const table = document.getElementById('ticketstable');
+
             // only allow when other fields are valid
-            if ( ! target.form.reportValidity() ) return;
+            if ( ! table.reportValidity() ) return;
             
             // only allow 4 sessions per day
             const columns = document.querySelectorAll('.time-header')
@@ -180,10 +182,11 @@ TODO: (much later) use the event passed to this template to prefill the form wit
 
         const newdatebutton = document.getElementById('newdate');
         newdatebutton.addEventListener('click', ({target}) => {
-            // only allow when other fields are valid
-            if ( ! target.form.reportValidity() ) return;
-            
             const table = document.getElementById('ticketstable');
+
+            // only allow when other fields are valid
+            if ( ! table.reportValidity() ) return;
+            
             const newdaterow = document.getElementById('empty-date-row').content.cloneNode(true);
             table.append(newdaterow);
         });
