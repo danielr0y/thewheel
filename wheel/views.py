@@ -79,7 +79,7 @@ def create():
         return redirect( url_for('main.index') )
 
     form = CreateEventForm() 
-    form.category.choices = Event.getAllCategories()
+    form.category.choices = [(g, g) for g in Event.getAllCategories()]
 
     if form.validate_on_submit():
         db_file_path = check_upload_file(form)
@@ -100,10 +100,12 @@ def create():
         x = 0
         for ticket in tickets:
             x = x + 1
+            datetimeobj = datetime.strptime(ticket["datetime"], '%Y-%m-%d %H:%M'),
+            print(datetimeobj)
 
             Ticket.release(
                 new_event.id, 
-                ticket["datetime"], # TODO: this needs to be a datetime object from string w/ format: 2021-01-01 10:00
+                datetimeobj, # TODO: this needs to be a datetime object from string w/ format: 2021-01-01 10:00
                 ticket["numberOfGondolas"], 
                 ticket["price"], 
                 x
