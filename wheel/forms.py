@@ -1,3 +1,4 @@
+from wheel.models import Event
 from flask_wtf import FlaskForm
 from wtforms.fields import TextAreaField,SubmitField, StringField, PasswordField, RadioField, SelectField, DateTimeField
 from wtforms.fields.html5 import IntegerField

@@ -165,4 +165,4 @@ def index():
     cancelled = Event.getAllByStatus('cancelled')
     form = indexForm()
     # return render_template('index.html', upcoming=upcoming, cancelled=cancelled)
-    return render_template('index.html',form=form)
+    return render_template('index.html',form=form, upcoming=upcoming, cancelled=cancelled)
