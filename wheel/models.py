@@ -181,13 +181,12 @@ class Ticket(db.Model):
 
 
     @staticmethod
-    def release(event_id, datetime, numberOfGondolas, ticketprice, counter):
+    def release(event_id, datetime, numberOfGondolas, ticketprice):
         ticket = Ticket(event_id = event_id, datetime = datetime[0], remaining = numberOfGondolas, price = ticketprice)
 
         db.session.add(ticket)
         db.session.commit()
 
-        print(counter)
         
         return ticket
 
@@ -247,10 +246,32 @@ class Booking(db.Model):
 
 
     @staticmethod
-    def book(): # TODO: what args does this need? all the properties?
-        # TODO: use Booking() constructor. follow the tutorial about creating destinations
-        # TODO: check that a booking was created and return errors if neccessary
-        return
+    def book(qty,price,datetime,user,ticket):
+        
+        
+    
+        ticket = Ticket.query.get(ticket)
+
+        outcome = 0
+
+        if qty < ticket.qty:
+            
+            booking = Booking(qty = qty , total_price = price , purchase_datetime = datetime , user_id = user , ticket_id = ticket)
+        
+            db.session.add(booking)
+            db.session.commit()
+
+            ticket.qty = ticket.qty - qty
+            db.session.commit()
+
+            return outcome
+
+        outcome = ticket.qty
+        return outcome
+
+        
+
+
 
 
     def getUser(self):

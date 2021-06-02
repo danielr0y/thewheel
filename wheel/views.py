@@ -59,14 +59,27 @@ def view(id):
 def book():
     form = BookEventForm()
     if form.validate_on_submit():
-        # TODO: get the data from the form and validate it
-        # TODO: use current_user and datetime.now()
 
-        new_booking = Booking.book() # TODO: actually send the data along to create
-        # TODO: use the response from book() to flash() something
-        return redirect( url_for('main.bookings') )
+        qty = form.qty.data
+        total_price = form.price.data
+        purchase_datetime = datetime.now()
+        user_id = current_user.id
+        ticket_id = form.ticket.data
 
-    # TODO: flash() something here about how the form wasnt received
+        ticket = Ticket.query.get(ticket_id)
+
+        current_event = Event.query.get(ticket.event_id)
+
+        booked = Booking.book(qty,total_price,purchase_datetime,user_id,ticket_id)
+
+        if booked == 0:
+            flash(f'Successfully booked {form.qty.data} tickets', 'success')
+            return redirect( url_for('main.bookings') )
+
+        flash(f'Sorry, there are only ' + booked + ' tickets available at that time, please try again.', 'danger')
+        return redirect( url_for('events.view', id=current_event.id)) 
+
+    flash(f'Form error', 'danger')
     return redirect( url_for('main.index') )
 
 
@@ -97,22 +110,20 @@ def create():
         new_event = Event.create(name,description,category,status,image)
 
         tickets = json.loads(form.tickets.data)
-        x = 0
+
         for ticket in tickets:
-            x = x + 1
             datetimeobj = datetime.strptime(ticket["datetime"], '%Y-%m-%d %H:%M'),
             print(datetimeobj)
 
             Ticket.release(
                 new_event.id, 
-                datetimeobj, # TODO: this needs to be a datetime object from string w/ format: 2021-01-01 10:00
+                datetimeobj, 
                 ticket["numberOfGondolas"], 
-                ticket["price"], 
-                x
+                ticket["price"]
             )
 
         flash(f'Successfully created {form.name.data}', 'success')
-        return redirect( url_for('events.event', id=new_event.id))
+        return redirect( url_for('events.view', id=new_event.id))
 
     return render_template('create.html', form=form)
 
