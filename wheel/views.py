@@ -59,7 +59,7 @@ def view(id):
 @login_required
 def book():
     form = BookEventForm()
-    current_event = Event.query.get(form.event.data)
+    current_event = Event.get(form.event.data)
     form.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), current_event.tickets))
     if form.validate_on_submit():
         

@@ -46,8 +46,8 @@ class User(db.Model, UserMixin):
 
 
     @staticmethod
-    def get(id):
-        return User.query.filter_by(id=id).first()
+    def get(id: int):
+        return User.query.get(id)
 
 
     @staticmethod
@@ -84,8 +84,8 @@ class Event(db.Model):
 
 
     @staticmethod
-    def get(id):
-        return Event.query.filter_by(id=id).first()
+    def get(id: int):
+        return Event.query.get(id)
 
 
     @staticmethod
@@ -209,8 +209,8 @@ class Ticket(db.Model):
 
 
     @staticmethod
-    def get(id):
-        return Ticket.query.filter_by(id=id).first()
+    def get(id: int):
+        return Ticket.query.get(id)
 
 
     @staticmethod
@@ -266,8 +266,8 @@ class Booking(db.Model):
     ticket_id = db.Column(db.Integer, db.ForeignKey('tickets.id'))
 
     @staticmethod
-    def get(id):
-        return Booking.query.filter_by(id=id).first()
+    def get(id: int):
+        return Booking.query.get(id)
 
 
     @staticmethod
@@ -278,7 +278,7 @@ class Booking(db.Model):
     @staticmethod
     def book(qty,price,datetime,user,ticket):
         
-        ticket_temp = Ticket.query.get(ticket)
+        ticket_temp = Ticket.get(ticket)
 
         outcome = 0
 
