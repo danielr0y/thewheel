@@ -46,3 +46,7 @@ class PostReviewForm(FlaskForm):
 class SearchForm(FlaskForm):
     # TODO: add all the neccessary fields
     submit = SubmitField("Search")
+
+class indexForm(FlaskForm):
+    # trying to fix unidentified Form error
+    submit = SubmitField("test")

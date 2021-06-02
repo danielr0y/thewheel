@@ -5,7 +5,7 @@ from flask.helpers import flash
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 import os, json
-from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm
+from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm, indexForm
 from .models import Event, Booking, Ticket
 from . import db 
 
@@ -163,5 +163,6 @@ def bookings():
 def index():
     upcoming = Event.getAllByStatus('upcoming')
     cancelled = Event.getAllByStatus('cancelled')
+    form = indexForm()
     # return render_template('index.html', upcoming=upcoming, cancelled=cancelled)
-    return render_template('index.html')
+    return render_template('index.html',form=form)
