@@ -69,10 +69,7 @@ def book():
         total_price = form.price.data
         purchase_datetime = datetime.now()
         user_id = current_user.id
-        ticket_id = form.ticket.data
-
-        ticket_current = Ticket.query.get(ticket_id)
-        
+        ticket_id = form.ticket.data      
 
         booked = Booking.book(qty,total_price,purchase_datetime,user_id,ticket_id)
 
