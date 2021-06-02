@@ -67,7 +67,6 @@ def book():
         ticket_id = form.ticket.data
 
         ticket = Ticket.query.get(ticket_id)
-
         current_event = Event.query.get(ticket.event_id)
 
         booked = Booking.book(qty,total_price,purchase_datetime,user_id,ticket_id)
@@ -78,6 +77,9 @@ def book():
 
         flash(f'Sorry, there are only ' + booked + ' tickets available at that time, please try again.', 'danger')
         return redirect( url_for('events.view', id=current_event.id)) 
+
+    for error in form.errors:
+        print(error)
 
     flash(f'Form error', 'danger')
     return redirect( url_for('main.index') )

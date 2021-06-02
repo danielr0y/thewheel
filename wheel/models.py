@@ -254,19 +254,19 @@ class Booking(db.Model):
 
         outcome = 0
 
-        if qty < ticket.qty:
+        if qty < ticket.remaining:
             
             booking = Booking(qty = qty , total_price = price , purchase_datetime = datetime , user_id = user , ticket_id = ticket)
         
             db.session.add(booking)
             db.session.commit()
 
-            ticket.qty = ticket.qty - qty
+            ticket.remaining = ticket.remaining - qty
             db.session.commit()
 
             return outcome
 
-        outcome = ticket.qty
+        outcome = ticket.remaining
         return outcome
 
         
