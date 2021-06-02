@@ -77,7 +77,7 @@ def book():
             flash(f'Successfully booked {form.qty.data} tickets', 'success')
             return redirect( url_for('main.bookings') )
 
-        flash(f'Sorry, there are only {booked} tickets available at that time, please try again.', 'danger')
+        flash(f'Sorry, there are only {booked} tickets available for that time, please try again.', 'danger')
         return redirect( url_for('events.view', id=current_event.id)) 
 
     for error in form.errors:
