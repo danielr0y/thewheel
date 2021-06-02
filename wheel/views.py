@@ -32,6 +32,8 @@ def view(id):
     bookform = BookEventForm()
     reviewform = PostReviewForm() # TODO: create this form
 
+    bookform.event.data = id
+
     # create radio field options from the tickets sorted by date
     bookform.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), event.tickets))
 
@@ -58,6 +60,9 @@ def view(id):
 @login_required
 def book():
     form = BookEventForm()
+    current_event = Event.query.get(form.event.data)
+    form.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), current_event.tickets))
+
     if form.validate_on_submit():
 
         qty = form.qty.data
@@ -66,8 +71,8 @@ def book():
         user_id = current_user.id
         ticket_id = form.ticket.data
 
-        ticket = Ticket.query.get(ticket_id)
-        current_event = Event.query.get(ticket.event_id)
+        ticket_current = Ticket.query.get(ticket_id)
+        
 
         booked = Booking.book(qty,total_price,purchase_datetime,user_id,ticket_id)
 

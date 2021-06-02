@@ -248,25 +248,23 @@ class Booking(db.Model):
     @staticmethod
     def book(qty,price,datetime,user,ticket):
         
-        
-    
-        ticket = Ticket.query.get(ticket)
+        ticket_temp = Ticket.query.get(ticket)
 
         outcome = 0
 
-        if qty < ticket.remaining:
+        if qty < ticket_temp.remaining:
             
             booking = Booking(qty = qty , total_price = price , purchase_datetime = datetime , user_id = user , ticket_id = ticket)
         
             db.session.add(booking)
             db.session.commit()
 
-            ticket.remaining = ticket.remaining - qty
+            ticket_temp.remaining = ticket_temp.remaining - qty
             db.session.commit()
 
             return outcome
 
-        outcome = ticket.remaining
+        outcome = ticket_temp.remaining
         return outcome
 
         
