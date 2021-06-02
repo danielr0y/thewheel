@@ -55,7 +55,8 @@
             data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg">
             <form class="modal-content" method="POST" action="{{ url_for('events.book') }}">
-                {# form.hidden_tag() #}
+                {{ bookform.hidden_tag() }}
+                {{ bookform.event }}
                 <div class="modal-header">
                     <h5 id="staticBackdropLabel" class="modal-title">Book your tickets to {{ event.name }} on the Wheel of Brisbane</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

@@ -74,8 +74,8 @@ class Event(db.Model):
 
 
     @staticmethod
-    def create(name, description, category, status, image, db_file_path): # FIXME: whats with db_file_path here? and here vvv
-        event = Event(name=name, description=description, category=category, status=status, image=image, db_file_path=db_file_path)
+    def create(name, description, category, status, image):
+        event = Event(name=name, description=description, category=category, status=status, image=image)
         
         db.session.add(event)
         db.session.commit()
@@ -198,13 +198,12 @@ class Ticket(db.Model):
 
 
     @staticmethod
-    def release(event_id, datetime, numberOfGondolas, ticketprice, counter):
-        ticket = Ticket(event_id = event_id, datetime = datetime, remaining = numberOfGondolas, price = ticketprice)
+    def release(event_id, datetime, numberOfGondolas, ticketprice):
+        ticket = Ticket(event_id = event_id, datetime = datetime[0], remaining = numberOfGondolas, price = ticketprice)
 
         db.session.add(ticket)
         db.session.commit()
 
-        print(counter)
         
         return ticket
 
@@ -277,10 +276,30 @@ class Booking(db.Model):
 
 
     @staticmethod
-    def book(): # TODO: what args does this need? all the properties?
-        # TODO: use Booking() constructor. follow the tutorial about creating destinations
-        # TODO: check that a booking was created and return errors if neccessary
-        return
+    def book(qty,price,datetime,user,ticket):
+        
+        ticket_temp = Ticket.query.get(ticket)
+
+        outcome = 0
+
+        if qty < ticket_temp.remaining:
+            
+            booking = Booking(qty = qty , total_price = price , purchase_datetime = datetime , user_id = user , ticket_id = ticket)
+        
+            db.session.add(booking)
+            db.session.commit()
+
+            ticket_temp.remaining = ticket_temp.remaining - qty
+            db.session.commit()
+
+            return outcome
+
+        outcome = ticket_temp.remaining
+        return outcome
+
+        
+
+
 
 
     def getUser(self):

@@ -161,8 +161,8 @@ def bookings():
 
 @main.route('/')
 def index():
-    upcoming = Event.getAllByStatus('upcoming')
-    cancelled = Event.getAllByStatus('cancelled')
+    upcoming = Event.getTopThreeByStatus('upcoming')
+    cancelled = Event.getTopThreeByStatus('cancelled')
     form = indexForm()
     # return render_template('index.html', upcoming=upcoming, cancelled=cancelled)
     return render_template('index.html',form=form, upcoming=upcoming, cancelled=cancelled)

@@ -2,6 +2,7 @@ from wheel.models import Event
 from flask_wtf import FlaskForm
 from wtforms.fields import TextAreaField,SubmitField, StringField, PasswordField, RadioField, SelectField, DateTimeField
 from wtforms.fields.html5 import IntegerField
+from wtforms.fields.simple import HiddenField
 from wtforms.validators import InputRequired, Length, Email, EqualTo
 from werkzeug.utils import secure_filename
 from flask_wtf.file import FileRequired, FileField, FileAllowed
@@ -33,6 +34,7 @@ class CreateEventForm(FlaskForm):
 
 
 class BookEventForm(FlaskForm):
+    event = HiddenField('event')
     ticket = RadioField('Tickets', coerce=int, validators=[InputRequired()])
     qty = IntegerField('Number of Gondolas', default=1, validators=[InputRequired()])
     price = IntegerField('Total Price', default=0, validators=[InputRequired()])
