@@ -182,7 +182,7 @@ class Ticket(db.Model):
 
     @staticmethod
     def release(event_id, datetime, numberOfGondolas, ticketprice, counter):
-        ticket = Ticket(event_id = event_id, datetime = datetime, remaining = numberOfGondolas, price = ticketprice)
+        ticket = Ticket(event_id = event_id, datetime = datetime[0], remaining = numberOfGondolas, price = ticketprice)
 
         db.session.add(ticket)
         db.session.commit()
