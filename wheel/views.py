@@ -32,6 +32,7 @@ def view(id):
     bookform = BookEventForm()
     reviewform = PostReviewForm() # TODO: create this form
 
+    bookform.event.data = id
     # create radio field options from the tickets sorted by date
     bookform.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), event.tickets))
 
@@ -58,15 +59,31 @@ def view(id):
 @login_required
 def book():
     form = BookEventForm()
+    current_event = Event.query.get(form.event.data)
+    form.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), current_event.tickets))
     if form.validate_on_submit():
-        # TODO: get the data from the form and validate it
-        # TODO: use current_user and datetime.now()
+        
+        qty = form.qty.data
+        total_price = form.price.data
+        purchase_datetime = datetime.now()
+        user_id = current_user.id
+        ticket_id = form.ticket.data      
 
-        new_booking = Booking.book() # TODO: actually send the data along to create
-        # TODO: use the response from book() to flash() something
-        return redirect( url_for('main.bookings') )
+        booked = Booking.book(qty,total_price,purchase_datetime,user_id,ticket_id)
 
-    # TODO: flash() something here about how the form wasnt received
+        if booked == 0:
+            flash(f'Successfully booked {form.qty.data} tickets', 'success')
+            return redirect( url_for('main.bookings') )
+        
+        flash(f'Sorry, there are only {booked} tickets available for that time, please try again.', 'danger')
+        return redirect( url_for('events.view', id=current_event.id)) 
+
+    for error in form.errors:
+        print(error)
+
+    flash(f'Form error', 'danger')
+
+    
     return redirect( url_for('main.index') )
 
 
@@ -79,7 +96,7 @@ def create():
         return redirect( url_for('main.index') )
 
     form = CreateEventForm() 
-    form.category.choices = Event.getAllCategories()
+    form.category.choices = [(g, g) for g in Event.getAllCategories()]
 
     if form.validate_on_submit():
         db_file_path = check_upload_file(form)
@@ -97,20 +114,20 @@ def create():
         new_event = Event.create(name,description,category,status,image)
 
         tickets = json.loads(form.tickets.data)
-        x = 0
+
         for ticket in tickets:
-            x = x + 1
+            datetimeobj = datetime.strptime(ticket["datetime"], '%Y-%m-%d %H:%M'),
+            print(datetimeobj)
 
             Ticket.release(
                 new_event.id, 
-                ticket["datetime"], # TODO: this needs to be a datetime object from string w/ format: 2021-01-01 10:00
+                datetimeobj,
                 ticket["numberOfGondolas"], 
-                ticket["price"], 
-                x
+                ticket["price"]
             )
 
         flash(f'Successfully created {form.name.data}', 'success')
-        return redirect( url_for('events.event', id=new_event.id))
+        return redirect( url_for('events.view', id=new_event.id))
 
     return render_template('create.html', form=form)
 
