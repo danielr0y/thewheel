@@ -10,7 +10,7 @@ passw: admin
 I have used and recommend installing: TODO Highlight
 https://marketplace.visualstudio.com/items?itemName=wayou.vscode-todo-highlight
 
-
+new next step instructions here
 
 #1	file:///Users/daniel/Documents/Daniel/uni/2021SEM1/IAB207/assignment%203/assignment3/wheel/templates/events.html#3
 	TODO: use the events passed to this template  -->
