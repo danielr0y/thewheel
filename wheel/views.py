@@ -47,8 +47,15 @@ def delete(id):
     event = Event.get(id)
 
     for x in event.tickets:
+
+        delete_bookings =  Booking.query.filter_by(ticket_id=x.id).all()
+        for y in delete_bookings:
+            db.session.delete(y)
+            db.session.commit()
+            
         db.session.delete(x)
         db.session.commit()
+        
 
     db.session.delete(event)
     db.session.commit()
