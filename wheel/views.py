@@ -18,7 +18,7 @@ events = Blueprint('events', __name__, url_prefix='/events')
 @events.route('/')
 def viewAll():
     upcoming = Event.getAllByStatus("upcoming")
-    booked = Event.getAllByStatus("booked")
+    booked = Event.getAllByStatus("booked out")
     cancelled = Event.getAllByStatus("cancelled")
     inactive = Event.getAllByStatus("inactive")
 
@@ -54,7 +54,7 @@ def delete(id):
     db.session.commit()
 
     flash(f'Successfully deleted event', 'success')
-    return render_template('events.html')
+    return redirect( url_for('events.viewAll') )
 
 
 

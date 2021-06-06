@@ -1,3 +1,4 @@
+from operator import truediv
 from . import db
 from flask_login import UserMixin
 from datetime import datetime
@@ -92,6 +93,14 @@ class Event(db.Model):
     def getAll():
         # TODO: 
         return 
+
+
+    def bookButton(self):
+        if self.status == "upcoming":
+            return True
+        else:
+            return False
+
 
 
     def getAllByStatus(input):
@@ -323,6 +332,31 @@ class Booking(db.Model):
             db.session.commit()
 
             return outcome
+
+        elif qty == ticket_temp.remaining: # This is so every time something is booked, it checks to see if there are any tickets left for that event and updates the status accordingly 
+
+            booking = Booking(qty = qty , total_price = price , purchase_datetime = datetime , user_id = user , ticket_id = ticket)
+        
+            db.session.add(booking)
+            db.session.commit()
+
+            ticket_temp.remaining = ticket_temp.remaining - qty
+            db.session.commit()
+
+            no_tickets = True
+
+            event = Event.query.get(ticket_temp.event_id)
+
+            for x in event.tickets:
+                if x.remaining != 0:
+                    no_tickets = False
+            if no_tickets:
+                event.status = "booked out"
+                db.session.commit() 
+            
+            return outcome
+            
+
 
         outcome = ticket_temp.remaining
         return outcome

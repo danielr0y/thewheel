@@ -57,8 +57,11 @@
         <div class="col-sm-auto my-auto">
             <!-- <button type="button" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5" 
                     data-bs-toggle="modal" data-bs-target="#book" {{ "disabled" if event.status != 'upcoming' }}>{{ event.getBookButtonText() }}</button> -->
-            <button type="button" class="btn btn-outline-success rounded-pill px-5" 
+            
+            {% if event.bookButton() %}
+                    <button type="button" class="btn btn-outline-success rounded-pill px-5" 
                     data-bs-toggle="modal" data-bs-target="#book" >Book now</button>
+            {% endif %}
         </div>
     </div>
     <div id="book" class="modal fade" tabindex="-1" 
