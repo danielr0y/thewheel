@@ -94,9 +94,9 @@ class Event(db.Model):
         return 
 
 
-    def getAllByStatus(status):
+    def getAllByStatus(input):
         # TODO:
-        return Event.query.filter_by(status=status).all()
+        return Event.query.filter_by(status=input).all()
 
 
     def getTopThreeByStatus(status):
@@ -106,9 +106,9 @@ class Event(db.Model):
 
 
     @staticmethod
-    def getAllByCategory(category):
-        # TODO:
-        return Event.query.filter_by(category=category).all()
+    def getAllByCategory(input):
+
+        return Event.query.filter_by(category=input).all()
 
 
     @staticmethod
@@ -144,7 +144,7 @@ class Event(db.Model):
 
         if x_min == test:
             return "There are no tickets for this event."
-            
+
         output = "from " + low_time + " on " + low_date + ",  to " + high_time + " on " + high_date
              
         return output

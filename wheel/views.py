@@ -14,6 +14,22 @@ main = Blueprint('main', __name__)
 events = Blueprint('events', __name__, url_prefix='/events')
 
 
+
+@events.route('/')
+def viewAll():
+    upcoming = Event.getAllByStatus("upcoming")
+    booked = Event.getAllByStatus("booked")
+    cancelled = Event.getAllByStatus("cancelled")
+    inactive = Event.getAllByStatus("inactive")
+
+    form = SearchForm() # TODO: create this form
+
+    # TODO: passing events to this template doesnt do anything
+    # return render_template('events.html', events=events, form=form)
+    return render_template('events.html', upcoming = upcoming, booked = booked, cancelled = cancelled, inactive = inactive )
+    
+
+
 @events.route('/<int:id>/update')
 def update(id):
     form = CreateEventForm() # TODO: create this form
@@ -165,14 +181,7 @@ def check_upload_file(form):
 
 
 
-@events.route('/')
-def viewAll():
-    events = Event.getAll() # TODO: this method needs to be written
-    form = SearchForm() # TODO: create this form
 
-    # TODO: passing events to this template doesnt do anything
-    # return render_template('events.html', events=events, form=form)
-    return render_template('events.html')
 
 
 
