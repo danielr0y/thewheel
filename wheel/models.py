@@ -127,6 +127,7 @@ class Event(db.Model):
 
         x_min = datetime(3000,9,9)
         x_max = datetime(2000,9,9)
+        test = datetime(3000,9,9)
 
         for x in self.tickets:
             if x.datetime < x_min:
@@ -141,6 +142,9 @@ class Event(db.Model):
         high_date = x_max.strftime("%m/%d/%Y")
         high_time = x_max.strftime("%I:%M%p")
 
+        if x_min == test:
+            return "There are no tickets for this event."
+            
         output = "from " + low_time + " on " + low_date + ",  to " + high_time + " on " + high_date
              
         return output
@@ -153,8 +157,13 @@ class Event(db.Model):
         for x in self.tickets:
             if x.price < low_ticket:
                 low_ticket = x.price
-             
-        return low_ticket
+        
+        if low_ticket == 100000:
+            return " "
+
+        low = str(low_ticket)
+
+        return "from $" + low + " per gondola"
 
     def getTicketsStartDate(self):
         return Ticket.getStartDateByEvent(self.id)

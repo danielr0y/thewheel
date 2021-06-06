@@ -33,7 +33,7 @@ def delete(id):
     for x in event.tickets:
         db.session.delete(x)
         db.session.commit()
-        
+
     db.session.delete(event)
     db.session.commit()
 
@@ -95,10 +95,9 @@ def book():
         flash(f'Sorry, there are only {booked} tickets available for that time, please try again.', 'danger')
         return redirect( url_for('events.view', id=current_event.id)) 
 
-    for error in form.errors:
-        print(error)
 
-    flash(f'Form error', 'danger')
+
+    flash(f'Sorry, you cannot book an event with no availability.', 'danger')
 
     
     return redirect( url_for('main.index') )

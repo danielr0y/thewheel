@@ -36,7 +36,7 @@
     <div class="row mb-3">
         <div class="col-sm">
             <p class="mb-1">
-                Booking available {{event.getTicketsDateRange()}}
+                {{event.getTicketsDateRange()}}
             </p>
             <!-- <p class="mb-1">
                 % for join, date in event.getTicketsDateRange().items() %
@@ -52,7 +52,7 @@
             </p>
         </div> -->
         <div class="col-sm">
-            <p>from&nbsp;${{ event.getTicketsPriceFrom() }} per&nbsp;gondola</p>
+            <p>{{ event.getTicketsPriceFrom() }}</p>
         </div>
         <div class="col-sm-auto my-auto">
             <!-- <button type="button" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5" 
