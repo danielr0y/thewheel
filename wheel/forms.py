@@ -29,7 +29,6 @@ class CreateEventForm(FlaskForm):
     newcategory = StringField('New Category')
     tickets = StringField('Tickets') # note: you don't have to use this in the template. the Javascript on the create.html page adds this on submit. but it does have to be here
 
-    # TODO: once this form is created we need to use the fields in template. Follow event.html as guide
     submit = SubmitField("Create")
 
 

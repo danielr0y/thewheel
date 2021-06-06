@@ -144,7 +144,15 @@ class Event(db.Model):
 
 
     def getTicketsPriceFrom(self):
-        return 100 # self.tickets.reduce( (prev, {price}) => lowest(prev, price) ) but python
+        
+        low_ticket = 100000
+
+        for x in self.tickets:
+            if x.price < low_ticket:
+                low_ticket = x.price
+             
+        return low_ticket
+        
 
 
     def getStatusColour(self):
