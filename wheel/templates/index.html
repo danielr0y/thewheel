@@ -38,7 +38,6 @@
 <section>
     <header class="row mb-3">
         <h3 class="col-auto">Upcoming Events</h3>
-        <span class="col my-auto">maybe just limit this to three events?</span>
     </header>
 
         <div class='row row-cols-1 row-cols-md-2 row-cols-xl-3 mb-3 g-3'>
@@ -51,23 +50,13 @@
 
                     <p class="mb-1">
                         <strong>
-                            Available from {{event.getTicketsStartDate()}}
-                            until {{event.getTicketsEndDate()}}
+                            {{event.getTicketsDateRange()}}
                         </strong>
                     </p>
 
-                    <p class="mb-1">
-                        <strong>
-                            Starting at {{event.getTicketsStartTime()}}
-                            Final ride at {{event.getTicketsEndTime()}}
-                        </strong>
-
-                     
-
-                    </p>
                 <p class="card-text">{{ event.description }}</p>
                     <div class="row">
-                        <span class="col my-auto">{{ "{}: from {}".format( event.status, event.getTicketsPriceFrom() ) }}</span>
+                        <span class="col my-auto">{{ "{}: from ${} per ticket".format( event.status, event.getTicketsPriceFrom() ) }}</span>
                         <span class="col-auto"><a href="{{url_for('events.view', id=event.id)}}" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-4">View event</a></span>
                     </div>
 
@@ -80,31 +69,29 @@
 </section>
 <section>
     <header class="row mb-3">
-        <h3 class="col-auto">Missed the memo?</h3>
-        <span class="col my-auto">cancelled events</span>
+        <h3 class="col-auto">Missed the memo? These got cancelled.</h3>
     </header>
     <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 mb-3 g-3">
-        {% for event in MISSINGcancelled %}
+        {% for event in cancelled %}
         <div class="col event">
             <article class="card">
-                <a href="{{url_for('events.view', id=event.id)}}" class="card-image" style="background-image: url('{{ event.image }}'); background-position: top;"></a>
+                <a href="{{url_for('events.view', id=event.id)}}" class="card-image" style="background-image: url('.{{ event.image }}'); background-position: top;"></a>
                 <div class="card-body">
                     <h5 class="card-title">{{ event.name }}</h5>
+
                     <p class="mb-1">
-                        {% for join, date in event.ticketDates() %}
-                            <strong>{{ "{}: {}".format(join, date) }}</strong>
-                        {% endfor %}
+                        <strong>
+                            {{event.getTicketsDateRange()}}
+                        </strong>
                     </p>
-                    <p class="mb-1">
-                        {% for join, time in event.ticketTimes() %}
-                            <strong>{{ "{}: {}".format(join, time) }}</strong>
-                        {% endfor %}
-                    </p>
+
                 <p class="card-text">{{ event.description }}</p>
                     <div class="row">
-                        <span class="col my-auto">{{ "{}: from {}".format( event.status, event.ticketsFrom() ) }}</span>
+                        <span class="col my-auto">{{ "{}: from ${} per ticket".format( event.status, event.getTicketsPriceFrom() ) }}</span>
                         <span class="col-auto"><a href="{{url_for('events.view', id=event.id)}}" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-4">View event</a></span>
                     </div>
+
+
                 </div>
             </article>
         </div>

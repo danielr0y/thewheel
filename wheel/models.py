@@ -141,7 +141,7 @@ class Event(db.Model):
         high_date = x_max.strftime("%m/%d/%Y")
         high_time = x_max.strftime("%I:%M%p")
 
-        output = "Bookings available from " + low_time + " on " + low_date + ",  to " + high_time + " on " + high_date
+        output = "from " + low_time + " on " + low_date + ",  to " + high_time + " on " + high_date
              
         return output
         

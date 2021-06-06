@@ -23,6 +23,23 @@ def update(id):
     # TODO: passing an event to this template does nothing
     # return render_template('create.html', form=form, event=event) 
     return render_template('create.html')
+    
+
+@events.route('/<int:id>/delete', methods=['GET', 'POST'])
+def delete(id):
+    
+    event = Event.get(id)
+
+    for x in event.tickets:
+        db.session.delete(x)
+        db.session.commit()
+        
+    db.session.delete(event)
+    db.session.commit()
+
+    flash(f'Successfully deleted event', 'success')
+    return render_template('events.html')
+
 
 
 

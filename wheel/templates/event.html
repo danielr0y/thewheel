@@ -14,6 +14,13 @@
         <a href="{{ url_for('events.update', id=event.id) }}" class="btn btn-outline-primary rounded-pill px-5">Update</a>
     </div>
 {% endif %}
+
+{% if current_user.is_authenticated and current_user.is_admin() %}
+    <div class="col-sm-auto my-auto">
+        <a href="{{ url_for('events.delete', id=event.id) }}" class="btn btn-outline-primary rounded-pill px-5">Delete</a>
+    </div>
+{% endif %}
+
 {% endblock %}
 
 {% block content %}
@@ -29,7 +36,7 @@
     <div class="row mb-3">
         <div class="col-sm">
             <p class="mb-1">
-                {{event.getTicketsDateRange()}}
+                Booking available {{event.getTicketsDateRange()}}
             </p>
             <!-- <p class="mb-1">
                 % for join, date in event.getTicketsDateRange().items() %
