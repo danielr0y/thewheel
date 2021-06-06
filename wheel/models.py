@@ -310,6 +310,13 @@ class Booking(db.Model):
 
 
     @staticmethod
+    def getEventID(booking_id):
+        booking = Booking.query.get(booking_id)
+        ticket = Ticket.query.get(booking.ticket_id)
+        event = Event.query.get(ticket.event_id)
+        return event.id
+
+    @staticmethod
     def getAllByUser(user_id):
         return Booking.query.filter_by(user_id=user_id)
 

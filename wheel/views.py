@@ -52,7 +52,7 @@ def delete(id):
         for y in delete_bookings:
             db.session.delete(y)
             db.session.commit()
-            
+
         db.session.delete(x)
         db.session.commit()
         
@@ -189,13 +189,30 @@ def check_upload_file(form):
 
 
 
-
-
-
 @main.route('/bookings')
 @login_required
 def bookings():
     bookings = Booking.getAllByUser(current_user.id)
+    
+    dictionary = {}
+    for booking in bookings:
+        ticket = Ticket.query.get(booking.ticket_id)
+        event = Event.query.get(ticket.event_id)
+        dictionary[booking.id] = { 
+            "Event ID: " : event.id, # have to have event ID in here for linking purposes
+            "Order ID:": booking.id,
+            "Event name: ": event.name,
+            "Ticket date: ": ticket.datetime.strftime("%d/%m/%Y"),
+            "Ticket time: ": ticket.datetime.strftime("%I:%M %p"),
+            "Total price: ": booking.total_price,
+            "Purchase date: ": booking.purchase_datetime.strftime("%d/%m/%Y %I:%M %p"),
+            "Ticket quantity: ": booking.qty,
+            "Event status: ": event.status,
+        }
+    
+    print(dictionary.values())
+
+    
 
     # TODO: for convenience, pass a list of dictionaries to the template... like this but python    
     # bookings = bookings.map( booking => ({ 
@@ -204,7 +221,7 @@ def bookings():
     #     'event' : this.ticket.getEvent() 
     # }) )
     # return render_template('bookings.html', bookings=bookings)
-    return render_template('bookings.html')
+    return render_template('bookings.html', bookings = dictionary)
 
 
 

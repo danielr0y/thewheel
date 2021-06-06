@@ -19,25 +19,25 @@
     </div>
 </form>
 <section class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-3">
-    {% for booking, ticket, event in bookings %}
-        <div id="{{ booking.id }}" class="col">
+    
+    {% for key, value in bookings.items() %}
+        <div id="{{ key }}" class="col">
             <div class="card">
-                <a href="{{ url_for('events.view', event.id)}}" class="card-image" style="background-image: url('{{ event.image }}')"></a>
                 <div class="card-body">
-                    <h5>{{ event.name }}</h5>
-                    <div><strong>orderID: </strong>{{ booking.id }}</div>
-                    <div><strong>event date: </strong>{{ ticket.getDate().strftime("%d/%m/%Y") }}</div>
-                    <div><strong>event time: </strong>{{ ticket.getTime().strftime("%I:%M %p") }}</div>
-                    <div><strong>purchase price: </strong>{{ booking.total_price }}</div>
-                    <div><strong>purchase date: </strong>{{ booking.purchase_datetime.strftime("%d/%m/%Y %I:%M %p") }}</div>
-                    <div class="mb-3"><strong>gondolas reserved: </strong>{{ booking.qty }}</div>
-                    <div class="row">
-                        <span class="col my-auto">{{ event.status }}</span>
-                        <a href="{{ url_for('events.view', event.id)}}" class="col-auto btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5">View event</a>
-                    </div>
+                    <a href="{{ url_for('events.view', id=value['Event ID: '])}}" class="nav-link">View Event</a>
+
+                {% for key, value in value.items() %}
+                <div><strong>{{ key }} </strong>{{ value }}</div>
+                {% endfor %}
+                
                 </div>
             </div>
         </div>
     {% endfor %}
+
+
+
+
+    
 </section>
 {% endblock %}
