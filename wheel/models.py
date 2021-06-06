@@ -124,8 +124,38 @@ class Event(db.Model):
 
 
     def getTicketsDateRange(self):
-        return Ticket.getDateRangeByEvent(self.id)
+
+        x_min = datetime(3000,9,9)
+        x_max = datetime(2000,9,9)
+
+        for x in self.tickets:
+            if x.datetime < x_min:
+                x_min = x.datetime
+
+            if x.datetime > x_max:
+                x_max = x.datetime
         
+        low_date = x_min.strftime("%m/%d/%Y")
+        low_time = x_min.strftime("%I:%M%p")
+
+        high_date = x_max.strftime("%m/%d/%Y")
+        high_time = x_max.strftime("%I:%M%p")
+
+        output = "Bookings available from " + low_time + " on " + low_date + ",  to " + high_time + " on " + high_date
+             
+        return output
+        
+
+    def getTicketsPriceFrom(self):
+        
+        low_ticket = 100000
+
+        for x in self.tickets:
+            if x.price < low_ticket:
+                low_ticket = x.price
+             
+        return low_ticket
+
     def getTicketsStartDate(self):
         return Ticket.getStartDateByEvent(self.id)
 
@@ -141,17 +171,6 @@ class Event(db.Model):
 
     def getTicketsEndTime(self):
         return Ticket.getEndTimeByEvent(self.id)
-
-
-    def getTicketsPriceFrom(self):
-        
-        low_ticket = 100000
-
-        for x in self.tickets:
-            if x.price < low_ticket:
-                low_ticket = x.price
-             
-        return low_ticket
         
 
 
@@ -220,7 +239,7 @@ class Ticket(db.Model):
     def get(id: int):
         return Ticket.query.get(id)
 
-
+    
     @staticmethod
     def getTimeRangeByEvent(event_id):
          return {
@@ -237,18 +256,12 @@ class Ticket(db.Model):
     def getEndTimeByEvent(event_id):
         return datetime.now().strftime("%I:%M %p") #Only returning a single time not pulling from db strftime again formats 
 
-    @staticmethod
-    def getDateRangeByEvent(event_id):
-        return {
-            "on": datetime.now().date().strftime("%d/%m/%Y"),
-            "and": datetime.now().date().strftime("%d/%m/%Y")
-        }
-
     def getStartDateByEvent(event_id):
         return  datetime.now().date().strftime("%d/%m/%Y") #Only returning a single date not pulling from db strftime formats weird on page
 
     def getEndDateByEvent(event_id):
         return  datetime.now().date().strftime("%d/%m/%Y") #Only returning a single date not pulling from db strftime formats weird on page
+
 
     def getEvent(self):
         return Event.get(self.event_id)
