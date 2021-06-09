@@ -37,13 +37,13 @@ class User(db.Model, UserMixin):
         user = User.getByEmail(email)
 
         if user is None:
-            return 'Incorrect email'
+            return [False, 'Incorrect email']
         
         if not check_password_hash(user.password_hash, password):
-            return 'Incorrect password'
+            return [False, 'Incorrect password']
 
         login_user(user)
-        return False # returns errors, so False means success
+        return [True, 'Welcome back'] 
 
 
     @staticmethod

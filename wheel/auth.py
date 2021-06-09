@@ -13,11 +13,8 @@ def login():
     password = request.form['password']
 
     if email and password:
-        error = User.login(email, password)
-        if error:
-            flash(error, 'danger')
-        else:
-            flash("welcome back", 'success')
+        success, message = User.login(email, password)
+        flash( message, 'success' if success else 'danger')
             
     return redirect(url_for('main.index'))
 
