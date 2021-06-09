@@ -1,4 +1,5 @@
 from operator import truediv
+from wheel.views import book
 from . import db
 from flask_login import UserMixin
 from datetime import datetime
@@ -334,7 +335,7 @@ class Booking(db.Model):
 
         # deal with errors first
         if qty > remaining:
-            return [True, remaining] # error, number of gondolas remaining
+            return [True, remaining, None] # error, number of gondolas remaining, booking_id
 
         # otherwise, make the booking
         booking = Booking(qty = qty , total_price = price , purchase_datetime = datetime , user_id = user , ticket_id = ticket_id)
@@ -352,7 +353,7 @@ class Booking(db.Model):
         db.session.add(booking)
         db.session.commit() 
 
-        return [False, remaining]
+        return [False, remaining, booking.id]
 
 
     def getUser(self):
