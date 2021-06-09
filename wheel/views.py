@@ -112,8 +112,8 @@ def book():
     form = BookEventForm()
     current_event = Event.get(form.event.data)
     form.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), current_event.tickets))
-    if form.validate_on_submit():
-        
+
+    if form.validate_on_submit():    
         qty = form.qty.data
         total_price = form.price.data
         purchase_datetime = datetime.now()
@@ -167,21 +167,23 @@ def create():
         description = form.desc.data
         status = form.status.data
         image = db_file_path
+        jsonTickets = form.tickets.data
 
         new_event = Event.create(name,description,category,status,image)
 
-        tickets = json.loads(form.tickets.data)
+        if jsonTickets:
+            tickets = json.loads(jsonTickets)
 
-        for ticket in tickets:
-            datetimeobj = datetime.strptime(ticket["datetime"], '%Y-%m-%d %H:%M'),
-            print(datetimeobj)
+            for ticket in tickets:
+                datetimeobj = datetime.strptime(ticket["datetime"], '%Y-%m-%d %H:%M'),
+                print(datetimeobj)
 
-            Ticket.release(
-                new_event.id, 
-                datetimeobj,
-                ticket["numberOfGondolas"], 
-                ticket["price"]
-            )
+                Ticket.release(
+                    new_event.id, 
+                    datetimeobj,
+                    ticket["numberOfGondolas"], 
+                    ticket["price"]
+                )
 
         flash(f'Successfully created {form.name.data}', 'success')
         return redirect( url_for('events.view', id=new_event.id))
