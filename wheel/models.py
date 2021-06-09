@@ -311,51 +311,31 @@ class Booking(db.Model):
 
 
     @staticmethod
-    def book(qty,price,datetime,user,ticket):
-        
-        ticket_temp = Ticket.get(ticket)
+    def book(qty, price, datetime, user, ticket_id):
+        ticket = Ticket.get(ticket_id)
+        remaining = ticket.remaining
 
-        outcome = 0
+        # deal with errors first
+        if qty > remaining:
+            return [True, remaining] # error, number of gondolas remaining
 
-        if qty < ticket_temp.remaining:
-            
-            booking = Booking(qty = qty , total_price = price , purchase_datetime = datetime , user_id = user , ticket_id = ticket)
-        
-            db.session.add(booking)
-            db.session.commit()
+        # otherwise, make the booking
+        booking = Booking(qty = qty , total_price = price , purchase_datetime = datetime , user_id = user , ticket_id = ticket_id)
+        ticket.remaining = remaining - qty
 
-            ticket_temp.remaining = ticket_temp.remaining - qty
-            db.session.commit()
+        # if that was the last ticket, check if the event status needs to be updated
+        if qty == remaining: 
+            event = Event.get(ticket.event_id)
 
-            return outcome
-
-        elif qty == ticket_temp.remaining: # This is so every time something is booked, it checks to see if there are any tickets left for that event and updates the status accordingly 
-
-            booking = Booking(qty = qty , total_price = price , purchase_datetime = datetime , user_id = user , ticket_id = ticket)
-        
-            db.session.add(booking)
-            db.session.commit()
-
-            ticket_temp.remaining = ticket_temp.remaining - qty
-            db.session.commit()
-
-            no_tickets = True
-
-            event = Event.query.get(ticket_temp.event_id)
-
-            for x in event.tickets:
-                if x.remaining != 0:
-                    no_tickets = False
-            if no_tickets:
+            otherRemainingTickets = list(filter(lambda ticket: ticket.remaining > 0, event.tickets))
+            if not len(otherRemainingTickets):
                 event.status = "booked out"
-                db.session.commit() 
-            
-            return outcome
-            
+    
+        # add and commit changes
+        db.session.add(booking)
+        db.session.commit() 
 
-
-        outcome = ticket_temp.remaining
-        return outcome
+        return [False, remaining]
 
         
 

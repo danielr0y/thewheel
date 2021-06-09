@@ -120,20 +120,16 @@ def book():
         user_id = current_user.id
         ticket_id = form.ticket.data      
 
-        booked = Booking.book(qty,total_price,purchase_datetime,user_id,ticket_id)
+        error, remaining = Booking.book(qty, total_price, purchase_datetime, user_id, ticket_id)
 
-        if booked <= 0:
-            flash(f'Successfully booked {form.qty.data} tickets', 'success')
-            return redirect( url_for('main.bookings') )
+        if error:
+            flash(f'Sorry, there are only {remaining} gondolas available for that time, please try again.', 'danger')
+            return redirect( url_for('events.view', id=current_event.id)) 
         
-        flash(f'Sorry, there are only {booked} gondolas available for that time, please try again.', 'danger')
-        return redirect( url_for('events.view', id=current_event.id)) 
-
-
+        flash(f'Successfully booked {qty} tickets', 'success')
+        return redirect( url_for('main.bookings') )
 
     flash(f'Sorry, you cannot book an event with no availability.', 'danger')
-
-    
     return redirect( url_for('main.index') )
 
 
