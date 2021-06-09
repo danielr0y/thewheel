@@ -146,7 +146,13 @@ def create():
         return redirect( url_for('main.index') )
 
     form = CreateEventForm() 
-    form.category.choices = [(g, g) for g in Event.getAllCategories()]
+    
+    def changeDefaultStatus(status):
+        form.status.default = status
+        form.process()
+        return form.status
+    
+    form.changeDefaultStatus = lambda status: changeDefaultStatus(status)
 
     if form.validate_on_submit():
         db_file_path = check_upload_file(form)

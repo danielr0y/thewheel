@@ -31,7 +31,7 @@ TODO: (much later) use the event passed to this template to prefill the form wit
                 {{ form.newcategory.label(style="z-index: 3") }}
                 
                 {# form.category.label #}
-                {{ form.category(class="form-select btn-outline-primary p-3") }}                    
+                {{ form.category(class="form-select btn-outline-primary p-3") }}
                 <!-- <select id="category" name="category" class="form-select btn-outline-primary p-3" > -->
                     <!-- <option value="new" selected>new category</option> -->
                     {# for category in form.categories #}
@@ -118,8 +118,8 @@ TODO: (much later) use the event passed to this template to prefill the form wit
             <button id="newdate" type="button" class="btn btn-outline-primary w-lg-25 rounded-pill">+</button>
         </div>
         <div class="col-auto ms-auto">
-            {# form.status.label #}
-            {{ form.status(class="form-select rounded-pill w-100 ps-4 pe-5") }}
+            {% set upcoming = form.changeDefaultStatus("upcoming") %}
+            {{ upcoming(class="form-select rounded-pill w-100 ps-4 pe-5") }}
             <!-- <select name="status" class="form-select rounded-pill ps-4 pe-5" >
                 <option value="Inactive">Inactive</option>
                 <option value="Upcoming" selected>Upcoming</option>
