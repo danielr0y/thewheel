@@ -126,10 +126,17 @@ class Event(db.Model):
 
 
     def set(self, name, description, category, status, image):
+        # TODO: this is the method to update an event
         return 
 
 
+    def getTicketsTimeRange(self):
+        # TODO: see getTicketsDateRange comment
+        return Ticket.getTimeRangeByEvent(self.id)
+
+
     def getTicketsDateRange(self):
+        # TODO: break this up into getTicketsDateRange and getTicketsTimeRange
 
         x_min = datetime(3000,9,9)
         x_max = datetime(2000,9,9)
@@ -157,7 +164,6 @@ class Event(db.Model):
         
 
     def getTicketsPriceFrom(self):
-        
         low_ticket = 100000
 
         for x in self.tickets:
@@ -171,23 +177,22 @@ class Event(db.Model):
 
         return "from $" + low + " per gondola"
 
+
     def getTicketsStartDate(self):
         return Ticket.getStartDateByEvent(self.id)
+
 
     def getTicketsEndDate(self):
         return Ticket.getEndDateByEvent(self.id)
 
 
-    def getTicketsTimeRange(self):
-        return Ticket.getTimeRangeByEvent(self.id)
-
     def getTicketsStartTime(self):
         return Ticket.getStartTimeByEvent(self.id)
+
 
     def getTicketsEndTime(self):
         return Ticket.getEndTimeByEvent(self.id)
         
-
 
     def getStatusColour(self):
         return {
@@ -225,6 +230,9 @@ class Review(db.Model):
     @staticmethod
     def post(event_id, author_id, text):
         time = datetime.now()
+        review = Review(event_id=event_id, author_id=author_id, time=time, text=text)
+
+        # TODO: add and commit to database
         return 
 
 
@@ -245,7 +253,6 @@ class Ticket(db.Model):
 
         db.session.add(ticket)
         db.session.commit()
-
         
         return ticket
 
@@ -301,6 +308,7 @@ class Booking(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     ticket_id = db.Column(db.Integer, db.ForeignKey('tickets.id'))
 
+
     @staticmethod
     def get(id: int):
         return Booking.query.get(id)
@@ -312,6 +320,7 @@ class Booking(db.Model):
         ticket = Ticket.query.get(booking.ticket_id)
         event = Event.query.get(ticket.event_id)
         return event.id
+
 
     @staticmethod
     def getAllByUser(user_id):
@@ -344,10 +353,6 @@ class Booking(db.Model):
         db.session.commit() 
 
         return [False, remaining]
-
-        
-
-
 
 
     def getUser(self):

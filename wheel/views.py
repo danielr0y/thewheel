@@ -37,7 +37,7 @@ def viewAll():
 def view(id):
     event = Event.get(id)
     bookform = BookEventForm()
-    reviewform = PostReviewForm() 
+    reviewform = PostReviewForm() # TODO: create this form
 
     bookform.event.data = id
     # create radio field options from the tickets 
@@ -59,34 +59,6 @@ def view(id):
     # the radio options are not actually held in dates, 
     # rather, they are retreived from the form object according to the ticket ids in dates
     return render_template('event.html', event=event, bookform=bookform, times=times, dates=dates)
-
-
-
-@events.route('/book', methods=['POST'])
-@login_required
-def book():
-    form = BookEventForm()
-    current_event = Event.get(form.event.data)
-    form.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), current_event.tickets))
-
-    if form.validate_on_submit():    
-        qty = form.qty.data
-        total_price = form.price.data
-        purchase_datetime = datetime.now()
-        user_id = current_user.id
-        ticket_id = form.ticket.data      
-
-        error, remaining, booking_id = Booking.book(qty, total_price, purchase_datetime, user_id, ticket_id)
-
-        if error:
-            flash(f'Sorry, there are only {remaining} gondolas available for that time, please try again.', 'danger')
-            return redirect( url_for('events.view', id=current_event.id)) 
-        
-        flash(f'Successfully booked {qty} tickets. Your booking ID is: {booking_id}', 'success')
-        return redirect( url_for('main.bookings') )
-
-    flash(f'Sorry, you cannot book an event with no availability.', 'danger')
-    return redirect( url_for('main.index') )
 
 
 
@@ -157,6 +129,77 @@ def check_upload_file(form):
     # save the file and return the db upload path
     fp.save(upload_path)
     return db_upload_path
+    
+
+
+@events.route('/<int:id>/update')
+def update(id):
+    form = CreateEventForm() # TODO: this form has now been created. use it.
+    event = Event.get(id)
+    form.name.data = event.name
+    form.desc.data = event.description
+    form.image.data = event.image
+    form.status.data = event.status
+    form.category.data = event.category
+    #form.newcategory.data = event.newcategory
+
+
+    # get rid of this and stop passing it
+    bookform = BookEventForm()
+    reviewform = PostReviewForm() 
+
+    # TODO: pass the event to the create template
+    # return render_template('create.html', form=form, event=event) 
+    return render_template('update.html', form=form, event=event, bookform = bookform, reviewform = reviewform)
+    
+
+@events.route('/<int:id>/delete', methods=['GET', 'POST'])
+def delete(id):
+    event = Event.get(id)
+
+    for ticket in event.tickets:
+        delete_bookings = Booking.query.filter_by(ticket_id=ticket.id).all()
+        
+        for booking in delete_bookings:
+            db.session.delete(booking)
+            # db.session.commit()
+
+        db.session.delete(ticket)
+        # db.session.commit()
+
+    db.session.delete(event)
+    db.session.commit()
+
+    flash(f'Successfully deleted event', 'success')
+    return redirect( url_for('events.viewAll') )
+
+
+
+@events.route('/book', methods=['POST'])
+@login_required
+def book():
+    form = BookEventForm()
+    current_event = Event.get(form.event.data)
+    form.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), current_event.tickets))
+
+    if form.validate_on_submit():    
+        qty = form.qty.data
+        total_price = form.price.data
+        purchase_datetime = datetime.now()
+        user_id = current_user.id
+        ticket_id = form.ticket.data      
+
+        error, remaining, booking_id = Booking.book(qty, total_price, purchase_datetime, user_id, ticket_id)
+
+        if error:
+            flash(f'Sorry, there are only {remaining} gondolas available for that time, please try again.', 'danger')
+            return redirect( url_for('events.view', id=current_event.id)) 
+        
+        flash(f'Successfully booked {qty} tickets. Your booking ID is: {booking_id}', 'success')
+        return redirect( url_for('main.bookings') )
+
+    flash(f'Sorry, you cannot book an event with no availability.', 'danger')
+    return redirect( url_for('main.index') )
 
 
 
