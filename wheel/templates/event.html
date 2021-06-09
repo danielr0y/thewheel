@@ -91,11 +91,16 @@
                             <div class="col">
                                 <label class="btn btn-light rounded-pill w-100">{{date}}</label>    
                             </div>
-                            {% for ticket_id in times %}
+                            {% for ticket_id, remaining in times %}
                                 {% for ticket in bookform.ticket if ticket.data == ticket_id %}
                                     <div class="col">
-                                        {{ ticket(class_="btn-check", data_price=ticket.label.text.strip('$'), required=True ) }}
-                                        {{ ticket.label(class_="btn btn-outline-success rounded-pill w-100") }}
+                                        {% if remaining > 0 %}
+                                            {{ ticket(class_="btn-check", data_remaining=remaining, data_price=ticket.label.text.strip('$'), required=True ) }}
+                                            {{ ticket.label(class_="btn btn-outline-success rounded-pill w-100") }}
+                                        {% else %}
+                                            {{ ticket(class_="btn-check", data_price=ticket.label.text.strip('$'), disabled=True ) }}
+                                            {{ ticket.label(class_="btn btn-outline-secondary rounded-pill w-100" ) }}
+                                        {% endif %}
                                     </div>
                                 {% endfor %}
                             {% endfor %}
@@ -129,7 +134,7 @@
                                         class="btn btn-success rounded-pill rounded-start plus">+</button>
                             </div>
                         </div>
-                        <div class="w-100"></div>
+                        <div id="remainingWarning" class="w-100 text-end"></div>
                         <div class="col my-auto text-end">
                             <label for="price">price</label>
                         </div>
@@ -197,6 +202,10 @@
     document.querySelectorAll('[name="ticket"]').forEach( (ticket) => {
         ticket.addEventListener('change', ({target}) => {
             updatePrice( target.getAttribute('data-price') || 0 );
+
+            const warning = document.getElementById('remainingWarning');
+            const remaining = target.getAttribute('data-remaining');
+            warning.innerText = "There are " + remaining + " gondolas remaining for this time.";
         } )
     } )
 

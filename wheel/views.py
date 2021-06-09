@@ -84,7 +84,7 @@ def view(id):
     reviewform = PostReviewForm() 
 
     bookform.event.data = id
-    # create radio field options from the tickets sorted by date
+    # create radio field options from the tickets 
     bookform.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), event.tickets))
 
     # get a list of all possible times in order
@@ -92,10 +92,10 @@ def view(id):
     ticketsgroupedbytime = groupby(ticketssortedbytime, key=lambda ticket: ticket.datetime.strftime("%I:%M %p"))
     times = [time for time, _tickets in ticketsgroupedbytime]
 
-    # get a list of ticket ids grouped by date
+    # get a list of ticket ids and the remaining tickets grouped by date
     ticketssortedbydate = sorted(event.tickets, key=lambda ticket: ticket.datetime)    
     ticketsgroupedbydate = groupby(ticketssortedbydate, key=lambda ticket: ticket.datetime.strftime("%d/%m/%Y"))
-    dates = [[date, [time.id for time in times]] for date, times in ticketsgroupedbydate]
+    dates = [[date, [[time.id, time.remaining] for time in times]] for date, times in ticketsgroupedbydate]
 
     # in the template, 
     # times are used to generate the table header and
@@ -122,11 +122,11 @@ def book():
 
         booked = Booking.book(qty,total_price,purchase_datetime,user_id,ticket_id)
 
-        if booked == 0:
+        if booked <= 0:
             flash(f'Successfully booked {form.qty.data} tickets', 'success')
             return redirect( url_for('main.bookings') )
         
-        flash(f'Sorry, there are only {booked} tickets available for that time, please try again.', 'danger')
+        flash(f'Sorry, there are only {booked} gondolas available for that time, please try again.', 'danger')
         return redirect( url_for('events.view', id=current_event.id)) 
 
 
