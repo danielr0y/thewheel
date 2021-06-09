@@ -56,9 +56,9 @@ TODO: (much later) use the event passed to this template to prefill the form wit
         </div>
         <div class="row m-3">
             <div class="col-md text-center my-auto">
-                <label for="releaseWoTickets" 
+                <label for="continueWoTickets" 
                         class="form-check-label">Continue without releasing tickets</label>
-                <input id="releaseWoTickets" class="form-check-input" type="checkbox" >
+                <input id="continueWoTickets" class="form-check-input" type="checkbox" >
             </div>
             <div class="col-6 col-md-auto ms-md-0">
                 {# form.status.label #}
@@ -149,7 +149,7 @@ TODO: (much later) use the event passed to this template to prefill the form wit
             document.getElementById('newcategory').value = target.value;
         });
 
-        document.getElementById('releaseWoTickets').addEventListener('change', ({target}) => {
+        document.getElementById('continueWoTickets').addEventListener('change', ({target}) => {
             document.getElementById('status').toggleAttribute('disabled');
             document.getElementById('submit').toggleAttribute('disabled');
             document.getElementById('tickets').toggleAttribute('disabled');
@@ -197,7 +197,7 @@ TODO: (much later) use the event passed to this template to prefill the form wit
 
         const form = document.getElementById('create-event');
         form.addEventListener('formdata', (event) => {
-            if ( event.target.releaseWoTickets.checked ) return;
+            if ( event.target.continueWoTickets.checked ) return;
 
             const times = document.querySelectorAll('.time-header');
             const daterows = document.querySelectorAll('.date-row');
