@@ -95,14 +95,6 @@ class Event(db.Model):
         return 
 
 
-    def bookButton(self):
-        if self.status == "upcoming":
-            return True
-        else:
-            return False
-
-
-
     def getAllByStatus(input):
         # TODO:
         return Event.query.filter_by(status=input).all()
