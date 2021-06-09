@@ -1,5 +1,3 @@
-from operator import truediv
-from wheel.views import book
 from . import db
 from flask_login import UserMixin
 from datetime import datetime
