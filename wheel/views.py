@@ -34,11 +34,22 @@ def viewAll():
 def update(id):
     form = CreateEventForm() # TODO: create this form
     event = Event.get(id)
+    form.name.data = event.name
+    form.desc.data = event.description
+    form.image.data = event.image
+    form.status.data = event.status
+    form.category.data = event.category
+    #form.newcategory.data = event.newcategory
+
+
+    # get rid of this and stop passing it
+    bookform = BookEventForm()
+    reviewform = PostReviewForm() 
 
     # TODO: passing a form to this template does nothing
     # TODO: passing an event to this template does nothing
     # return render_template('create.html', form=form, event=event) 
-    return render_template('create.html')
+    return render_template('update.html', form=form, event=event, bookform = bookform, reviewform = reviewform)
     
 
 @events.route('/<int:id>/delete', methods=['GET', 'POST'])
@@ -70,7 +81,7 @@ def delete(id):
 def view(id):
     event = Event.get(id)
     bookform = BookEventForm()
-    reviewform = PostReviewForm() # TODO: create this form
+    reviewform = PostReviewForm() 
 
     bookform.event.data = id
     # create radio field options from the tickets sorted by date
