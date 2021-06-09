@@ -17,61 +17,18 @@ events = Blueprint('events', __name__, url_prefix='/events')
 
 @events.route('/')
 def viewAll():
-    upcoming = Event.getAllByStatus("upcoming")
-    booked = Event.getAllByStatus("booked out")
-    cancelled = Event.getAllByStatus("cancelled")
-    inactive = Event.getAllByStatus("inactive")
+    # TODO: consider deleting these. Lets talk about what should be shown on the events page vs index page
+    # upcoming = Event.getAllByStatus("upcoming")
+    # booked = Event.getAllByStatus("booked out")
+    # cancelled = Event.getAllByStatus("cancelled")
+    # inactive = Event.getAllByStatus("inactive")
 
+    events = Event.getAll()
+    categories = Event.getAllCategories()
     form = SearchForm() # TODO: create this form
 
-    # TODO: passing events to this template doesnt do anything
-    # return render_template('events.html', events=events, form=form)
-    return render_template('events.html', upcoming = upcoming, booked = booked, cancelled = cancelled, inactive = inactive )
-    
-
-
-@events.route('/<int:id>/update')
-def update(id):
-    form = CreateEventForm() # TODO: this form has now been created. use it.
-    event = Event.get(id)
-    form.name.data = event.name
-    form.desc.data = event.description
-    form.image.data = event.image
-    form.status.data = event.status
-    form.category.data = event.category
-    #form.newcategory.data = event.newcategory
-
-
-    # get rid of this and stop passing it
-    bookform = BookEventForm()
-    reviewform = PostReviewForm() 
-
-    # TODO: pass the event to the create template
-    # return render_template('create.html', form=form, event=event) 
-    return render_template('update.html', form=form, event=event, bookform = bookform, reviewform = reviewform)
-    
-
-@events.route('/<int:id>/delete', methods=['GET', 'POST'])
-def delete(id):
-    
-    event = Event.get(id)
-
-    for x in event.tickets:
-
-        delete_bookings =  Booking.query.filter_by(ticket_id=x.id).all()
-        for y in delete_bookings:
-            db.session.delete(y)
-            db.session.commit()
-
-        db.session.delete(x)
-        db.session.commit()
-        
-
-    db.session.delete(event)
-    db.session.commit()
-
-    flash(f'Successfully deleted event', 'success')
-    return redirect( url_for('events.viewAll') )
+    return render_template('events.html', events=events, categories=categories, form=form)
+    # return render_template('events.html', categories = categories, upcoming = upcoming, booked = booked, cancelled = cancelled, inactive = inactive )
 
 
 

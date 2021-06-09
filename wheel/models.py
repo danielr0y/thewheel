@@ -91,8 +91,11 @@ class Event(db.Model):
 
     @staticmethod
     def getAll():
-        # TODO: 
-        return 
+        # gets events with tickets in the future
+        return Event.query.\
+            join(Ticket).\
+            filter( Ticket.datetime > datetime.now() ).\
+            all()
 
 
     def getAllByStatus(input):
@@ -114,6 +117,7 @@ class Event(db.Model):
 
     @staticmethod
     def getAllCategories():
+        # returns a list of categories as strings
         return [event.category for event in Event.query.group_by('category').all()]
 
 
