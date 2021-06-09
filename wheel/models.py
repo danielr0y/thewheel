@@ -98,21 +98,25 @@ class Event(db.Model):
             all()
 
 
-    def getAllByStatus(input):
-        # TODO:
-        return Event.query.filter_by(status=input).all()
-
-
-    def getTopThreeByStatus(status):
-        # TODO: maybe we should try and order by Ticket dates?
-        return Event.query.filter_by(status=status).limit(3).all()
-
+    @staticmethod
+    def getAllByStatus(status, limit=None):
+        # gets events with tickets in the future by status
+        return Event.query.\
+            join( Ticket ).\
+            filter( Ticket.datetime > datetime.now() ).\
+            filter( Event.status == status ).\
+            limit( limit ).\
+            all()
 
 
     @staticmethod
-    def getAllByCategory(input):
-
-        return Event.query.filter_by(category=input).all()
+    def getAllByCategory(category):
+        # gets events with tickets in the future by category
+        return Event.query.\
+            join( Ticket ).\
+            filter( Ticket.datetime > datetime.now() ).\
+            filter( Event.category == category ).\
+            all()
 
 
     @staticmethod
