@@ -32,7 +32,7 @@ def viewAll():
 
 @events.route('/<int:id>/update')
 def update(id):
-    form = CreateEventForm() # TODO: create this form
+    form = CreateEventForm() # TODO: this form has now been created. use it.
     event = Event.get(id)
     form.name.data = event.name
     form.desc.data = event.description
@@ -46,8 +46,7 @@ def update(id):
     bookform = BookEventForm()
     reviewform = PostReviewForm() 
 
-    # TODO: passing a form to this template does nothing
-    # TODO: passing an event to this template does nothing
+    # TODO: pass the event to the create template
     # return render_template('create.html', form=form, event=event) 
     return render_template('update.html', form=form, event=event, bookform = bookform, reviewform = reviewform)
     
@@ -120,13 +119,13 @@ def book():
         user_id = current_user.id
         ticket_id = form.ticket.data      
 
-        error, remaining = Booking.book(qty, total_price, purchase_datetime, user_id, ticket_id)
+        error, remaining, booking_id = Booking.book(qty, total_price, purchase_datetime, user_id, ticket_id)
 
         if error:
             flash(f'Sorry, there are only {remaining} gondolas available for that time, please try again.', 'danger')
             return redirect( url_for('events.view', id=current_event.id)) 
         
-        flash(f'Successfully booked {qty} tickets', 'success')
+        flash(f'Successfully booked {qty} tickets. Your booking ID is: {booking_id}', 'success')
         return redirect( url_for('main.bookings') )
 
     flash(f'Sorry, you cannot book an event with no availability.', 'danger')
