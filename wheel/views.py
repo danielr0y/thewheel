@@ -146,6 +146,7 @@ def create():
         return redirect( url_for('main.index') )
 
     form = CreateEventForm() 
+    form.category.choices = [("", "new category"), *[(category, category) for category in Event.getAllCategories()]]
     
     def changeDefaultStatus(status):
         form.status.default = status

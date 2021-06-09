@@ -114,10 +114,7 @@ class Event(db.Model):
 
     @staticmethod
     def getAllCategories():
-        
-        return [(Event.category) for Event in Event.query.group_by('category')]
-        # TODO: SELECT category FROM events GROUP BY category but with SQLAlchemy syntax
-        return 
+        return [event.category for event in Event.query.group_by('category').all()]
 
 
     def set(self, name, description, category, status, image):
