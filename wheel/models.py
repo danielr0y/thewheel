@@ -159,6 +159,10 @@ class Event(db.Model):
 
 
 
+    def getFutureTickets(self):
+        return list( filter( lambda ticket: ticket.datetime > datetime.now(), self.tickets ) )
+
+
 
     def getTicketsTimeRange(self):
         # TODO: see getTicketsDateRange comment
