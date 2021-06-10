@@ -151,13 +151,13 @@ class Event(db.Model):
 
     @staticmethod
     def getAllCategories():
-        # returns a list of categories as strings
         return [event.category for event in Event.query.group_by('category').all()]
 
 
-    def set(self, name, description, category, status, image):
-        # TODO: this is the method to update an event
-        return 
+
+
+
+
 
 
     def getTicketsTimeRange(self):
@@ -205,23 +205,7 @@ class Event(db.Model):
 
         low = str(low_ticket)
 
-        return "from $" + low + " per gondola"
-
-
-    def getTicketsStartDate(self):
-        return Ticket.getStartDateByEvent(self.id)
-
-
-    def getTicketsEndDate(self):
-        return Ticket.getEndDateByEvent(self.id)
-
-
-    def getTicketsStartTime(self):
-        return Ticket.getStartTimeByEvent(self.id)
-
-
-    def getTicketsEndTime(self):
-        return Ticket.getEndTimeByEvent(self.id)
+        return "from $" + low
         
 
     def getStatusColour(self):
@@ -240,6 +224,11 @@ class Event(db.Model):
             'booked out': 'booked out',
             'cancelled': 'cancelled'
         }[self.status]
+
+
+    def set(self, name, description, category, status, image):
+        # TODO: this is the method to update an event
+        return 
 
 
 
@@ -293,29 +282,6 @@ class Ticket(db.Model):
         return Ticket.query.get(id)
 
     
-    @staticmethod
-    def getTimeRangeByEvent(event_id):
-         return {
-            "from": datetime.now().strftime("%I:%M %p"), # self.tickets.reduce( (prev, {datetime}) => lowest(prev, datetime) ) but python
-            "until": datetime.now().strftime("%I:%M %p") # self.tickets.reduce( (prev, {datetime}) => highest(prev, datetime) ) but python
-        }
-
-
-    @staticmethod
-    def getStartTimeByEvent(event_id):
-        return datetime.now().strftime("%I:%M %p") #Only returning a single time not pulling from db strftime again formats 
-
-    @staticmethod
-    def getEndTimeByEvent(event_id):
-        return datetime.now().strftime("%I:%M %p") #Only returning a single time not pulling from db strftime again formats 
-
-    def getStartDateByEvent(event_id):
-        return  datetime.now().date().strftime("%d/%m/%Y") #Only returning a single date not pulling from db strftime formats weird on page
-
-    def getEndDateByEvent(event_id):
-        return  datetime.now().date().strftime("%d/%m/%Y") #Only returning a single date not pulling from db strftime formats weird on page
-
-
     def getEvent(self):
         return Event.get(self.event_id)
 
