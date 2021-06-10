@@ -195,19 +195,7 @@ def check_upload_file(image):
 @events.route('/<int:id>/delete', methods=['GET', 'POST'])
 def delete(id):
     event = Event.get(id)
-
-    for ticket in event.tickets:
-        delete_bookings = Booking.query.filter_by(ticket_id=ticket.id).all()
-        
-        for booking in delete_bookings:
-            db.session.delete(booking)
-            # db.session.commit()
-
-        db.session.delete(ticket)
-        # db.session.commit()
-
-    db.session.delete(event)
-    db.session.commit()
+    event.delete()
 
     flash(f'Successfully deleted event', 'success')
     return redirect( url_for('events.viewAll') )

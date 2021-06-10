@@ -168,6 +168,17 @@ class Event(db.Model):
         return self
 
 
+    def delete(self):
+        for ticket in self.tickets:
+            ticket.delete()
+
+        for review in self.reviews:
+            review.delete()
+
+        db.session.delete(self)
+        db.session.commit()
+
+
 
     def getFutureTickets(self):
         return list( filter( lambda ticket: ticket.datetime > datetime.now(), self.tickets ) )
@@ -321,6 +332,13 @@ class Ticket(db.Model):
     def get(id: int):
         return Ticket.query.get(id)
 
+
+    def delete(self):
+        Booking.deleteAllByTicket(self.id)
+
+        db.session.delete(self)
+        db.session.commit()
+
     
     def getEvent(self):
         return Event.get(self.event_id)
@@ -365,6 +383,14 @@ class Booking(db.Model):
 
 
     @staticmethod
+    def deleteAllByTicket(ticket_id):
+        bookings = Booking.query.filter_by(ticket_id=ticket_id).all()
+        
+        for booking in bookings:
+            booking.delete()
+
+
+    @staticmethod
     def book(qty, price, datetime, user, ticket_id):
         ticket = Ticket.get(ticket_id)
         remaining = ticket.remaining
@@ -390,6 +416,11 @@ class Booking(db.Model):
         db.session.commit() 
 
         return [False, remaining, booking.id]
+
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 
     def getUser(self):
