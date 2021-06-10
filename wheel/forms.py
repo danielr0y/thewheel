@@ -20,17 +20,6 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Register")
 
 
-class UpdateEventForm(FlaskForm):
-
-    name = StringField('Name', validators=[InputRequired()])
-    desc = StringField('Description', validators=[InputRequired()])
-    image = FileField('Event Image', validators=[FileRequired(message='Image can not be empty'),FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')])
-    status = SelectField('Status', choices=[('inactive', 'Inactive'), ('upcoming', 'Upcoming'), ('booked out', 'Booked Out'), ('cancelled', 'Cancelled')])
-    category = SelectField('Category')
-    newcategory = StringField('New Category')
-
-    submit = SubmitField("Update")
-
 
 class CreateEventForm(FlaskForm):
     name = StringField('Name', validators=[InputRequired()])

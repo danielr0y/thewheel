@@ -4,7 +4,7 @@ from flask.helpers import flash
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 import os, json
-from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm, UpdateEventForm
+from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm
 from .models import Event, Booking, Ticket
 from . import db 
 
@@ -149,47 +149,6 @@ def check_upload_file(image):
     
 
 
-# @events.route('/<int:id>/update', methods=['GET', 'POST'])
-# def update(id):
-#     if not current_user.is_admin():
-#         flash( "You are not an administrator. You can't update events", 'danger' )
-#         return redirect( url_for('main.index') )
-
-#     form = CreateEventForm() 
-#     # form = UpdateEventForm() 
-#     event = Event.get(id)
-#     form.category.choices = [("", "new category"), *[(category, category) for category in Event.getAllCategories()]]
-
-#     # check to see if we need to perfom a DB Update
-    
-#     if form.validate_on_submit():
-#         db_file_path = check_upload_file(form)
-#         #form.save
-#         db.session.commit()
-#         flash(f'Successfully updated {form.name.data}', 'success')
-#         return redirect( url_for('events.view', id=id))  
-
-#     form.name.data = event.name
-#     form.desc.data = event.description
-#     form.image.data = event.image
-#     form.status.data = event.status
-#     form.category.data = event.category
-#     #form.newcategory.data = event.newcategory
-
-
-    
-#     def changeDefaultStatus(status):
-#         form.status.default = status
-#         form.process()
-#         return form.status
-    
-    
-#     form.changeDefaultStatus = lambda status: changeDefaultStatus(status)
-
- 
-
-
-#     return render_template('update.html', form=form, event=event)
     
 
 @events.route('/<int:id>/delete', methods=['GET', 'POST'])
