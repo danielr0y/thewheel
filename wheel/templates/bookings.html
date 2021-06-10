@@ -20,8 +20,7 @@
 </form>
 <section class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-3">
     
-    {% for aBooking in bookings %}
-    {% set booking, ticket, event = aBooking.values() %}
+    {% for booking, ticket, event in bookings %}
         <div id="{{ booking.id }}" class="col">
             <div class="card">
                 <a href="{{ url_for('events.view', id=event.id)}}" class="card-image" style="background-image: url('{{ event.image }}')"></a>

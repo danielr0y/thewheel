@@ -75,19 +75,20 @@
                             </div>
                         {% endfor %}
                         <!-- new date row -->
-                        {% for date, times in dates %}
+                        {% for date, tickets in dates %}
                             <div class="col">
                                 <label class="btn btn-light rounded-pill w-100">{{date}}</label>    
                             </div>
-                            {% for ticket_id, remaining in times %}
-                                {% for ticket in bookform.ticket if ticket.data == ticket_id %}
+                            {% for ticket in tickets %}
+                            {% set remaining = ticket.remaining %}
+                                {% for radioOption in bookform.ticket if radioOption.data == ticket.id %}
                                     <div class="col">
                                         {% if remaining > 0 %}
-                                            {{ ticket(class_="btn-check", data_remaining=remaining, data_price=ticket.label.text.strip('$'), required=True ) }}
-                                            {{ ticket.label(class_="btn btn-outline-success rounded-pill w-100") }}
+                                            {{ radioOption(class_="btn-check", data_remaining=remaining, data_price=ticket.price, required=True ) }}
+                                            {{ radioOption.label(class_="btn btn-outline-success rounded-pill w-100") }}
                                         {% else %}
-                                            {{ ticket(class_="btn-check", data_price=ticket.label.text.strip('$'), disabled=True ) }}
-                                            {{ ticket.label(class_="btn btn-outline-secondary rounded-pill w-100" ) }}
+                                            {{ radioOption(class_="btn-check", data_price=ticket.price, disabled=True ) }}
+                                            {{ radioOption.label(class_="btn btn-outline-secondary rounded-pill w-100" ) }}
                                         {% endif %}
                                     </div>
                                 {% endfor %}
