@@ -16,12 +16,6 @@ events = Blueprint('events', __name__, url_prefix='/events')
 
 @events.route('/')
 def viewAll():
-    # TODO: consider deleting these. Lets talk about what should be shown on the events page vs index page
-    # upcoming = Event.getAllByStatus("upcoming")
-    # booked = Event.getAllByStatus("booked out")
-    # cancelled = Event.getAllByStatus("cancelled")
-    # inactive = Event.getAllByStatus("inactive")
-
     eventsupdate = Event.getAll()
 
     for event in eventsupdate:
@@ -200,7 +194,6 @@ def bookings():
     ] for aBooking in Booking.getAllByUser(current_user.id)]
     
     return render_template('bookings.html', bookings = bookings)
-    # return render_template('bookings.html', bookings = dictionary)
 
 
 

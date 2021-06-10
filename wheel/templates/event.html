@@ -6,8 +6,6 @@
 
 {% block title %}{{ event.name }}{% endblock %}
 
-<!-- TODO: this page uses the event object a bit but it's not complete -->
-
 {% block header_buttons %}
 {% if current_user.is_authenticated and current_user.is_admin() %}
     <div class="col-sm-auto my-auto">
@@ -25,7 +23,6 @@
 
 {% block content %}
 <section>
-    <!-- TODO: We're storing HTML in the database. How do we made Flask parse HTML? -->
     {{ event.description }}
 </section>
 <section>
