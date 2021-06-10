@@ -61,24 +61,19 @@ def view(id):
 
 
 
+@events.route('/<int:id>/update', methods=['GET', 'POST'])
 @events.route('/create', methods=['GET', 'POST'])
 @login_required
-def create():
+def create(id=None):
     if not current_user.is_admin():
         flash( "You are not an administrator. You can't create events", 'danger' )
         return redirect( url_for('main.index') )
 
     form = CreateEventForm() 
     form.category.choices = [("", "new category"), *[(category, category) for category in Event.getAllCategories()]]
-    
-    def changeDefaultStatus(status):
-        form.status.default = status
-        form.process()
-        return form.status
-    
-    form.changeDefaultStatus = lambda status: changeDefaultStatus(status)
 
-    if form.validate_on_submit():
+    if form.validate_on_submit(): 
+        # POST goes this way
         db_file_path = check_upload_file(form)
         
         if len(form.newcategory.data)==0:
@@ -111,7 +106,35 @@ def create():
         flash(f'Successfully created {form.name.data}', 'success')
         return redirect( url_for('events.view', id=new_event.id))
 
-    return render_template('create.html', form=form)
+    # GET goes this way 
+    form.changeDefaultStatus = lambda status: changeDefaultStatus(status)
+    def changeDefaultStatus(status):
+        form.status.default = status
+        form.process()
+        return form.status
+
+    if id:
+        # UPDATE
+        event = Event.get(id)
+        tickets = [ { 
+            "date": date, 
+            "tickets": [ {
+                "remaining": ticket.remaining, 
+                "price": ticket.price
+            } for ticket in tickets]
+        } for date, tickets in event.getAllTicketsGroupedByDate() ]
+
+        form.name.data = event.name
+        form.desc.data = event.description
+        form.image.data = event.image
+        form.status.data = event.status
+        form.category.data = event.category
+        form.newcategory.data = event.category
+
+        return render_template('create.html', form=form, event_id=id, tickets=json.dumps(tickets) )
+    
+    # CREATE
+    return render_template('create.html', form=form, event_id=id)
 
 
 
@@ -131,42 +154,47 @@ def check_upload_file(form):
     
 
 
-@events.route('/<int:id>/update', methods=['GET', 'POST'])
-def update(id):
-    form = UpdateEventForm() 
-    event = Event.get(id)
-    form.category.choices = [("", "new category"), *[(category, category) for category in Event.getAllCategories()]]
+# @events.route('/<int:id>/update', methods=['GET', 'POST'])
+# def update(id):
+#     if not current_user.is_admin():
+#         flash( "You are not an administrator. You can't update events", 'danger' )
+#         return redirect( url_for('main.index') )
 
-    # check to see if we need to perfom a DB Update
-    
-    if form.validate_on_submit():
-        db_file_path = check_upload_file(form)
-        #form.save
-        db.session.commit()
-        flash(f'Successfully updated {form.name.data}', 'success')
-        return redirect( url_for('events.view', id=id))  
+#     form = CreateEventForm() 
+#     # form = UpdateEventForm() 
+#     event = Event.get(id)
+#     form.category.choices = [("", "new category"), *[(category, category) for category in Event.getAllCategories()]]
 
-    form.name.data = event.name
-    form.desc.data = event.description
-    form.image.data = event.image
-    form.status.data = event.status
-    form.category.data = event.category
-    #form.newcategory.data = event.newcategory
+#     # check to see if we need to perfom a DB Update
+    
+#     if form.validate_on_submit():
+#         db_file_path = check_upload_file(form)
+#         #form.save
+#         db.session.commit()
+#         flash(f'Successfully updated {form.name.data}', 'success')
+#         return redirect( url_for('events.view', id=id))  
+
+#     form.name.data = event.name
+#     form.desc.data = event.description
+#     form.image.data = event.image
+#     form.status.data = event.status
+#     form.category.data = event.category
+#     #form.newcategory.data = event.newcategory
 
 
     
-    def changeDefaultStatus(status):
-        form.status.default = status
-        form.process()
-        return form.status
+#     def changeDefaultStatus(status):
+#         form.status.default = status
+#         form.process()
+#         return form.status
     
     
-    form.changeDefaultStatus = lambda status: changeDefaultStatus(status)
+#     form.changeDefaultStatus = lambda status: changeDefaultStatus(status)
 
  
 
 
-    return render_template('update.html', form=form, event=event)
+#     return render_template('update.html', form=form, event=event)
     
 
 @events.route('/<int:id>/delete', methods=['GET', 'POST'])

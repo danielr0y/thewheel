@@ -10,7 +10,7 @@ TODO:   use the form passed to this template
 
 TODO: (much later) use the event passed to this template to prefill the form with data when editing
  -->
-<form id="create-event" method="POST" action="{{ url_for('events.create') }}" enctype="multipart/form-data">
+<form id="create-event" method="POST" action="{{ url_for('events.create') if event_id == None else url_for('events.create', id=event_id) }}" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     <fieldset class="row mb-3 g-3">
         <legend>Event details</legend>
@@ -82,7 +82,7 @@ TODO: (much later) use the event passed to this template to prefill the form wit
         <legend class="col-sm">Release tickets</legend>
         <span class="col-sm-auto my-auto">Please specify how many gondolas to reserve for each date/time slot and the price of the ticket.</span>
         <div class="w-100"></div>
-        <fieldset id="ticketstable" class="col">
+        <fieldset id="ticketstable" class="col" data-tickets="{{ tickets }}">
             <template id="empty-time-header">
                 <div class="col">
                     <input type="time" min="10:00" max="23:30" step="1800" value="10:00" required
