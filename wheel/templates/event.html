@@ -36,21 +36,14 @@
     <div class="row mb-3">
         <div class="col-sm">
             <p class="mb-1">
-                {{event.getTicketsDateRange()}}
+                {{ event.printTicketsDateRange() }}
             </p>
-            <!-- <p class="mb-1">
-                % for join, date in event.getTicketsDateRange().items() %
-                    join:&nbsp;date
-                % endfor %
-            </p> -->
         </div>
-        <!-- <div class="col-sm">
+        <div class="col-sm">
             <p class="mb-1">
-                % for join, time in event.getTicketsTimeRange().items() %
-                join:&nbsp;time
-                % endfor %
+                {{ event.printTicketsTimeRange() }}
             </p>
-        </div> -->
+        </div>
         <div class="col-sm">
             <p>{{ event.getTicketsPriceFrom() }}</p>
         </div>

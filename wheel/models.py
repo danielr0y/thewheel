@@ -1,4 +1,5 @@
 from itertools import groupby
+from functools import reduce
 from . import db
 from flask_login import UserMixin
 from datetime import datetime
@@ -186,35 +187,48 @@ class Event(db.Model):
         return [[date, [time for time in times]] for date, times in ticketsgroupedbydate]
 
 
+    def getTicketsRange(self):
+        tickets = self.getFutureTickets()
+        numberOfTickets = len(tickets)
 
+        if numberOfTickets == 0:
+            return [numberOfTickets, None, None]
 
-    def getTicketsDateRange(self):
-        # TODO: break this up into getTicketsDateRange and getTicketsTimeRange
-
-        x_min = datetime(3000,9,9)
-        x_max = datetime(2000,9,9)
-        test = datetime(3000,9,9)
-
-        for x in self.tickets:
-            if x.datetime < x_min:
-                x_min = x.datetime
-
-            if x.datetime > x_max:
-                x_max = x.datetime
+        min_ticket = reduce( lambda x, y: min(x, y, key=lambda ticket: ticket.datetime), tickets )
+        max_ticket = reduce( lambda x, y: max(x, y, key=lambda ticket: ticket.datetime), tickets )
         
-        low_date = x_min.strftime("%m/%d/%Y")
-        low_time = x_min.strftime("%I:%M%p")
+        return [numberOfTickets, min_ticket, max_ticket]
 
-        high_date = x_max.strftime("%m/%d/%Y")
-        high_time = x_max.strftime("%I:%M%p")
 
-        if x_min == test:
+    def printTicketsDateRange(self):
+        numberOftickets, min_ticket, max_ticket = self.getTicketsRange()
+
+        if numberOftickets == 0:
             return "There are no tickets for this event."
 
-        output = "from " + low_time + " on " + low_date + ",  to " + high_time + " on " + high_date
-             
-        return output
-        
+        min = min_ticket.datetime.strftime("%d/%m/%Y")
+        max = max_ticket.datetime.strftime("%d/%m/%Y")
+
+        if min == max:
+            return f"on: {min}"
+            
+        return f"from: {min} until: {max}"
+
+
+    def printTicketsTimeRange(self):
+        numberOftickets, min_ticket, max_ticket = self.getTicketsRange()
+
+        if numberOftickets == 0:
+            return "There are no tickets for this event."
+
+        min = min_ticket.datetime.strftime("%I:%M%p")
+        max = max_ticket.datetime.strftime("%I:%M%p")
+
+        if numberOftickets == 1:
+            return f"at: {min}"
+            
+        return f"from: {min} until: {max}"
+
 
     def getTicketsPriceFrom(self):
         low_ticket = 100000
