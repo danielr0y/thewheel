@@ -135,16 +135,18 @@ def check_upload_file(form):
 @events.route('/<int:id>/update', methods=['GET', 'POST'])
 def update(id):
     form = UpdateEventForm() 
+    event = Event.get(id)
+    form.category.choices = [("", "new category"), *[(category, category) for category in Event.getAllCategories()]]
 
     # check to see if we need to perfom a DB Update
+    
     if form.validate_on_submit():
         db_file_path = check_upload_file(form)
-        #TODO: db.session.commit(form)
+        #form.save
+        db.session.commit()
         flash(f'Successfully updated {form.name.data}', 'success')
-        return redirect( url_for('events.view', id=form.id))  
+        return redirect( url_for('events.view', id=id))  
 
-    event = Event.get(id)
-    form.id.data = event.id
     form.name.data = event.name
     form.desc.data = event.description
     form.image.data = event.image
@@ -152,7 +154,7 @@ def update(id):
     form.category.data = event.category
     #form.newcategory.data = event.newcategory
 
-    form.category.choices = [("", "new category"), *[(category, category) for category in Event.getAllCategories()]]
+
     
     def changeDefaultStatus(status):
         form.status.default = status

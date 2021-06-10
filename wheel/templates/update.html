@@ -7,11 +7,7 @@
 {% block title %}{{ event.name }}{% endblock %}
 
 {% block header_buttons %}
-{% if current_user.is_authenticated and current_user.is_admin() %}
-    <div class="col-sm-auto my-auto">
-        <a href="{{ url_for('events.update', id=event.id) }}" class="btn btn-outline-primary rounded-pill px-5">Update</a>
-    </div>
-{% endif %}
+
 {% endblock %}
 
 {% block content %}
@@ -69,8 +65,13 @@
         </section>
 
         <div class="col-auto">
-            {# form.submit.label #}
-            {{ form.submit(class="btn btn-primary rounded-pill px-5") }}
+
+            {% if current_user.is_authenticated and current_user.is_admin() %}
+            
+                {# form.submit.label #}
+                {{ form.submit(class="btn btn-primary rounded-pill px-5") }}
+
+            {% endif %}
 
         </div>
 
