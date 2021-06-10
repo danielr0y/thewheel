@@ -224,36 +224,35 @@ def book():
 @main.route('/bookings')
 @login_required
 def bookings():
-    bookings = Booking.getAllByUser(current_user.id)
+    # bookings = Booking.getAllByUser(current_user.id)
     
-    dictionary = {}
-    for booking in bookings:
-        ticket = Ticket.query.get(booking.ticket_id)
-        event = Event.query.get(ticket.event_id)
-        dictionary[booking.id] = { 
-            "Event ID: " : event.id, # have to have event ID in here for linking purposes
-            "Order ID:": booking.id,
-            "Event name: ": event.name,
-            "Ticket date: ": ticket.datetime.strftime("%d/%m/%Y"),
-            "Ticket time: ": ticket.datetime.strftime("%I:%M %p"),
-            "Total price: ": booking.total_price,
-            "Purchase date: ": booking.purchase_datetime.strftime("%d/%m/%Y %I:%M %p"),
-            "Ticket quantity: ": booking.qty,
-            "Event status: ": event.status,
-        }
-    
-    print(dictionary.values())
+    # dictionary = {}
+    # for booking in bookings:
+    #     ticket = Ticket.get(booking.ticket_id)
+    #     event = Event.get(ticket.event_id)
+    #     dictionary[booking.id] = { 
+    #         "Event ID: " : event.id, # have to have event ID in here for linking purposes
+    #         "Order ID: ": booking.id,
+    #         "Event name: ": event.name,
+    #         "Ticket date: ": ticket.datetime.strftime("%d/%m/%Y"),
+    #         "Ticket time: ": ticket.datetime.strftime("%I:%M %p"),
+    #         "Total price: ": booking.total_price,
+    #         "Purchase date: ": booking.purchase_datetime.strftime("%d/%m/%Y %I:%M %p"),
+    #         "Ticket quantity: ": booking.qty,
+    #         "Event status: ": event.status,
+    #     }
+    # Harvery, I was having issues with this on the templates side when trying to add the image and hide the event ID
+    # so I changed the approach. now it just send everything to the template and we pick the parts out there
+    # print(dictionary.values())
 
+    bookings = [ {
+            'booking': aBooking, 
+            'ticket': aBooking.getTicket(), 
+            'event': aBooking.getTicket().getEvent()
+    } for aBooking in Booking.getAllByUser(current_user.id)]
     
-
-    # TODO: for convenience, pass a list of dictionaries to the template... like this but python    
-    # bookings = bookings.map( booking => ({ 
-    #     ...booking, 
-    #     'ticket' : booking.getTicket(), 
-    #     'event' : this.ticket.getEvent() 
-    # }) )
-    # return render_template('bookings.html', bookings=bookings)
-    return render_template('bookings.html', bookings = dictionary)
+    return render_template('bookings.html', bookings = bookings)
+    # return render_template('bookings.html', bookings = dictionary)
 
 
 
