@@ -5,7 +5,7 @@ from flask.helpers import flash
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 import os, json
-from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm
+from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm, UpdateEventForm
 from .models import Event, Booking, Ticket
 from . import db 
 
@@ -132,10 +132,19 @@ def check_upload_file(form):
     
 
 
-@events.route('/<int:id>/update')
+@events.route('/<int:id>/update', methods=['GET', 'POST'])
 def update(id):
-    form = CreateEventForm() # TODO: this form has now been created. use it.
+    form = UpdateEventForm() 
+
+    # check to see if we need to perfom a DB Update
+    if form.validate_on_submit():
+        db_file_path = check_upload_file(form)
+        #TODO: db.session.commit(form)
+        flash(f'Successfully updated {form.name.data}', 'success')
+        return redirect( url_for('events.view', id=form.id))  
+
     event = Event.get(id)
+    form.id.data = event.id
     form.name.data = event.name
     form.desc.data = event.description
     form.image.data = event.image
@@ -143,14 +152,20 @@ def update(id):
     form.category.data = event.category
     #form.newcategory.data = event.newcategory
 
+    form.category.choices = [("", "new category"), *[(category, category) for category in Event.getAllCategories()]]
+    
+    def changeDefaultStatus(status):
+        form.status.default = status
+        form.process()
+        return form.status
+    
+    
+    form.changeDefaultStatus = lambda status: changeDefaultStatus(status)
 
-    # get rid of this and stop passing it
-    bookform = BookEventForm()
-    reviewform = PostReviewForm() 
+ 
 
-    # TODO: pass the event to the create template
-    # return render_template('create.html', form=form, event=event) 
-    return render_template('update.html', form=form, event=event, bookform = bookform, reviewform = reviewform)
+
+    return render_template('update.html', form=form, event=event)
     
 
 @events.route('/<int:id>/delete', methods=['GET', 'POST'])

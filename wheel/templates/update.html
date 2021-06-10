@@ -6,8 +6,6 @@
 
 {% block title %}{{ event.name }}{% endblock %}
 
-<!-- TODO: this page uses the event object a bit but it's not complete -->
-
 {% block header_buttons %}
 {% if current_user.is_authenticated and current_user.is_admin() %}
     <div class="col-sm-auto my-auto">
@@ -18,23 +16,12 @@
 
 {% block content %}
 
-<form id="update-event" method="POST" action="{{ url_for('events.create') }}" enctype="multipart/form-data">
+<form id="update-event" method="POST" action="{{ url_for('events.update', id=event.id) }}" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     <fieldset class="row mb-3 g-3">
         <legend>Event details</legend>
         <div class="col-lg-6">
             <div class="form-floating">
-            <!--    
-                This works    
-            <input id="eventname" name="name" type="text" class="form-control"
-                        placeholder="Give this event a name" value="{{event.name}}"></input> 
-            <label for="eventname">Event name</label> 
-
-                
-                The other doesnt
-
-            form.name(class="form-control", placeholder="Give this event a name")
-            -->
             {{ form.name(class="form-control") }}
             {{ form.name.label }}
 
@@ -43,35 +30,50 @@
         </div>
         <div class="col-lg-6">
             <div class="input-group form-floating">
-                <!-- <input type="text" id="newcategory" name="newcategory" class="form-control" placeholder="select a category for this event"></input> -->
-                <!-- <label for="newcategory" style="z-index: 3">Event category</label> -->
+
                 {{ form.newcategory(class="form-control", placeholder="select a category for this event") }}
                 {{ form.newcategory.label(style="z-index: 3") }}
                 
                 {# form.category.label #}
                 {{ form.category(class="form-select btn-outline-primary p-3") }}                    
-                <!-- <select id="category" name="category" class="form-select btn-outline-primary p-3" > -->
-                    <!-- <option value="new" selected>new category</option> -->
+
                     {# for category in form.categories #}
                     {# endfor #}
-                <!-- </select> -->
+  
             </div>
         </div>
         <div class="w-100">
             <div class="form-floating">
-                <!-- {{ form.desc(class="form-control", rows="4", style="height: auto;", placeholder="enter a description") }}
-                {{ form.desc.label }} -->
+
                 <textarea id="eventdesc" name="desc" class="form-control" rows="4"
                          style="height: auto;" placeholder="enter a description">{{event.description}}</textarea> 
                  <label for="floatingTextarea2">Event description</label> 
             </div>
         </div>
         <div class="input-group">
+        
+            <img src="{{ event.image}}">
             {{ form.image.label(class="input-group-text") }}
             {{ form.image(class="form-control") }}
-            <!-- <label for="eventimage" class="input-group-text">Event image</label> -->
-            <!-- <input id="eventimage" name="image" type="file" class="form-control"> -->
+
+
+
+
         </div>
+
+        <section>
+            <div class="col-auto ms-auto">
+                {% set upcoming = form.changeDefaultStatus("upcoming") %}
+                {{ upcoming(class="form-select rounded-pill w-100 ps-4 pe-5") }}
+            </div>
+        </section>
+
+        <div class="col-auto">
+            {# form.submit.label #}
+            {{ form.submit(class="btn btn-primary rounded-pill px-5") }}
+
+        </div>
+
     </fieldset>
 </form>
 
@@ -84,40 +86,8 @@
 
 
 
-<section>
-    <!-- TODO: We're storing HTML in the database. How do we made Flask parse HTML? -->
-    {{ event.description }}
-</section>
-<section>
-    <header class="row mb-3">
-        <h3 class="col">Dates and times</h3>
-        <span class="col-sm-auto ms-auto my-auto">{{ event.status }}</span>
-    </header>
-    <div class="row mb-3">
-        <div class="col-sm">
-            <p class="mb-1">
-                {{event.getTicketsDateRange()}}
-            </p>
-            <!-- <p class="mb-1">
-                % for join, date in event.getTicketsDateRange().items() %
-                    join:&nbsp;date
-                % endfor %
-            </p> -->
-        </div>
-        <!-- <div class="col-sm">
-            <p class="mb-1">
-                % for join, time in event.getTicketsTimeRange().items() %
-                join:&nbsp;time
-                % endfor %
-            </p>
-        </div> -->
-        <div class="col-sm">
-            <p>{{ event.getTicketsPriceFrom() }}</p>
-        </div>
 
-    </div>
-   
-</section>
+
 
 {% endblock %}
 
@@ -128,48 +98,7 @@
         return new bootstrap.Tooltip(tooltipTriggerEl)
     });
 
-    const people = document.getElementById('people');
-    const gondolas = document.getElementById('qty');
-
-    /* selecting a ticket option */
-    document.querySelectorAll('[name="ticket"]').forEach( (ticket) => {
-        ticket.addEventListener('change', ({target}) => {
-            updatePrice( target.getAttribute('data-price') || 0 );
-        } )
-    } )
-
-    /* updating number of people */
-    people.addEventListener('change', ({target}) => {
-        const minus = target.closest('.counter').querySelector('.minus');
-        minus.disabled = (target.value === target.min );
-
-        const plus = target.closest('.counter').querySelector('.plus');
-        plus.disabled = (target.value === target.max);
-
-        const requiredgondolas = Math.ceil( Number(target.value)/6 );
-
-        const currentgondolas = Number(gondolas.value);
-        if ( currentgondolas < requiredgondolas || target.value < currentgondolas ){
-            gondolas.value = requiredgondolas;
-        }
-
-        gondolas.dispatchEvent( new Event('change') );
-    } );
-
-    /* updating number of gondolas */
-    gondolas.addEventListener('change', ({target}) => {
-        const plus = target.closest('.counter').querySelector('.plus');
-        plus.disabled = (target.value === people.value || target.value === target.max);
-        
-        const requiredgondolas = Math.ceil( Number(people.value)/6 );
-        const minus = target.closest('.counter').querySelector('.minus');
-        minus.disabled = (target.value <= requiredgondolas);
-
-        const price = document.querySelector(`[value="${target.form.ticket.value}"]`);
-
-        price && updatePrice( price.getAttribute('data-price') || 0 );
-    } );
-
+   
     /* controls for buttons */
     document.querySelectorAll('.counter').forEach( (counter) => {
         counter.querySelectorAll('button').forEach( (button) => {
@@ -187,9 +116,7 @@
         } );
     } );
 
-    function updatePrice(price){
-        document.getElementById('price').value = Number(gondolas.value) * Number( price );
-    }
+
 </script>
 
 {% endblock %}

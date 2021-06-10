@@ -21,6 +21,7 @@ class RegisterForm(FlaskForm):
 
 
 class UpdateEventForm(FlaskForm):
+    id = HiddenField('id')
     name = StringField('Name', validators=[InputRequired()])
     desc = StringField('Description', validators=[InputRequired()])
     image = FileField('Event Image', validators=[FileRequired(message='Image can not be empty'),FileAllowed(ALLOWED_FILE, message='Only supports png, jpg, JPG, PNG')])
