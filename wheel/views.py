@@ -23,7 +23,13 @@ def viewAll():
     # cancelled = Event.getAllByStatus("cancelled")
     # inactive = Event.getAllByStatus("inactive")
 
+    eventsupdate = Event.getAll()
+
+    for event in eventsupdate:
+        Event.updateStatusInactive(event)
+
     events = Event.getAll()
+
     categories = Event.getAllCategories()
     form = SearchForm() # TODO: create this form
 

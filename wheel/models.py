@@ -89,6 +89,31 @@ class Event(db.Model):
 
 
     @staticmethod
+    def updateStatusInactive(self):
+
+        x_max = datetime(2000,9,9)
+
+        for x in self.tickets:
+            if x.datetime > x_max and x.remaining != 0:
+                x_max = x.datetime
+
+        if x_max < datetime.now():
+
+            self.status = 'inactive'
+            db.session.commit()
+            return
+
+        elif self.status == 'inactive':
+
+            self.status = 'upcoming'
+            db.session.commit()
+            return
+        
+        return
+
+        
+
+    @staticmethod
     def getAll():
         # gets events with tickets in the future
         return Event.query.\
