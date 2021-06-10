@@ -307,6 +307,12 @@ class Review(db.Model):
         return 
 
 
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return 
+
+
 
 class Ticket(db.Model):
     __tablename__ = 'tickets'
