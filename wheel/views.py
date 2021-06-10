@@ -1,4 +1,3 @@
-from itertools import groupby
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for
 from flask.helpers import flash
@@ -42,22 +41,16 @@ def viewAll():
 @events.route('/<int:id>')
 def view(id):
     event = Event.get(id)
+    tickets = event.getFutureTickets()
+    times = event.getAllTicketTimes()
+    dates = event.getAllTicketsGroupedByDate()
+
     bookform = BookEventForm()
     reviewform = PostReviewForm() # TODO: create this form
 
+    # set default values
     bookform.event.data = id
-    # create radio field options from the tickets 
-    bookform.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), event.tickets))
-
-    # get a list of all possible times in order
-    ticketssortedbytime = sorted(event.tickets, key=lambda ticket: ticket.datetime.strftime("%I:%M %p"))
-    ticketsgroupedbytime = groupby(ticketssortedbytime, key=lambda ticket: ticket.datetime.strftime("%I:%M %p"))
-    times = [time for time, _tickets in ticketsgroupedbytime]
-
-    # get a list of ticket ids and the remaining tickets grouped by date
-    ticketssortedbydate = sorted(event.tickets, key=lambda ticket: ticket.datetime)    
-    ticketsgroupedbydate = groupby(ticketssortedbydate, key=lambda ticket: ticket.datetime.strftime("%d/%m/%Y"))
-    dates = [[date, [[time.id, time.remaining] for time in times]] for date, times in ticketsgroupedbydate]
+    bookform.ticket.choices = list(map( lambda ticket: (ticket.id, f'${ticket.price}'), tickets ))
 
     # in the template, 
     # times are used to generate the table header and

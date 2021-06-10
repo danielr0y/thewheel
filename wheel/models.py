@@ -1,3 +1,4 @@
+from itertools import groupby
 from . import db
 from flask_login import UserMixin
 from datetime import datetime
@@ -163,10 +164,28 @@ class Event(db.Model):
         return list( filter( lambda ticket: ticket.datetime > datetime.now(), self.tickets ) )
 
 
+    def getAllTicketTimes(self):
+        # returns a list of time strings for this event 
+        tickets = self.getFutureTickets()
 
-    def getTicketsTimeRange(self):
-        # TODO: see getTicketsDateRange comment
-        return Ticket.getTimeRangeByEvent(self.id)
+        ticketssortedbytime = sorted(tickets, key=lambda ticket: ticket.datetime.strftime("%I:%M %p"))
+        ticketsgroupedbytime = groupby(ticketssortedbytime, key=lambda ticket: ticket.datetime.strftime("%I:%M %p"))
+        
+        # return lists instead of itertool objects
+        return [time for time, tickets in ticketsgroupedbytime]
+
+
+    def getAllTicketsGroupedByDate(self):
+        # returns all of the future tickets for this event grouped by date
+        tickets = self.getFutureTickets()
+
+        ticketssortedbydate = sorted(tickets, key=lambda ticket: ticket.datetime)    
+        ticketsgroupedbydate = groupby(ticketssortedbydate, key=lambda ticket: ticket.datetime.strftime("%d/%m/%Y"))
+        
+        # return lists instead of itertool objects
+        return [[date, [time for time in times]] for date, times in ticketsgroupedbydate]
+
+
 
 
     def getTicketsDateRange(self):
