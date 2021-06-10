@@ -74,37 +74,31 @@ def create(id=None):
 
     if form.validate_on_submit(): 
         # POST goes this way
-        db_file_path = check_upload_file(form)
-        
-        if len(form.newcategory.data)==0:
-            category = form.category.data
-        else:
-            category = form.newcategory.data
+        existing_event = Event.get(id) if id else False
         
         name = form.name.data
         description = form.desc.data
+        existing_category = form.category.data
+        category = existing_category if existing_category else form.newcategory.data
         status = form.status.data
-        image = db_file_path
+        image = check_upload_file(form.image.data)
         jsonTickets = form.tickets.data
 
-        new_event = Event.create(name,description,category,status,image)
+        event = existing_event.set(name, description, category, status, image) if existing_event else \
+                Event.create(name, description, category, status, image)
 
         if jsonTickets:
             tickets = json.loads(jsonTickets)
 
+            if existing_event: 
+                event.deleteAllTickets()
+
             for ticket in tickets:
                 datetimeobj = datetime.strptime(ticket["datetime"], '%Y-%m-%d %H:%M'),
-                print(datetimeobj)
-
-                Ticket.release(
-                    new_event.id, 
-                    datetimeobj,
-                    ticket["numberOfGondolas"], 
-                    ticket["price"]
-                )
+                Ticket.release( event.id, datetimeobj, ticket["numberOfGondolas"], ticket["price"] )
 
         flash(f'Successfully created {form.name.data}', 'success')
-        return redirect( url_for('events.view', id=new_event.id))
+        return redirect( url_for('events.view', id=event.id))
 
     # GET goes this way 
     form.changeDefaultStatus = lambda status: changeDefaultStatus(status)
@@ -138,10 +132,11 @@ def create(id=None):
 
 
 
-def check_upload_file(form):
-    # get file data from form
-    fp = form.image.data
-    filename = fp.filename
+def check_upload_file(image):
+    if not image:
+        return None
+        
+    filename = image.filename
     # get the current path of the module file… store image file relative to this path
     BASE_PATH = os.path.dirname(__file__)
     #upload file location – directory of this file/static/image
@@ -149,7 +144,7 @@ def check_upload_file(form):
     # store relative path in DB as image location in HTML is relative
     db_upload_path = '/static/images/'+ secure_filename(filename)
     # save the file and return the db upload path
-    fp.save(upload_path)
+    image.save(upload_path)
     return db_upload_path
     
 

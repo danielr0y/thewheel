@@ -113,7 +113,6 @@ class Event(db.Model):
         
         return
 
-        
 
     @staticmethod
     def getAll():
@@ -156,8 +155,17 @@ class Event(db.Model):
         return [event.category for event in Event.query.group_by('category').all()]
 
 
+    def set(self, name, description, category, status, image):
+        self.name = name
+        self.description = description
+        self.category = category
+        self.status = status
 
+        if image:
+            self.image = image
 
+        db.session.commit()
+        return self
 
 
 
@@ -261,11 +269,6 @@ class Event(db.Model):
             'booked out': 'booked out',
             'cancelled': 'cancelled'
         }[self.status]
-
-
-    def set(self, name, description, category, status, image):
-        # TODO: this is the method to update an event
-        return 
 
 
 
