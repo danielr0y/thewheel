@@ -11,6 +11,13 @@ I have used and recommend installing: TODO Highlight
 https://marketplace.visualstudio.com/items?itemName=wayou.vscode-todo-highlight
 
 
+
+# FIXME: not sure why but cool brisbane stuff shows up on /events but not /index
+# FIXME: there is no longer any way to see events that have been created without tickets. not sure where we'd even show them. 
+
+
+
+
 #1	file:///Users/daniel/Documents/Daniel/uni/2021SEM1/IAB207/assignment%203/assignment3/wheel/views.py#20
 	TODO: consider deleting these. Lets talk about what should be shown on the events page vs index page
 
