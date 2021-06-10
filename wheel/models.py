@@ -94,6 +94,8 @@ class Event(db.Model):
         return Event.query.\
             join(Ticket).\
             filter( Ticket.datetime > datetime.now() ).\
+            group_by( Event.id ).\
+            order_by( Ticket.datetime ).\
             all()
 
 
@@ -104,6 +106,8 @@ class Event(db.Model):
             join( Ticket ).\
             filter( Ticket.datetime > datetime.now() ).\
             filter( Event.status == status ).\
+            group_by( Event.id ).\
+            order_by( Ticket.datetime ).\
             limit( limit ).\
             all()
 
@@ -115,6 +119,8 @@ class Event(db.Model):
             join( Ticket ).\
             filter( Ticket.datetime > datetime.now() ).\
             filter( Event.category == category ).\
+            group_by( Event.id ).\
+            order_by( Ticket.datetime ).\
             all()
 
 
@@ -209,6 +215,7 @@ class Event(db.Model):
             'booked out': 'booked out',
             'cancelled': 'cancelled'
         }[self.status]
+
 
 
 class Review(db.Model):
