@@ -16,10 +16,6 @@ events = Blueprint('events', __name__, url_prefix='/events')
 
 @events.route('/')
 def viewAll():
-    eventsupdate = Event.getAll()
-
-    for event in eventsupdate:
-        Event.updateStatusInactive(event)
 
     events = Event.getAll()
 
@@ -38,6 +34,8 @@ def view(id):
     tickets = event.getFutureTickets()
     times = Ticket.getAllTimesFromTickets(tickets)
     dates = Ticket.groupTicketsByDate(tickets)
+
+        
 
     bookform = BookEventForm()
     reviewform = PostReviewForm() # TODO: create this form
