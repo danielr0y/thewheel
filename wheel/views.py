@@ -209,17 +209,17 @@ def book(id):
 
 
 
+@main.route('/bookings/<int:id>')
 @main.route('/bookings')
 @login_required
-def bookings():
-    bookings = [ [
-            booking, 
-            booking.getTicket(), 
-            booking.getEvent()
-    ] for booking in Booking.getAllByUser(current_user.id)]
-    
+def bookings(id=None):
+    if id:
+        booking = Booking.get(id)
+        ticket = booking.getTicket()
+        event = booking.getEvent()
+    bookings = [[booking, ticket, event]] if id else \
+        [[booking, booking.getTicket(), booking.getEvent()] for booking in Booking.getAllByUser(current_user.id)]
     return render_template('bookings.html', bookings = bookings)
-
 
 
 @main.route('/')
