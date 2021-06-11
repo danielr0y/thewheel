@@ -443,3 +443,8 @@ class Booking(db.Model):
 
     def getTicket(self):
         return Ticket.get(self.ticket_id)
+
+    
+    def getEvent(self):
+        ticket = self.getTicket()
+        return ticket.getEvent()

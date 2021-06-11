@@ -191,10 +191,10 @@ def book(id):
 @login_required
 def bookings():
     bookings = [ [
-            aBooking, 
-            aBooking.getTicket(), 
-            aBooking.getTicket().getEvent()
-    ] for aBooking in Booking.getAllByUser(current_user.id)]
+            booking, 
+            booking.getTicket(), 
+            booking.getEvent()
+    ] for booking in Booking.getAllByUser(current_user.id)]
     
     return render_template('bookings.html', bookings = bookings)
 
