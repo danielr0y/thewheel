@@ -32,6 +32,11 @@ def viewAll():
 def view(id):
     event = Event.get(id)
     tickets = event.getFutureTickets()
+
+    if len(tickets) == 0:
+        if event.status != 'cancelled':
+            event.updateStatus("inactive")
+        
     times = Ticket.getAllTimesFromTickets(tickets)
     dates = Ticket.groupTicketsByDate(tickets)
 
