@@ -211,7 +211,7 @@ class Event(db.Model):
         numberOftickets, min_ticket, max_ticket = self.getTicketsRange()
 
         if numberOftickets == 0:
-            return "There are no tickets for this event."
+            return ""
 
         min = min_ticket.datetime.strftime("%d/%m/%Y")
         max = max_ticket.datetime.strftime("%d/%m/%Y")
@@ -226,7 +226,7 @@ class Event(db.Model):
         numberOftickets, min_ticket, max_ticket = self.getTicketsRange()
 
         if numberOftickets == 0:
-            return "There are no tickets for this event."
+            return ""
 
         min = min_ticket.datetime.strftime("%I:%M%p")
         max = max_ticket.datetime.strftime("%I:%M%p")
@@ -241,18 +241,14 @@ class Event(db.Model):
 
 
     def getTicketsPriceFrom(self):
-        low_ticket = 100000
+        tickets = self.getFutureTickets()
 
-        for x in self.tickets:
-            if x.price < low_ticket:
-                low_ticket = x.price
-        
-        if low_ticket == 100000:
-            return " "
+        if len(tickets) == 0:
+            return ""
 
-        low = str(low_ticket)
+        ticket = reduce( lambda x, y: min(x, y, key=lambda ticket: ticket.price), tickets )
 
-        return "from $" + low
+        return f"from ${ticket.price}"
         
 
     def getStatusColour(self):
