@@ -90,7 +90,7 @@ def view(id):
 @login_required
 def create(id=None):
     if not current_user.is_admin():
-        flash( "You are not an administrator. You can't create events", 'danger' )
+        flash( "You are not an administrator. You can't create or update events", 'danger' )
         return redirect( url_for('main.index') )
 
     form = CreateEventForm() 
