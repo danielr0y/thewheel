@@ -39,14 +39,20 @@ def viewAll():
     return render_template('events.html', events=events, categories=categories)
 
 
-# @events.route('/<int:id>/PostReview', methods=['POST'])
-# @login_required
-# def PostReview(id):
-#     reviewform = PostReviewForm() 
-#     if reviewform.validate_on_submit(): 
-#         #Review.post(id, current_user.id, reviewform.review.data)
-#         flash(f'Successfully posted your review', 'success')
-#         return redirect( url_for('events.view', id=id))
+@events.route('/<int:id>/review', methods=['POST'])
+@login_required
+def reviewCreate(id):
+    form = PostReviewForm() 
+    event = Event.query.get(id)
+    if form.validate_on_submit(): 
+
+        Review.post(event.id, current_user.id, form.text.data)
+        flash('Review Created!', 'success')
+        
+    else:
+        flash('Issue posting review', 'danger')
+
+    return redirect( url_for('events.view', id=id))
 
 @events.route('/<int:id>')
 def view(id):
