@@ -190,28 +190,6 @@ class Event(db.Model):
         return list( filter( lambda ticket: ticket.datetime > datetime.now(), self.tickets ) )
 
 
-    def getAllTicketTimes(self):
-        # returns a list of time strings for this event 
-        tickets = self.getFutureTickets()
-
-        ticketssortedbytime = sorted(tickets, key=lambda ticket: ticket.datetime.strftime("%I:%M %p"))
-        ticketsgroupedbytime = groupby(ticketssortedbytime, key=lambda ticket: ticket.datetime.strftime("%I:%M %p"))
-        
-        # return lists instead of itertool objects
-        return [time for time, tickets in ticketsgroupedbytime]
-
-
-    def getAllTicketsGroupedByDate(self):
-        # returns all of the future tickets for this event grouped by date
-        tickets = self.getFutureTickets()
-
-        ticketssortedbydate = sorted(tickets, key=lambda ticket: ticket.datetime)    
-        ticketsgroupedbydate = groupby(ticketssortedbydate, key=lambda ticket: ticket.datetime.strftime("%d/%m/%Y"))
-        
-        # return lists instead of itertool objects
-        return [[date, [time for time in times]] for date, times in ticketsgroupedbydate]
-
-
     def getTicketsRange(self):
         tickets = self.getFutureTickets()
         numberOfTickets = len(tickets)
@@ -347,6 +325,26 @@ class Ticket(db.Model):
     @staticmethod
     def get(id: int):
         return Ticket.query.get(id)
+
+
+    @staticmethod
+    def getAllTimesFromTickets(tickets):
+        # returns a list of time strings for this event 
+        ticketssortedbytime = sorted(tickets, key=lambda ticket: ticket.datetime.strftime("%I:%M %p"))
+        ticketsgroupedbytime = groupby(ticketssortedbytime, key=lambda ticket: ticket.datetime.strftime("%I:%M %p"))
+        
+        # return lists instead of itertool objects
+        return [time for time, tickets in ticketsgroupedbytime]
+
+
+    @staticmethod
+    def groupTicketsByDate(tickets):
+        # returns all of the future tickets for this event grouped by date
+        ticketssortedbydate = sorted(tickets, key=lambda ticket: ticket.datetime)    
+        ticketsgroupedbydate = groupby(ticketssortedbydate, key=lambda ticket: ticket.datetime.strftime("%d/%m/%Y"))
+        
+        # return lists instead of itertool objects
+        return [[date, [time for time in times]] for date, times in ticketsgroupedbydate]
 
 
     def delete(self):

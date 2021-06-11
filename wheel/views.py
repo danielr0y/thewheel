@@ -36,8 +36,8 @@ def viewAll():
 def view(id):
     event = Event.get(id)
     tickets = event.getFutureTickets()
-    times = event.getAllTicketTimes()
-    dates = event.getAllTicketsGroupedByDate()
+    times = Ticket.getAllTimesFromTickets(tickets)
+    dates = Ticket.groupTicketsByDate(tickets)
 
     bookform = BookEventForm()
     reviewform = PostReviewForm() # TODO: create this form
@@ -47,7 +47,6 @@ def view(id):
     # USE Review.post() it's already written for you
 
     # set default values
-    bookform.event.data = id
     bookform.ticket.choices = list(map( lambda ticket: (ticket.id, f'${ticket.price}'), tickets ))
 
     # in the template, 
@@ -114,7 +113,7 @@ def create(id=None):
                 "remaining": ticket.remaining, 
                 "price": ticket.price
             } for ticket in tickets]
-        } for date, tickets in event.getAllTicketsGroupedByDate() ]
+        } for date, tickets in Ticket.groupTicketsByDate(event.tickets) ]
 
         form.name.data = event.name
         form.desc.data = event.description
