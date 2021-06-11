@@ -36,22 +36,17 @@
 
 {% block content %}
 <section>
-    <form id="search_category" method="GET" action="{{ url_for('events.viewAll')}}" >
-        {{ form.hidden_tag() }}
-        <header class="row mb-3">
-            <!-- <h3 class="col">Upcoming Events</h3>
-            <p class="col-auto my-auto"><a href="{# url_for('events.viewAll') #}">More Events</a></p> -->
-
-            <div class="col-6 col-md-auto">
-                {{form.search(class="form-select btn-outline-primary p-3") }}
-            </div>
-            
-            <div class="col-6 col-md-auto">
-                {{ form.submit(class="btn btn-primary rounded-pill px-5") }}
-            </div>
-        </header>
-    </form>
-        <div class='row row-cols-1 row-cols-md-2 row-cols-xl-3 mb-3 g-3'>
+    <header class="row mb-3">
+        <h3 class="col">Upcoming Events</h3>
+        <div class="col-6 col-md-auto my-auto">
+            <form method="GET" action="{{ url_for('events.viewAll') }}" class="d-flex flex-row gap-1 col-auto my-auto">
+                {{ form.search(class="form-control", placeholder="search for events") }}
+                {{ form.category(class="form-select rounded-pill ps-4 pe-5") }}
+                <button class="btn btn-outline-success rounded-pill px-5" type="submit">Search</button>
+            </form>
+        </div>
+    </header>
+    <div class='row row-cols-1 row-cols-md-2 row-cols-xl-3 mb-3 g-3'>
         {% for event in upcoming %}
         <div class="col event">
             <article class="card">

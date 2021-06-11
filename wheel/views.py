@@ -16,24 +16,22 @@ events = Blueprint('events', __name__, url_prefix='/events')
 
 
 @events.route('/')
-
 def viewAll():
-
-    search =  request.args['search']
-
+    search = request.args['search']
+    category = request.args['category']
     categories = Event.getAllCategories()
 
-    if search == None:
-
+    if search == None and category == 'all':
         events = Event.getAll()
 
-    elif search in categories:
-
+    elif search == None:
         events = Event.getAllByCategory(search)
 
-    else:
-
+    elif category == 'all':
         events = Event.getAllBySearch(search)
+
+    else:
+        events = Event.getAllBySearchAndCategory(search, category)
 
     
     return render_template('events.html', events=events, categories=categories)
@@ -228,9 +226,6 @@ def index():
     cancelled = Event.getAllByStatus('cancelled', 3)
 
     form = SearchForm() 
-    form.search.choices = [*[(category, category) for category in Event.getAllCategories()]]
-
+    form.category.choices = [("all", "all categories"), *[(category, category) for category in Event.getAllCategories()]]
     
-
-    
-    return render_template('index.html', upcoming=upcoming, cancelled=cancelled, form = form)
+    return render_template('index.html', upcoming=upcoming, cancelled=cancelled, form=form)
