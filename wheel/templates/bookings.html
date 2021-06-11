@@ -28,14 +28,18 @@
                     <div class="card-body">
                         <h5>{{ event.name }}</h5>
                         <div><strong>orderID: </strong>{{ booking.id }}</div>
-                        <div><strong>event date: </strong>{{ ticket.datetime.strftime("%d/%m/%Y") }}</div>
-                        <div><strong>event time: </strong>{{ ticket.datetime.strftime("%I:%M %p") }}</div>
-                        <div><strong>purchase price: </strong>{{ booking.total_price }}</div>
+                        <div><strong>date: </strong>{{ ticket.datetime.strftime("%d/%m/%Y") }}</div>
+                        <div><strong>time: </strong>{{ ticket.datetime.strftime("%I:%M %p") }}</div>
+                        <div><strong>purchase price: </strong>${{ booking.total_price }}</div>
                         <div><strong>date purchased: </strong>{{ booking.purchase_datetime.strftime("%d/%m/%Y") }}</div>
                         <div class="mb-3"><strong>gondolas reserved: </strong>{{ booking.qty }}</div>
                         <div class="row">
-                            <span class="col my-auto">{{ event.status }}</span>
-                            <a href="{{ url_for('events.view', id=event.id)}}" class="col-auto btn btn-outline-success rounded-pill px-5">View event</a>
+                            {% if ticket.datetime > now %}
+                                <span class="col my-auto">{{ event.status }}</span>
+                                <a href="{{ url_for('events.view', id=event.id) }}" class="col-auto btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5">View event</a>
+                            {% else %}
+                                <a href="{{ url_for('events.view', id=event.id) + '#reviews' }}" class="col-auto btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5">Leave a review</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
