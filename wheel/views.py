@@ -17,15 +17,15 @@ events = Blueprint('events', __name__, url_prefix='/events')
 
 @events.route('/')
 def viewAll():
-    search = request.args['search']
-    category = request.args['category']
+    search = request.args['search'] if 'search' in request.args else ''
+    category = request.args['category'] if 'category' in request.args else 'all'
     categories = Event.getAllCategories()
 
-    if search == None and category == 'all':
+    if search == '' and category == 'all':
         events = Event.getAll()
 
-    elif search == None:
-        events = Event.getAllByCategory(search)
+    elif search == '':
+        events = Event.getAllByCategory(category)
 
     elif category == 'all':
         events = Event.getAllBySearch(search)
@@ -33,8 +33,11 @@ def viewAll():
     else:
         events = Event.getAllBySearchAndCategory(search, category)
 
+    form = SearchForm() 
+    form.category.choices = [("all", "all categories"), *[(category, category) for category in Event.getAllCategories()]]
     
-    return render_template('events.html', events=events, categories=categories)
+    return render_template('events.html', events=events, categories=categories, form=form)
+
 
 
 @events.route('/<int:id>/review', methods=['POST'])
@@ -51,6 +54,8 @@ def reviewCreate(id):
         flash('Issue posting review', 'danger')
 
     return redirect( url_for('events.view', id=id))
+
+
 
 @events.route('/<int:id>')
 def view(id):
@@ -165,8 +170,6 @@ def check_upload_file(image):
     return db_upload_path
     
 
-
-    
 
 @events.route('/<int:id>/delete', methods=['GET', 'POST'])
 def delete(id):
