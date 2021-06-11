@@ -91,7 +91,7 @@ class Event(db.Model):
 
 
     def updateStatusInactive(self):
-        # FIXME: I don't think this is working properly.
+        
         x_max = datetime(2000,9,9)
 
         for x in self.tickets:
