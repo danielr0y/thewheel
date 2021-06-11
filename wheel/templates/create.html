@@ -46,20 +46,20 @@
         </div>
     </fieldset>
     <fieldset id="tickets" class="row">
-        <legend class="col-sm">Release tickets</legend>
+        <legend class="col-sm">Tickets</legend>
         <span class="col-sm-auto my-auto">Please specify how many gondolas to reserve for each date/time slot and the price of the ticket.</span>
         <div class="w-100"></div>
         <fieldset id="ticketstable" class="col" data-tickets="{{ tickets }}">
             <template id="empty-time-header">
                 <div class="col">
-                    <input type="time" min="10:00" max="23:30" step="1800" value="10:00" required
+                    <input type="time" min="10:00" step="1800" value="18:00" required
                             class="form-control btn-light rounded-pill text-center time-header "/>
                 </div>
             </template>
             <template id="empty-date-row">
                 <div class="row mb-3 g-2 gx-lg-5 date-row">
                     <div class="col">
-                        <input type="date" min="2021-01-01" max="2022-12-31" value="2021-01-01" 
+                        <input type="date" min="{{ now }}" value="{{ now }}" 
                                 class="btn btn-light rounded-pill w-100 date-header" required/>
                     </div>
                 </div>
@@ -182,5 +182,4 @@
         } );
     })()
 </script>
-
 {% endblock %}

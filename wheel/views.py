@@ -152,7 +152,8 @@ def create(id=None):
         return render_template('create.html', form=form, event_id=id, tickets=json.dumps(tickets) )
     
     # CREATE
-    return render_template('create.html', form=form, event_id=id)
+    now = datetime.now().strftime("%Y-%m-%d")
+    return render_template('create.html', form=form, event_id=id, now=now)
 
 
 
