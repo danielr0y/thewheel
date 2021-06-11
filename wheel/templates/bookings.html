@@ -34,11 +34,13 @@
                         <div><strong>date purchased: </strong>{{ booking.purchase_datetime.strftime("%d/%m/%Y") }}</div>
                         <div class="mb-3"><strong>gondolas reserved: </strong>{{ booking.qty }}</div>
                         <div class="row">
+                            <span class="col my-auto">{{ event.status }}</span>
                             {% if ticket.datetime > now %}
-                                <span class="col my-auto">{{ event.status }}</span>
                                 <a href="{{ url_for('events.view', id=event.id) }}" class="col-auto btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5">View event</a>
                             {% else %}
-                                <a href="{{ url_for('events.view', id=event.id) + '#reviews' }}" class="col-auto btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5">Leave a review</a>
+                                <a href="{{ url_for('events.view', id=event.id) + '#reviews' }}" class="col-auto btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" 
+                                        title="This ticket was in the past so it asks how the event was">Leave a review</a>
                             {% endif %}
                         </div>
                     </div>
@@ -46,10 +48,16 @@
             </div>
         </div>
     {% endfor %}
-
-
-
-
-    
 </section>
+{% endblock %}
+{% block scripts %}
+<script>
+    (function(){
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    })()
+</script>
+
 {% endblock %}

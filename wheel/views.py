@@ -221,9 +221,11 @@ def bookings(id=None):
         booking = Booking.get(id)
         ticket = booking.getTicket()
         event = booking.getEvent()
+
     bookings = [[booking, ticket, event]] if id else \
         [[booking, booking.getTicket(), booking.getEvent()] for booking in Booking.getAllByUser(current_user.id)]
-    return render_template('bookings.html', bookings = bookings)
+
+    return render_template('bookings.html', bookings=bookings, now=datetime.now() )
 
 
 @main.route('/')
