@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request
 from flask.helpers import flash
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
@@ -14,10 +14,12 @@ events = Blueprint('events', __name__, url_prefix='/events')
 
 
 
-@events.route('/<search>')
+
 @events.route('/')
 
-def viewAll(search=None):
+def viewAll():
+
+    search =  request.args['search']
 
     categories = Event.getAllCategories()
 
@@ -33,9 +35,8 @@ def viewAll(search=None):
 
         events = Event.getAllBySearch(search)
 
-    form = SearchForm() # TODO: create this form
     
-    return render_template('events.html', events=events, categories=categories, form=form)
+    return render_template('events.html', events=events, categories=categories)
 
 
 
@@ -219,5 +220,11 @@ def bookings():
 def index():
     upcoming = Event.getAllByStatus('upcoming', 3)
     cancelled = Event.getAllByStatus('cancelled', 3)
+
+    form = SearchForm() 
+    form.search.choices = [*[(category, category) for category in Event.getAllCategories()]]
+
     
-    return render_template('index.html', upcoming=upcoming, cancelled=cancelled)
+
+    
+    return render_template('index.html', upcoming=upcoming, cancelled=cancelled, form = form)

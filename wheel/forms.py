@@ -45,5 +45,6 @@ class PostReviewForm(FlaskForm):
 
 
 class SearchForm(FlaskForm):
+    search = SelectField('Category')
     # TODO: add all the neccessary fields
     submit = SubmitField("Search")
