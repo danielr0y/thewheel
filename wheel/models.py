@@ -185,6 +185,10 @@ class Event(db.Model):
             review.delete()
 
 
+    def updateStatus(self, status):
+        self.status = status
+        db.session.commit()
+
 
     def getFutureTickets(self):
         return list( filter( lambda ticket: ticket.datetime > datetime.now(), self.tickets ) )
