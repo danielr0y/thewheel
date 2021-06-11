@@ -252,6 +252,9 @@ class Event(db.Model):
 
         if numberOftickets == 1:
             return f"at: {min}"
+
+        if numberOftickets == 2:
+            return f"at: {min} and: {max}"
             
         return f"from: {min} until: {max}"
 
