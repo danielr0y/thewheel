@@ -423,8 +423,8 @@ class Booking(db.Model):
         if qty == remaining: 
             event = Event.get(ticket.event_id)
 
-            otherRemainingTickets = list(filter(lambda ticket: ticket.remaining > 0, event.tickets))
-            if not len(otherRemainingTickets):
+            otherRemainingTickets = list(filter(lambda ticket: ticket.remaining > 0, event.getFutureTickets() ))
+            if len(otherRemainingTickets) == 0:
                 event.status = "booked out"
     
         # add and commit changes
