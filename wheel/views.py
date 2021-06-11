@@ -159,12 +159,12 @@ def delete(id):
 
 
 
-@events.route('/book', methods=['POST'])
+@events.route('/<int:id>/book', methods=['POST'])
 @login_required
-def book():
+def book(id):
     form = BookEventForm()
-    current_event = Event.get(form.event.data)
-    form.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), current_event.tickets))
+    event = Event.get(id)
+    form.ticket.choices = list(map(lambda ticket: (ticket.id, f'${ticket.price}'), event.getFutureTickets()))
 
     if form.validate_on_submit():    
         qty = form.qty.data
@@ -177,7 +177,7 @@ def book():
 
         if error:
             flash(f'Sorry, there are only {remaining} gondolas available for that time, please try again.', 'danger')
-            return redirect( url_for('events.view', id=current_event.id)) 
+            return redirect( url_for('events.view', id=event.id)) 
         
         flash(f'Successfully booked {qty} tickets. Your booking ID is: {booking_id}', 'success')
         return redirect( url_for('main.bookings') )
