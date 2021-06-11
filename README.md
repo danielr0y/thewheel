@@ -1,43 +1,31 @@
-# assignment3
+# 8:Wed_5-7_Jason 2
+Daniel Roy n8031789
+Harvey Goldsmith n10534261
+Matt Gill n10446435
+
 IAB207 Assignment 3
 
-My design document from assignment 1 is also included in the repo for your reference
-
-administrator account
-email: admin@thewheel.com 
+Administrator account
+email: admin@thewheel.com.au
 passw: admin
 
-I have used and recommend installing: TODO Highlight
-https://marketplace.visualstudio.com/items?itemName=wayou.vscode-todo-highlight
+a customer account with some edge case bookings. including bookings for events which were cancelled, booked out and which are now inactive
+email: daniel@email.com 
+passw: daniel
 
+As outlined in the design document for assignment 1 (included in the repo), our project does not directly have dates associated with events. Instead, each event has many tickets. This allows an event to occur many times per day and over many days .
 
+It is important to note that each individual ticket/time-slot has it's own number remaining. 
+This number is shown when booking a ticket. If you try to book too many it will reject the booking.
+A ticket is no longer available after this number reaches 0 but the event itself may not yet be "booked out". Only once all tickets/timeslots have no number remaining does the event then change to "booked out".
 
-# FIXME: there is no longer any way to see events that have been created without tickets. 
+Once all tickets for an event are in the past, the event will become "inactive". Inactive events can only be found via the My Bookings page or by inserting the ID in the URL. for example,
+https://iab207thewheel.herokuapp.com/events/15
 
-# do we want to show the register page to administrators and allow them to sign up more admins?
+An administrator can update an inactive event from last year (Valentine's Day for example) instead of creating a new one. The new tickets for this year will replace the old ones (making the event upcoming again) and all of the customer reviews from previous years will still be shown.
 
-# the home page needs a drop down box in the navigation bar for categories. or we can use the components like on the events page
+All new users are customers. There exists only one administrator account (provided above)
 
-
-
-
-#1	file:///Users/daniel/Documents/Daniel/uni/2021SEM1/IAB207/assignment%203/assignment3/wheel/views.py#27
-	TODO: create this form
-
-#2	file:///Users/daniel/Documents/Daniel/uni/2021SEM1/IAB207/assignment%203/assignment3/wheel/views.py#43
-	TODO: create this form
-
-#3	file:///Users/daniel/Documents/Daniel/uni/2021SEM1/IAB207/assignment%203/assignment3/wheel/views.py#45
-	TODO: validate the review form here
-
-#4	file:///Users/daniel/Documents/Daniel/uni/2021SEM1/IAB207/assignment%203/assignment3/wheel/templates/events.html#3
-	TODO: search form?
-
-#5	file:///Users/daniel/Documents/Daniel/uni/2021SEM1/IAB207/assignment%203/assignment3/wheel/templates/events.html#46
-	TODO: we might have to make this into a form that just does a GET requests to /events/:category -->
-
-#6	file:///Users/daniel/Documents/Daniel/uni/2021SEM1/IAB207/assignment%203/assignment3/wheel/forms.py#45
-	TODO: add all the neccessary fields
-
-#7	file:///Users/daniel/Documents/Daniel/uni/2021SEM1/IAB207/assignment%203/assignment3/wheel/forms.py#50
-	TODO: add all the neccessary fields
+The index page shows the next 3 upcoming events as well as cancelled events and has a search bar and category selector. These two parameters can be combined. Searching "Brisbane Festival" and "all categories", then filtering those results to "Brisbane Festival" + "Fireworks" is a good way to see that this works.
+https://iab207thewheel.herokuapp.com/events/?search=Brisbane+Festival&category=all
+https://iab207thewheel.herokuapp.com/events/?search=Brisbane+Festival&category=Fireworks
