@@ -47,6 +47,6 @@ class PostReviewForm(FlaskForm):
 
 
 class SearchForm(FlaskForm):
-    search = SelectField('Category')
-
-    submit = SubmitField("Search")
+    search = StringField('Search')
+    category = SelectField('Category')
+    # submit = SubmitField("Search")

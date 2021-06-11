@@ -84,17 +84,6 @@ class Event(db.Model):
        
         return event
 
-    @staticmethod
-    def getAllBySearch(query):
-        
-        return Event.query.\
-            join( Ticket ).\
-            filter( Ticket.datetime > datetime.now() ).\
-            filter( Event.description.ilike(f"%{query}%") ).\
-            group_by( Event.id ).\
-            order_by( Ticket.datetime ).\
-            all()
-
 
     @staticmethod
     def get(id: int):
@@ -131,6 +120,29 @@ class Event(db.Model):
         return Event.query.\
             join( Ticket ).\
             filter( Ticket.datetime > datetime.now() ).\
+            filter( Event.category == category ).\
+            group_by( Event.id ).\
+            order_by( Ticket.datetime ).\
+            all()
+
+        
+    @staticmethod
+    def getAllBySearch(search):
+        return Event.query.\
+            join( Ticket ).\
+            filter( Ticket.datetime > datetime.now() ).\
+            filter( Event.description.ilike(f"%{search}%") ).\
+            group_by( Event.id ).\
+            order_by( Ticket.datetime ).\
+            all()
+
+        
+    @staticmethod
+    def getAllBySearchAndCategory(search, category=None):
+        return Event.query.\
+            join( Ticket ).\
+            filter( Ticket.datetime > datetime.now() ).\
+            filter( Event.description.ilike(f"%{search}%") ).\
             filter( Event.category == category ).\
             group_by( Event.id ).\
             order_by( Ticket.datetime ).\
