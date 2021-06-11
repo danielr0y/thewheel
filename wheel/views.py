@@ -42,6 +42,10 @@ def view(id):
     bookform = BookEventForm()
     reviewform = PostReviewForm() # TODO: create this form
 
+    # TODO: validate the review form here
+    # don't put database logic here
+    # USE Review.post() it's already written for you
+
     # set default values
     bookform.event.data = id
     bookform.ticket.choices = list(map( lambda ticket: (ticket.id, f'${ticket.price}'), tickets ))
