@@ -35,6 +35,8 @@ def viewAll():
 
     form = SearchForm() 
     form.category.choices = [("all", "all categories"), *[(category, category) for category in Event.getAllCategories()]]
+    form.search.data = search
+    form.category.data = category
     
     return render_template('events.html', events=events, categories=categories, form=form)
 
