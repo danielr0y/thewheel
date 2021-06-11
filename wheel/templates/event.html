@@ -26,6 +26,13 @@
     {{ event.description }}
 </section>
 <section>
+
+    <div class="row mb-3">
+        <header class="row mb-3">
+            <h3 class="col">Category: {{event.category}}</h3>
+        </header>
+    </div>
+    
     <header class="row mb-3">
         <h3 class="col">Dates and times</h3>
         <span class="col-sm-auto ms-auto my-auto">{{ event.status }}</span>
@@ -49,6 +56,9 @@
                     data-bs-toggle="modal" data-bs-target="#book" {{ "disabled" if event.status != 'upcoming' }}>{{ event.getBookButtonText() }}</button>
         </div>
     </div>
+
+    
+
     <div id="book" class="modal fade" tabindex="-1" 
             data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg">
