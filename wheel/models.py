@@ -95,7 +95,7 @@ class Event(db.Model):
         x_max = datetime(2000,9,9)
 
         for x in self.tickets:
-            if x.datetime > x_max and x.remaining != 0:
+            if x.datetime > x_max:
                 x_max = x.datetime
 
         if x_max < datetime.now():
