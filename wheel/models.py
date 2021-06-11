@@ -301,9 +301,10 @@ class Review(db.Model):
     @staticmethod
     def post(event_id, author_id, text):
         time = datetime.now()
-        review = Review(event_id=event_id, author_id=author_id, time=time, text=text)
+        review = Review( event_id=event_id, author_id=author_id, time=time, text=text )
 
-        # TODO: add and commit to database
+        db.session.add(review)
+        db.session.commit()
         return 
 
 
