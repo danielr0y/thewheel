@@ -7,25 +7,26 @@
 {% endblock %}
 
 {% block title %}{{ event.name }}{% endblock %}
-{% block subtitle %}<a href="{{ url_for('events.viewAll') + '?category=' + event.category }}" class="text-decoration-none text-muted">{{ event.category }}</a>{% endblock %}
 
 {% block header_buttons %}
-{% if current_user.is_authenticated and current_user.is_admin() %}
-    <div class="col-sm-auto my-auto">
-        <a href="{{ url_for('events.create', id=event.id) }}" class="btn btn-outline-primary rounded-pill px-5">Update</a>
-    </div>
-{% endif %}
+    {% if current_user.is_authenticated and current_user.is_admin() %}
+        <div class="col-sm-auto my-auto">
+            <a href="{{ url_for('events.create', id=event.id) }}" class="btn btn-outline-primary rounded-pill px-5">Update</a>
+        </div>
+    {% endif %}
 
-{% if current_user.is_authenticated and current_user.is_admin() %}
-    <div class="col-sm-auto my-auto">
-        <a href="{{ url_for('events.delete', id=event.id) }}" class="btn btn-outline-primary rounded-pill px-5">Delete</a>
-    </div>
-{% endif %}
-
+    {% if current_user.is_authenticated and current_user.is_admin() %}
+        <div class="col-sm-auto my-auto">
+            <a href="{{ url_for('events.delete', id=event.id) }}" class="btn btn-outline-primary rounded-pill px-5">Delete</a>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
 <section>
+    <h4><a href="{{ url_for('events.viewAll') + '?category=' + event.category }}" class="text-decoration-none text-muted">{{ event.category }}</a></h4>
+</section>
+<section class="mb-3">
     {{ event.description }}
 </section>
 <section>    
