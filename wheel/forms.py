@@ -40,11 +40,13 @@ class BookEventForm(FlaskForm):
 
 
 class PostReviewForm(FlaskForm):
-    review = StringField('Review', validators=[InputRequired()])
+    
+    text = TextAreaField('Comment', [InputRequired()])
+    
     submit = SubmitField("Post review")
 
 
 class SearchForm(FlaskForm):
     search = SelectField('Category')
-    # TODO: add all the neccessary fields
+
     submit = SubmitField("Search")

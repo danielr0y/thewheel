@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 import os, json
 from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm
-from .models import Event, Booking, Ticket
+from .models import Event, Booking, Ticket, Review
 from . import db 
 
 
@@ -39,14 +39,14 @@ def viewAll():
     return render_template('events.html', events=events, categories=categories)
 
 
-@events.route('/<int:id>/PostReview', methods=['POST'])
-@login_required
-def PostReview(id):
-    reviewform = PostReviewForm() 
-    if reviewform.validate_on_submit(): 
-        #Review.post(id, current_user.id, reviewform.review.data)
-        flash(f'Successfully posted your review', 'success')
-        return redirect( url_for('events.view', id=id))
+# @events.route('/<int:id>/PostReview', methods=['POST'])
+# @login_required
+# def PostReview(id):
+#     reviewform = PostReviewForm() 
+#     if reviewform.validate_on_submit(): 
+#         #Review.post(id, current_user.id, reviewform.review.data)
+#         flash(f'Successfully posted your review', 'success')
+#         return redirect( url_for('events.view', id=id))
 
 @events.route('/<int:id>')
 def view(id):
@@ -79,7 +79,7 @@ def view(id):
     # dates are used to generate rows.
     # the radio options are not actually held in dates, 
     # rather, they are retreived from the form object according to the ticket ids in dates
-    return render_template('event.html', event=event, bookform=bookform, times=times, dates=dates, reviewform=reviewform)
+    return render_template('event.html', event=event, bookform=bookform, times=times, dates=dates, rform=reviewform)
 
 
 @events.route('/<int:id>/update', methods=['GET', 'POST'])
