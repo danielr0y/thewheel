@@ -26,7 +26,14 @@ def viewAll():
     # return render_template('events.html', categories = categories, upcoming = upcoming, booked = booked, cancelled = cancelled, inactive = inactive )
 
 
-
+@events.route('/<int:id>/PostReview', methods=['POST'])
+@login_required
+def PostReview(id):
+    reviewform = PostReviewForm() 
+    if reviewform.validate_on_submit(): 
+        #Review.post(id, current_user.id, reviewform.review.data)
+        flash(f'Successfully posted your review', 'success')
+        return redirect( url_for('events.view', id=id))
 
 @events.route('/<int:id>')
 def view(id):
@@ -49,6 +56,8 @@ def view(id):
     # don't put database logic here
     # USE Review.post() it's already written for you
 
+    #Review.post(event_id, author_id, text)
+
     # set default values
     bookform.ticket.choices = list(map( lambda ticket: (ticket.id, f'${ticket.price}'), tickets ))
 
@@ -57,8 +66,7 @@ def view(id):
     # dates are used to generate rows.
     # the radio options are not actually held in dates, 
     # rather, they are retreived from the form object according to the ticket ids in dates
-    return render_template('event.html', event=event, bookform=bookform, times=times, dates=dates)
-
+    return render_template('event.html', event=event, bookform=bookform, times=times, dates=dates, reviewform=reviewform)
 
 
 @events.route('/<int:id>/update', methods=['GET', 'POST'])

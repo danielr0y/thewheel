@@ -40,7 +40,7 @@ class BookEventForm(FlaskForm):
 
 
 class PostReviewForm(FlaskForm):
-    # TODO: add all the neccessary fields
+    review = StringField('Review', validators=[InputRequired()])
     submit = SubmitField("Post review")
 
 

@@ -144,14 +144,15 @@
 <section>
     <header><h3>Reviews</h3></header>
     {% if current_user.is_authenticated %}
-    <form id="review" class="row mb-3" method="POST">
-        {# form.hidden_tag() #}
+    <form id="review" class="row mb-3" method="POST" action="{{ url_for('events.PostReview', id=event.id ) }}">
+        {# reviewform.hidden_tag() #}
         <input type="hidden" name="author" value="you" 
                 class="form-control-plaintext" readonly>
         <div class="col">
             <div class="form-floating">
-                <textarea id="reviewtext" name="review" required 
-                        class="form-control" placeholder="Write a review"></textarea>
+<!--                 <textarea id="reviewtext" name="review" required 
+                        class="form-control" placeholder="Write a review"></textarea> -->
+                {{ reviewform.review ( class="form-control", rows="4", style="height: auto;" ,placeholder="Write a review") }}
                 <label for="reviewtext">Review</label>
             </div>
         </div>
