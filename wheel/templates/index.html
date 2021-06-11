@@ -37,9 +37,9 @@
 {% block content %}
 <section>
     <header class="row mb-3">
-        <h3 class="col-auto">Upcoming Events</h3>
+        <h3 class="col">Upcoming Events</h3>
+        <p class="col-auto my-auto"><a href="{{ url_for('events.viewAll') }}">More Events</a></p>
     </header>
-
         <div class='row row-cols-1 row-cols-md-2 row-cols-xl-3 mb-3 g-3'>
         {% for event in upcoming %}
         <div class="col event">
