@@ -169,14 +169,21 @@ class Event(db.Model):
 
 
     def delete(self):
-        for ticket in self.tickets:
-            ticket.delete()
-
-        for review in self.reviews:
-            review.delete()
+        self.deleteAllTickets()
+        self.deleteAllReviews()
 
         db.session.delete(self)
         db.session.commit()
+
+
+    def deleteAllTickets(self):
+        for ticket in self.tickets:
+            ticket.delete()
+
+
+    def deleteAllReviews(self):
+        for review in self.reviews:
+            review.delete()
 
 
 
