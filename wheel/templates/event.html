@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block title %}{{ event.name }}{% endblock %}
+{% block subtitle %}<a href="{{ url_for('events.viewAll') + '?category=' + event.category }}" class="text-decoration-none text-muted">{{ event.category }}</a>{% endblock %}
 
 {% block header_buttons %}
 {% if current_user.is_authenticated and current_user.is_admin() %}
@@ -27,17 +28,10 @@
 <section>
     {{ event.description }}
 </section>
-<section>
-
-    <div class="row mb-3">
-        <header class="row mb-3">
-            <h3 class="col">Category: {{event.category}}</h3>
-        </header>
-    </div>
-    
+<section>    
     <header class="row mb-3">
         <h3 class="col">Dates and times</h3>
-        <span class="col-sm-auto ms-auto my-auto">{{ event.status }}</span>
+        <!-- <span class="col-sm-auto ms-auto my-auto">{{ event.status }}</span> -->
     </header>
     <div class="row mb-3">
         <div class="col-sm">
