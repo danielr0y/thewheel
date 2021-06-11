@@ -49,8 +49,15 @@
             <p>{{ event.getTicketsPriceFrom() }}</p>
         </div>
         <div class="col-sm-auto my-auto">
-            <button type="button" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5" 
-                    data-bs-toggle="modal" data-bs-target="#book" {{ "disabled" if event.status != 'upcoming' }}>{{ event.getBookButtonText() }}</button>
+            {% if current_user.is_authenticated %}
+                <button type="button" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5" 
+                        data-bs-toggle="modal" data-bs-target="#book" {{ "disabled" if event.status != 'upcoming' }}>{{ event.getBookButtonText() }}</button>
+            {% else %}
+                <button type="button" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-5" 
+                        data-bs-toggle="tooltip" data-bs-placement="top" 
+                        title="You must be logged in to book tickets"
+                        {{ "disabled" if event.status != 'upcoming' }}>{{ event.getBookButtonText() }}</button>
+            {% endif %}
         </div>
     </div>
 
@@ -180,72 +187,82 @@
 
 {% block scripts %}
 <script>
-    const people = document.getElementById('people');
-    const gondolas = document.getElementById('qty');
+    (function(){
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    })()
+</script>
+<script>
+    (function(){
+        const people = document.getElementById('people');
+        const gondolas = document.getElementById('qty');
 
-    /* selecting a ticket option */
-    document.querySelectorAll('[name="ticket"]').forEach( (ticket) => {
-        ticket.addEventListener('change', ({target}) => {
-            updatePrice( target.getAttribute('data-price') || 0 );
+        /* selecting a ticket option */
+        document.querySelectorAll('[name="ticket"]').forEach( (ticket) => {
+            ticket.addEventListener('change', ({target}) => {
+                updatePrice( target.getAttribute('data-price') || 0 );
 
-            const warning = document.getElementById('remainingWarning');
-            const remaining = target.getAttribute('data-remaining');
-            warning.innerText = "There are " + remaining + " gondolas remaining for this time.";
+                const warning = document.getElementById('remainingWarning');
+                const remaining = target.getAttribute('data-remaining');
+                warning.innerText = "There are " + remaining + " gondolas remaining for this time.";
+            } )
         } )
-    } )
 
-    /* updating number of people */
-    people.addEventListener('change', ({target}) => {
-        const minus = target.closest('.counter').querySelector('.minus');
-        minus.disabled = (target.value === target.min );
+        /* updating number of people */
+        people.addEventListener('change', ({target}) => {
+            const minus = target.closest('.counter').querySelector('.minus');
+            minus.disabled = (target.value === target.min );
 
-        const plus = target.closest('.counter').querySelector('.plus');
-        plus.disabled = (target.value === target.max);
+            const plus = target.closest('.counter').querySelector('.plus');
+            plus.disabled = (target.value === target.max);
 
-        const requiredgondolas = Math.ceil( Number(target.value)/6 );
+            const requiredgondolas = Math.ceil( Number(target.value)/6 );
 
-        const currentgondolas = Number(gondolas.value);
-        if ( currentgondolas < requiredgondolas || target.value < currentgondolas ){
-            gondolas.value = requiredgondolas;
-        }
+            const currentgondolas = Number(gondolas.value);
+            if ( currentgondolas < requiredgondolas || target.value < currentgondolas ){
+                gondolas.value = requiredgondolas;
+            }
 
-        gondolas.dispatchEvent( new Event('change') );
-    } );
+            gondolas.dispatchEvent( new Event('change') );
+        } );
 
-    /* updating number of gondolas */
-    gondolas.addEventListener('change', ({target}) => {
-        const plus = target.closest('.counter').querySelector('.plus');
-        plus.disabled = (target.value === people.value || target.value === target.max);
-        
-        const requiredgondolas = Math.ceil( Number(people.value)/6 );
-        const minus = target.closest('.counter').querySelector('.minus');
-        minus.disabled = (target.value <= requiredgondolas);
+        /* updating number of gondolas */
+        gondolas.addEventListener('change', ({target}) => {
+            const plus = target.closest('.counter').querySelector('.plus');
+            plus.disabled = (target.value === people.value || target.value === target.max);
+            
+            const requiredgondolas = Math.ceil( Number(people.value)/6 );
+            const minus = target.closest('.counter').querySelector('.minus');
+            minus.disabled = (target.value <= requiredgondolas);
 
-        const price = document.querySelector(`[value="${target.form.ticket.value}"]`);
+            const price = document.querySelector(`[value="${target.form.ticket.value}"]`);
 
-        price && updatePrice( price.getAttribute('data-price') || 0 );
-    } );
+            price && updatePrice( price.getAttribute('data-price') || 0 );
+        } );
 
-    /* controls for buttons */
-    document.querySelectorAll('.counter').forEach( (counter) => {
-        counter.querySelectorAll('button').forEach( (button) => {
-            button.addEventListener('click', () => {
-                const input = counter.querySelector('input');
+        /* controls for buttons */
+        document.querySelectorAll('.counter').forEach( (counter) => {
+            counter.querySelectorAll('button').forEach( (button) => {
+                button.addEventListener('click', () => {
+                    const input = counter.querySelector('input');
 
-                if ( button.classList.contains('plus') )
-                    input.stepUp();
-                
-                if ( button.classList.contains('minus') )
-                    input.stepDown();
+                    if ( button.classList.contains('plus') )
+                        input.stepUp();
+                    
+                    if ( button.classList.contains('minus') )
+                        input.stepDown();
 
-                input.dispatchEvent( new Event('change') );
+                    input.dispatchEvent( new Event('change') );
+                } );
             } );
         } );
-    } );
 
-    function updatePrice(price){
-        document.getElementById('price').value = Number(gondolas.value) * Number( price );
-    }
+        function updatePrice(price){
+            document.getElementById('price').value = Number(gondolas.value) * Number( price );
+        }
+    })()
 </script>
 
 {% endblock %}
