@@ -84,6 +84,17 @@ class Event(db.Model):
        
         return event
 
+    @staticmethod
+    def getAllBySearch(query):
+        
+        return Event.query.\
+            join( Ticket ).\
+            filter( Ticket.datetime > datetime.now() ).\
+            filter( Event.description.ilike(f"%{query}%") ).\
+            group_by( Event.id ).\
+            order_by( Ticket.datetime ).\
+            all()
+
 
     @staticmethod
     def get(id: int):
