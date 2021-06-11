@@ -90,9 +90,8 @@ class Event(db.Model):
         return Event.query.get(id)
 
 
-    @staticmethod
     def updateStatusInactive(self):
-
+        # FIXME: I don't think this is working properly.
         x_max = datetime(2000,9,9)
 
         for x in self.tickets:
