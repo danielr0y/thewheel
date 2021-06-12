@@ -53,6 +53,22 @@ class User(db.Model, UserMixin):
 
 
     @staticmethod
+    def delete(id):
+        
+        user = User.query.get(id)
+        db.session.delete(user)
+        db.session.commit()
+
+
+    @staticmethod
+    def makeAdmin(id):
+        
+        user = User.query.get(id)
+        user.type = 'administrator'
+        db.session.commit()
+
+
+    @staticmethod
     def getByEmail(email):
         return User.query.filter_by(email=email).first()
 

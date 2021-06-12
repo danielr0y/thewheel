@@ -18,6 +18,9 @@
                             <h5>{{ user.name }}</h5>
                             <div><strong>User ID: </strong>{{ user.id }}</div>
                             <div><strong>email: </strong>{{ user.email }}</div>
+                            <div class="col-sm-auto my-auto">
+                                <a href="{{ url_for('main.delete', id=user.id) }}" class="btn btn-outline-primary rounded-pill px-5">Delete</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -43,6 +46,12 @@
                             <h5>{{ user.name }}</h5>
                             <div><strong>User ID: </strong>{{ user.id }}</div>
                             <div><strong>email: </strong>{{ user.email }}</div>
+                            <div class="col-sm-auto my-auto">
+                                <a href="{{ url_for('main.delete', id=user.id) }}" class="btn btn-outline-primary rounded-pill px-5">Delete</a>
+                            </div>
+                            <div class="col-sm-auto my-auto">
+                                <a href="{{ url_for('main.admin', id=user.id) }}" class="btn btn-outline-primary rounded-pill px-5">Make Admin</a>
+                            </div>
                         </div>
                     </div>
                 </div>

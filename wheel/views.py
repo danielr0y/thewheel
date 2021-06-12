@@ -250,6 +250,32 @@ def accounts():
     return render_template('accounts.html', users=users)
 
 
+@main.route('/accounts/<int:id>/delete', methods=['GET', 'POST'])
+@login_required
+def delete(id):
+
+    if id == current_user.id:
+        flash(f'Cannot delete account that is logged in.', 'danger')
+        return redirect( url_for('main.accounts'))
+
+    User.delete(id)
+
+    flash(f'Successfully deleted account', 'success')
+    return redirect( url_for('main.accounts') )
+
+
+@main.route('/accounts/<int:id>/admin', methods=['GET', 'POST'])
+@login_required
+def admin(id):
+    
+    User.makeAdmin(id)
+
+    flash(f'Successfully made account an administrator', 'success')
+    return redirect( url_for('main.accounts') )
+
+
+
+
 
 @main.route('/')
 def index():
