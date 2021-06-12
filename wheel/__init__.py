@@ -1,7 +1,7 @@
 from flask import Flask 
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, login_manager
 
 
 db = SQLAlchemy()
@@ -33,6 +33,8 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return User.get(int(user_id))
+
+    
 
     # import views
     from . import views

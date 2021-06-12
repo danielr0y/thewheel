@@ -1,16 +1,21 @@
+import json
+import os
 from datetime import datetime
-from flask import Blueprint, render_template, redirect, url_for, request
-from flask.helpers import flash
-from flask_login import current_user, login_required
-from werkzeug.utils import secure_filename
-import os, json
-from .forms import CreateEventForm, BookEventForm, SearchForm, PostReviewForm
-from .models import Event, Booking, Ticket, Review
-from . import db 
 
+from flask import Blueprint, redirect, render_template, request, url_for
+from flask.helpers import flash
+from flask_login import current_user, login_manager, login_required, LoginManager
+from werkzeug.utils import secure_filename
+
+from . import db
+from .forms import BookEventForm, CreateEventForm, PostReviewForm, SearchForm
+from .models import Booking, Event, Review, Ticket
 
 main = Blueprint('main', __name__)
 events = Blueprint('events', __name__, url_prefix='/events')
+
+
+
 
 
 
@@ -56,6 +61,8 @@ def reviewCreate(id):
         flash('Issue posting review', 'danger')
 
     return redirect( url_for('events.view', id=id))
+
+
 
 
 
@@ -157,6 +164,8 @@ def create(id=None):
 
 
 
+
+
 def check_upload_file(image):
     if not image:
         return None
@@ -175,12 +184,15 @@ def check_upload_file(image):
 
 
 @events.route('/<int:id>/delete', methods=['GET', 'POST'])
+@login_required
 def delete(id):
     event = Event.get(id)
     event.delete()
 
     flash(f'Successfully deleted event', 'success')
     return redirect( url_for('events.viewAll') )
+
+
 
 
 
@@ -213,6 +225,8 @@ def book(id):
 
 
 
+
+
 @main.route('/bookings/<int:id>')
 @main.route('/bookings')
 @login_required
@@ -226,6 +240,7 @@ def bookings(id=None):
         [[booking, booking.getTicket(), booking.getEvent()] for booking in Booking.getAllByUser(current_user.id)]
 
     return render_template('bookings.html', bookings=bookings, now=datetime.now() )
+
 
 
 @main.route('/')
