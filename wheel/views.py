@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 
 from . import db
 from .forms import BookEventForm, CreateEventForm, PostReviewForm, SearchForm
-from .models import Booking, Event, Review, Ticket
+from .models import Booking, Event, Review, Ticket, User
 
 main = Blueprint('main', __name__)
 events = Blueprint('events', __name__, url_prefix='/events')
@@ -240,6 +240,14 @@ def bookings(id=None):
         [[booking, booking.getTicket(), booking.getEvent()] for booking in Booking.getAllByUser(current_user.id)]
 
     return render_template('bookings.html', bookings=bookings, now=datetime.now() )
+
+
+@main.route('/accounts')
+@login_required
+def accounts():
+    users = User.query.all()
+
+    return render_template('accounts.html', users=users)
 
 
 

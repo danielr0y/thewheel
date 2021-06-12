@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Accounts List{% endblock %}
+
+{% block content %}
+
+<section class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-3">
+    <h1>Admins: </h1>
+    
+        {% for user in users %}
+        
+            {% if user.type == 'administrator' %}
+            <div id="{{ user.id }}" class="col">
+                <div class="card">
+                    
+                    <div class="card-body">
+                        <div class="card-body">
+                            <h5>{{ user.name }}</h5>
+                            <div><strong>User ID: </strong>{{ user.id }}</div>
+                            <div><strong>email: </strong>{{ user.email }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    
+</section>
+<section class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-3">
+
+    <h1>Customers: </h1>
+
+    
+
+        {% for user in users %}
+
+            {% if user.type == 'customer' %}
+            <div id="{{ user.id }}" class="col">
+                <div class="card">
+                    
+                    <div class="card-body">
+                        <div class="card-body">
+                            <h5>{{ user.name }}</h5>
+                            <div><strong>User ID: </strong>{{ user.id }}</div>
+                            <div><strong>email: </strong>{{ user.email }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+        {% endfor %}
+    
+</section>
+{% endblock %}

@@ -176,7 +176,7 @@
     <div class="row border-bottom"> 
         <article>
             <strong>{{ review.author.name }}</strong>
-            <i>{{ review.time }}</i>
+            <i>{{ review.time.strftime("%d/%m/%Y") }}</i>
             <p>{{ review.text }}</p>
         </article>
     </div>
