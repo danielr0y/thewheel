@@ -2,6 +2,7 @@
 Daniel Roy n8031789
 Harvey Goldsmith n10534261
 Matt Gill n10446435
+Max Pyle n10765239
 
 IAB207 Assignment 3
 
