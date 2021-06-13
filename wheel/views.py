@@ -49,11 +49,11 @@ def viewAll():
 
 @events.route('/<int:id>/review', methods=['POST'])
 @login_required
-def reviewCreate(id):
+def review(id):
     form = PostReviewForm() 
     event = Event.query.get(id)
-    if form.validate_on_submit(): 
 
+    if form.validate_on_submit(): 
         Review.post(event.id, current_user.id, form.text.data)
         flash('Review Created!', 'success')
         
@@ -91,7 +91,7 @@ def view(id):
     # dates are used to generate rows.
     # the radio options are not actually held in dates, 
     # rather, they are retreived from the form object according to the ticket ids in dates
-    return render_template('event.html', event=event, bookform=bookform, times=times, dates=dates, rform=reviewform)
+    return render_template('event.html', event=event, bookform=bookform, times=times, dates=dates, reviewform=reviewform)
 
 
 @events.route('/<int:id>/update', methods=['GET', 'POST'])

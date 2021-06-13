@@ -158,29 +158,29 @@
 <section>
     <header><h2>Reviews</h3></header>
     {% if current_user.is_authenticated %}
-
-    <div class="row">  
-        <div class="col-md-12">  
-          <h3>Write a review:</h1>  
-        </div>  
-      </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            {{wtf.quick_form(rform, '/events/{}/review'.format(event.id))}}
+    <form id="review" class="row mb-3" method="POST" action="{{ url_for('events.review', id=event.id) }}">
+        {{ reviewform.hidden_tag() }}
+        <div class="col">
+            <div class="form-floating">
+                {{ reviewform.text(class_="form-control", placeholder="Write a review") }}
+                {{ reviewform.text.label }}
+            </div>
         </div>
-    </div>
+        <div class="col-auto my-auto">
+            {{ reviewform.submit(class_="btn btn-outline-success rounded-pill px-5") }}
+        </div>
+    </form>
     {% endif %}
     <div id="reviews">
-    {% for review in event.reviews %}
-    <div class="row border-bottom"> 
-        <article>
-            <strong>{{ review.author.name }}</strong>
-            <i>{{ review.time.strftime("%d/%m/%Y") }}</i>
-            <p>{{ review.text }}</p>
-        </article>
-    </div>
-    {% endfor %}
+        {% for review in event.reviews %}
+            <div class="row border-top pt-3"> 
+                <article>
+                    <strong>{{ review.author.name }}</strong>
+                    <i>{{ review.time.strftime("%d/%m/%Y") }}</i>
+                    <p>{{ review.text }}</p>
+                </article>
+            </div>
+        {% endfor %}
     </div>
 </section>
 {% endblock %}
