@@ -16,10 +16,6 @@ events = Blueprint('events', __name__, url_prefix='/events')
 
 
 
-
-
-
-
 @events.route('/')
 def viewAll():
     search = request.args['search'] if 'search' in request.args else ''
@@ -47,25 +43,6 @@ def viewAll():
 
 
 
-@events.route('/<int:id>/review', methods=['POST'])
-@login_required
-def review(id):
-    form = PostReviewForm() 
-    event = Event.query.get(id)
-
-    if form.validate_on_submit(): 
-        Review.post(event.id, current_user.id, form.text.data)
-        flash('Review Created!', 'success')
-        
-    else:
-        flash('Issue posting review', 'danger')
-
-    return redirect( url_for('events.view', id=id))
-
-
-
-
-
 @events.route('/<int:id>')
 def view(id):
     event = Event.get(id)
@@ -80,8 +57,6 @@ def view(id):
     times = Ticket.getAllTimesFromTickets(tickets)
     dates = Ticket.groupTicketsByDate(tickets)
 
-        
-
     bookform = BookEventForm()
     reviewform = PostReviewForm() 
     bookform.ticket.choices = list(map( lambda ticket: (ticket.id, f'${ticket.price}'), tickets ))
@@ -92,6 +67,7 @@ def view(id):
     # the radio options are not actually held in dates, 
     # rather, they are retreived from the form object according to the ticket ids in dates
     return render_template('event.html', event=event, bookform=bookform, times=times, dates=dates, reviewform=reviewform)
+
 
 
 @events.route('/<int:id>/update', methods=['GET', 'POST'])
@@ -166,8 +142,6 @@ def create(id=None):
 
 
 
-
-
 def check_upload_file(image):
     if not image:
         return None
@@ -193,8 +167,6 @@ def delete(id):
 
     flash(f'Successfully deleted event', 'success')
     return redirect( url_for('events.viewAll') )
-
-
 
 
 
@@ -226,6 +198,32 @@ def book(id):
 
 
 
+@events.route('/<int:id>/review', methods=['POST'])
+@login_required
+def review(id):
+    form = PostReviewForm() 
+    event = Event.query.get(id)
+
+    if form.validate_on_submit(): 
+        Review.post(event.id, current_user.id, form.text.data)
+        flash('Review Created!', 'success')
+        
+    else:
+        flash('Issue posting review', 'danger')
+
+    return redirect( url_for('events.view', id=id))
+
+
+
+@main.route('/')
+def index():
+    upcoming = Event.getAllByStatus('upcoming', 3)
+    cancelled = Event.getAllByStatus('cancelled', 3)
+
+    form = SearchForm() 
+    form.category.choices = [("all", "all categories"), *[(category, category) for category in Event.getAllCategories()]]
+    
+    return render_template('index.html', upcoming=upcoming, cancelled=cancelled, form=form)
 
 
 
@@ -244,12 +242,14 @@ def bookings(id=None):
     return render_template('bookings.html', bookings=bookings, now=datetime.now() )
 
 
+
 @main.route('/accounts')
 @login_required
 def accounts():
     users = User.query.all()
 
     return render_template('accounts.html', users=users)
+
 
 
 @main.route('/accounts/<int:id>/delete', methods=['GET', 'POST'])
@@ -266,6 +266,7 @@ def delete(id):
     return redirect( url_for('main.accounts') )
 
 
+
 @main.route('/accounts/<int:id>/admin', methods=['GET', 'POST'])
 @login_required
 def admin(id):
@@ -274,17 +275,3 @@ def admin(id):
 
     flash(f'Successfully made account an administrator', 'success')
     return redirect( url_for('main.accounts') )
-
-
-
-
-
-@main.route('/')
-def index():
-    upcoming = Event.getAllByStatus('upcoming', 3)
-    cancelled = Event.getAllByStatus('cancelled', 3)
-
-    form = SearchForm() 
-    form.category.choices = [("all", "all categories"), *[(category, category) for category in Event.getAllCategories()]]
-    
-    return render_template('index.html', upcoming=upcoming, cancelled=cancelled, form=form)
