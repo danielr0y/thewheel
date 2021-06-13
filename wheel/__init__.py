@@ -1,4 +1,4 @@
-from flask import Flask 
+from flask import Flask, render_template, request 
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_manager
@@ -12,6 +12,7 @@ def create_app():
     app.debug = True
     # app.secret_key = 'h78gf43083740h3'
     app.config['SECRET_KEY'] = 'h78gf43083740h3'
+    app.config['TRAP_HTTP_EXCEPTIONS'] = True 
     
     #initialize db 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///wheel.sqlite'
@@ -44,6 +45,19 @@ def create_app():
     from . import auth
     app.register_blueprint(auth.auth)
     
+
+    @app.errorhandler(404)
+    def handle_404(e):
+        path = request.path
+        # return a default response
+        return render_template('404.html'), 404
+
+    @app.errorhandler(500)
+    def handle_500(e):
+        path = request.path
+        # return a default response
+        return render_template('500.html'), 404
+
     return app
 
 
