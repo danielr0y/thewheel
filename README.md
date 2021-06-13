@@ -27,7 +27,9 @@ https://iab207thewheel.herokuapp.com/events/15
 
 An administrator can update an inactive event from last year (Valentine's Day for example) instead of creating a new one. The new tickets for this year will replace the old ones (making the event upcoming again) and all of the customer reviews from previous years will still be shown.
 
-
 The index page shows the next 3 upcoming events as well as cancelled events and has a search bar and category selector. These two parameters can be combined. Searching "Brisbane Festival" and "all categories", then filtering those results to "Brisbane Festival" + "Fireworks" is a good way to see that this works.
 https://iab207thewheel.herokuapp.com/events/?search=Brisbane+Festival&category=all
 https://iab207thewheel.herokuapp.com/events/?search=Brisbane+Festival&category=Fireworks
+
+The bookings page can be limited to just one booking my putting the id in the URL
+http://127.0.0.1:5000/bookings/12348
