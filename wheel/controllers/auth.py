@@ -1,11 +1,11 @@
 from flask import Blueprint, flash, render_template, request, url_for, redirect
-from .models import User
-from .forms import RegisterForm
-from flask_login import login_required,logout_user
-from . import db
+from flask_login import login_required, logout_user
 
+from wheel.models import User
+from wheel.forms import RegisterForm
 
 auth = Blueprint('auth', __name__)
+
 
 @auth.route('/login', methods=['POST'])
 def login(): 
@@ -16,8 +16,7 @@ def login():
         success, message = User.login(email, password)
         flash( message, 'success' if success else 'danger')
             
-    return redirect(url_for('main.index'))
-
+    return redirect(url_for('index.get'))
 
 
 
@@ -34,7 +33,7 @@ def register():
             return redirect(url_for('auth.login'))
 
         flash('Thanks for registering! Please log in', 'success')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('index.get'))
 
     return render_template('register.html', form=form)
 
@@ -44,4 +43,4 @@ def register():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('main.index'))
+    return redirect(url_for('index.get'))

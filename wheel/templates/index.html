@@ -39,7 +39,7 @@
     <header class="row mb-3">
         <h3 class="col">Upcoming Events</h3>
         <div class="col-6 col-md-auto my-auto">
-            <form method="GET" action="{{ url_for('events.viewAll') }}" class="d-flex flex-row gap-1 col-auto my-auto">
+            <form method="GET" action="{{ url_for('events.getAll') }}" class="d-flex flex-row gap-1 col-auto my-auto">
                 {{ form.search(class="form-control w-auto", placeholder="search for events") }}
                 {{ form.category(class="form-select rounded-pill ps-4 pe-5") }}
                 <button class="btn btn-outline-success rounded-pill px-5" type="submit">Search</button>
@@ -50,7 +50,7 @@
         {% for event in upcoming %}
         <div class="col event">
             <article class="card">
-                <a href="{{url_for('events.view', id=event.id)}}" class="card-image" style="background-image: url('{{ event.image }}'); background-position: top;"></a>
+                <a href="{{url_for('events.get', id=event.id)}}" class="card-image" style="background-image: url('{{ event.image }}'); background-position: top;"></a>
                 <div class="card-body">
                     <h5 class="card-title">{{ event.name }}</h5>
                     <p class="mb-1"><strong>{{ event.printTicketsDateRange() }}</strong></p>
@@ -58,7 +58,7 @@
                     <p class="card-text">{{ event.description }}</p>
                     <div class="row">
                         <span class="col my-auto">{{ event.status }}{{ ": {}".format( event.getTicketsPriceFrom() ) if event.status == "upcoming" }}</span>
-                        <span class="col-auto"><a href="{{url_for('events.view', id=event.id)}}" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-4">View event</a></span>
+                        <span class="col-auto"><a href="{{url_for('events.get', id=event.id)}}" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-4">View event</a></span>
                     </div>
                 </div>
             </article>
@@ -74,7 +74,7 @@
         {% for event in cancelled %}
         <div class="col event">
             <article class="card">
-                <a href="{{url_for('events.view', id=event.id)}}" class="card-image" style="background-image: url('.{{ event.image }}'); background-position: top;"></a>
+                <a href="{{url_for('events.get', id=event.id)}}" class="card-image" style="background-image: url('.{{ event.image }}'); background-position: top;"></a>
                 <div class="card-body">
                     <h5 class="card-title">{{ event.name }}</h5>
 
@@ -87,7 +87,7 @@
                 <p class="card-text">{{ event.description }}</p>
                     <div class="row">
                         <span class="col my-auto">{{ "{}: {}".format( event.status, event.getTicketsPriceFrom() ) }}</span>
-                        <span class="col-auto"><a href="{{url_for('events.view', id=event.id)}}" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-4">View event</a></span>
+                        <span class="col-auto"><a href="{{url_for('events.get', id=event.id)}}" class="btn btn-outline-{{ event.getStatusColour() }} rounded-pill px-4">View event</a></span>
                     </div>
 
 

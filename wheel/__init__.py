@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request 
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_manager
+from flask_login import LoginManager
 
 
 db = SQLAlchemy()
@@ -10,7 +10,6 @@ def create_app():
     app = Flask(__name__)
     app.env = 'development'
     app.debug = True
-    # app.secret_key = 'h78gf43083740h3'
     app.config['SECRET_KEY'] = 'h78gf43083740h3'
     app.config['TRAP_HTTP_EXCEPTIONS'] = True 
     
@@ -20,8 +19,8 @@ def create_app():
 
     bootstrap = Bootstrap(app)
     
-    #initialize the login manager
 
+    #initialize the login manager
     login_manager = LoginManager()
 
     #set the name of the login function that lets user login
@@ -30,22 +29,25 @@ def create_app():
     login_manager.init_app(app)
 
     #create a user loader function takes userid and returns User
-    from .models import User 
+    from wheel.models import User 
     @login_manager.user_loader
     def load_user(user_id):
         return User.get(int(user_id))
 
     
 
-    # import views
-    from . import views
-    app.register_blueprint(views.main)
-    app.register_blueprint(views.events)
-
-    from . import auth
-    app.register_blueprint(auth.auth)
+    # import controllers
+    from wheel.controllers import index, events, bookings, accounts, auth
     
+    app.register_blueprint(index.index)
+    app.register_blueprint(events.events)
+    app.register_blueprint(bookings.bookings)
+    app.register_blueprint(accounts.accounts)
+    app.register_blueprint(auth.auth)
 
+
+
+    # error handlers
     @app.errorhandler(404)
     def handle_404(e):
         path = request.path
@@ -65,6 +67,3 @@ def create_app():
         return render_template('500.html'), 500
 
     return app
-
-
-

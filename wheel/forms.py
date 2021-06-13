@@ -1,12 +1,16 @@
-from wheel.models import Event
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileRequired, FileField, FileAllowed
+
 from wtforms.fields import TextAreaField,SubmitField, StringField, PasswordField, RadioField, SelectField, DateTimeField
 from wtforms.fields.html5 import IntegerField
 from wtforms.validators import InputRequired, Length, Email, EqualTo
+
 from werkzeug.utils import secure_filename
-from flask_wtf.file import FileRequired, FileField, FileAllowed
+
+from wheel.models import Event
 
 ALLOWED_FILE = {'png', 'jpg', 'JPG', 'PNG'}
+
 
 class RegisterForm(FlaskForm):
     name = StringField('Name', validators=[InputRequired()])
@@ -32,6 +36,7 @@ class CreateEventForm(FlaskForm):
     submit = SubmitField("Create")
 
 
+
 class BookEventForm(FlaskForm):
     ticket = RadioField('Tickets', coerce=int, validators=[InputRequired()])
     qty = IntegerField('Number of Gondolas', default=1, validators=[InputRequired()])
@@ -39,9 +44,11 @@ class BookEventForm(FlaskForm):
     submit = SubmitField("Book now")
 
 
+
 class PostReviewForm(FlaskForm):
     text = TextAreaField('Review', [InputRequired()])
     submit = SubmitField("Post review")
+
 
 
 class SearchForm(FlaskForm):

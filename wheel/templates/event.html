@@ -24,7 +24,7 @@
 
 {% block content %}
 <section>
-    <h4><a href="{{ url_for('events.viewAll') + '?category=' + event.category }}" class="text-decoration-none text-muted">{{ event.category }}</a></h4>
+    <h4><a href="{{ url_for('events.getAll') + '?category=' + event.category }}" class="text-decoration-none text-muted">{{ event.category }}</a></h4>
 </section>
 <section class="mb-3">
     {{ event.description }}
