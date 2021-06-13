@@ -9,6 +9,8 @@ Administrator account
 email: admin@thewheel.com.au
 passw: admin
 
+To create more admin accounts, create an account then log in with any existing admin account, click the accounts tab and select “make admin”.
+
 a customer account with some edge case bookings. including bookings for events which were cancelled, booked out and which are now inactive
 email: daniel@email.com 
 passw: daniel
@@ -24,7 +26,6 @@ https://iab207thewheel.herokuapp.com/events/15
 
 An administrator can update an inactive event from last year (Valentine's Day for example) instead of creating a new one. The new tickets for this year will replace the old ones (making the event upcoming again) and all of the customer reviews from previous years will still be shown.
 
-All new users are customers. There exists only one administrator account (provided above)
 
 The index page shows the next 3 upcoming events as well as cancelled events and has a search bar and category selector. These two parameters can be combined. Searching "Brisbane Festival" and "all categories", then filtering those results to "Brisbane Festival" + "Fireworks" is a good way to see that this works.
 https://iab207thewheel.herokuapp.com/events/?search=Brisbane+Festival&category=all
