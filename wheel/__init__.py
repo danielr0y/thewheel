@@ -52,11 +52,17 @@ def create_app():
         # return a default response
         return render_template('404.html'), 404
 
+    @app.errorhandler(405)
+    def handle_405(e):
+        path = request.path
+        # return a default response
+        return render_template('405.html'), 405
+
     @app.errorhandler(500)
     def handle_500(e):
         path = request.path
         # return a default response
-        return render_template('500.html'), 404
+        return render_template('500.html'), 500
 
     return app
 

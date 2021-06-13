@@ -69,6 +69,8 @@ def reviewCreate(id):
 @events.route('/<int:id>')
 def view(id):
     event = Event.get(id)
+    if event is None:
+        return render_template('eventnotfound.html')
     tickets = event.getFutureTickets()
 
     if len(tickets) == 0:
