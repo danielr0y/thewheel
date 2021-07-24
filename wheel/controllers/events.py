@@ -1,33 +1,15 @@
 import json
-import os
 from datetime import datetime
 
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask.helpers import flash
 from flask_login import current_user, login_required
-from werkzeug.utils import secure_filename
 
 from wheel.forms import SearchForm, CreateEventForm, BookEventForm, PostReviewForm
 from wheel.models import Event, Ticket, Booking, Review
+from wheel.forms import check_upload_file
 
 events = Blueprint('events', __name__, url_prefix='/events')
-
-
-def check_upload_file(image):
-    if not image:
-        return None
-        
-    filename = image.filename
-    # get the current path of the module file… store image file relative to this path
-    BASE_PATH = os.path.dirname(__file__)
-    #upload file location – directory of this file/static/image
-    upload_path = os.path.join(BASE_PATH, 'static/images', secure_filename(filename))
-    # store relative path in DB as image location in HTML is relative
-    db_upload_path = '/static/images/'+ secure_filename(filename)
-    # save the file and return the db upload path
-    image.save(upload_path)
-    return db_upload_path
-
 
 
 @events.route('/<int:id>/update', methods=['GET', 'POST'])
