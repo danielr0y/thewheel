@@ -155,8 +155,6 @@
 
         const form = document.getElementById('create-event');
         form.addEventListener('formdata', (event) => {
-            if ( event.target.continueWoTickets.checked ) return;
-
             const times = document.querySelectorAll('.time-header');
             const daterows = document.querySelectorAll('.date-row');
 
