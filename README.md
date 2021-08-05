@@ -28,7 +28,8 @@ From romantic dining experiences to front-row seats to our nation’s best firew
 * Variable number of passengers permissible in one gondola (max 6) and
 * Variable rates for different tickets to the same event
 
-User stories, conceptual and data models and wireframe designs can be found in the design document at [https://github.com/danielr0y/thewheel/n8031789_design_rwad.pdf](https://github.com/danielr0y/thewheel/blob/45a80215a0084b3e77a62b7e029c86b147d9d5ec/n8031789_design_rwad.pdf)
+## Design
+User stories, conceptual- and data models and wireframe designs can be found in the design document at [https://github.com/danielr0y/thewheel/n8031789_design_rwad.pdf](https://github.com/danielr0y/thewheel/blob/45a80215a0084b3e77a62b7e029c86b147d9d5ec/n8031789_design_rwad.pdf)
 
 ## User Guide
 ### Administrator account
