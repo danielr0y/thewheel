@@ -1,6 +1,5 @@
 # Python web application with Flask
-[https://iab207thewheel.herokuapp.com/](https://iab207thewheel.herokuapp.com/)\
-Please be patient when loading this website for the first time. The dyno is sleeping.
+[https://iab207thewheel.herokuapp.com/](https://iab207thewheel.herokuapp.com/)
 
 ## Summary
 This conventional web application project uses the Python web framework Flask and its associated templating, session management and database connectivity libraries to serve a simple event management website styled with Bootstrap.
